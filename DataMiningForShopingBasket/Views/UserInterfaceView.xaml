@@ -7,7 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Button Content="OK" 
+        <Button Content="{Binding ButtonText}" 
+                Command="{Binding ButtonClickCommand}"
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Padding="15,3"/>

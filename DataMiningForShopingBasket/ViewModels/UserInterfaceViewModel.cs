@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataMiningForShopingBasket.ViewModels
 {
-    class AuthorizationViewModel : INotifyPropertyChanged, IChangeWindowCallerDataContext
+    class UserInterfaceViewModel : INotifyPropertyChanged, IChangeWindowCallerDataContext
     {
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -22,19 +22,18 @@ namespace DataMiningForShopingBasket.ViewModels
 
         public event ChangeWindowEventHandler ChangeWindowCalled;
 
+        public string ButtonText { get; set; } = "oooooook";
+
         #region Commands
-        private MyCommand _LoginClickCommand;
-        public MyCommand LoginClickCommand =>
-            _LoginClickCommand ?? (_LoginClickCommand =
-                new MyCommand((obj) => true, (obj) => LoginClick_Handler()));
+        private MyCommand _ButtonClickCommand;
+        public MyCommand ButtonClickCommand =>
+            _ButtonClickCommand ?? (_ButtonClickCommand =
+                new MyCommand((obj) => true, (obj) => ButtonClick_Handler()));
         #endregion
 
-        public string Login { get; set; } = "qqqaaaaaaa";
-        public string Password { get; set; }
-
-        private void LoginClick_Handler()
+        private void ButtonClick_Handler()
         {
-            ChangeWindowCalled(this, new UserInterfaceView());
+            ChangeWindowCalled(this, new AuthorizationView());
         }
     }
 }

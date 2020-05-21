@@ -7,9 +7,6 @@
              xmlns:viewModels="clr-namespace:DataMiningForShopingBasket.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-    <UserControl.DataContext>
-        <viewModels:AuthorizationViewModel/>
-    </UserControl.DataContext>
     <Grid>
         <Grid.Resources>
             <Style x:Key="TextStyle">
@@ -89,7 +86,8 @@
         <Button Grid.Row="7"
                 Grid.Column="1"
                 Content="Войти"                
-                Style="{StaticResource ButtonStyle}">
+                Style="{StaticResource ButtonStyle}"
+                Command="{Binding LoginClickCommand}">
         </Button>
     </Grid>
 </UserControl>
