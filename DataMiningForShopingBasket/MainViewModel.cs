@@ -24,7 +24,8 @@ namespace DataMiningForShopingBasket
 
         public MainViewModel()
         {
-            ChangeWindow(new AuthorizationView());
+            //ChangeWindow(new AuthorizationView()); 
+            ChangeWindow(new UserInterfaceView()); 
         }
 
         private void ChangeWindowHandler(object sender, IChangeWindowCaller e)
