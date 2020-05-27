@@ -90,6 +90,7 @@
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="Models\ManagerInterfaceModel.cs" />
     <Compile Include="Models\UserInterfaceModel.cs" />
     <Compile Include="Products.cs">
       <DependentUpon>DataMiningDB.tt</DependentUpon>

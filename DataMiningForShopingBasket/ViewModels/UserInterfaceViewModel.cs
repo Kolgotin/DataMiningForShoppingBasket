@@ -34,7 +34,7 @@ namespace DataMiningForShopingBasket.ViewModels
         ObservableCollection<UserInterfaceModel> _ProductsList;
         public ObservableCollection<UserInterfaceModel> ProductsList
         {
-            get => _ProductsList ?? (_ProductsList = a());
+            get => _ProductsList ?? (_ProductsList = GetListUIM());
             set
             {
                 _ProductsList = value;
@@ -46,7 +46,7 @@ namespace DataMiningForShopingBasket.ViewModels
         {
         }
 
-        private ObservableCollection<UserInterfaceModel> a()
+        private ObservableCollection<UserInterfaceModel> GetListUIM()
         {
             var a = new ObservableCollection<UserInterfaceModel>();
             a.Add(new UserInterfaceModel(1, "zzzz"));
