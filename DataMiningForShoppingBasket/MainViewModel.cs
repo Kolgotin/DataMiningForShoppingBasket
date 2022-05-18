@@ -19,7 +19,7 @@ namespace DataMiningForShoppingBasket
         public IChangeWindowCaller CurrentUserControl { get; set; } 
 
         public MainViewModel()
-        {
+        {//?
             ChangeWindow(new AuthorizationView());
         }
 
