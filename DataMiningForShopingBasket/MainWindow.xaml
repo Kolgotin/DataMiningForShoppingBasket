@@ -12,6 +12,6 @@
         <local:MainViewModel/>
     </Window.DataContext>
     <Grid>
-        <UserControl Content="{Binding CurrentUC}"/>
+        <UserControl Content="{Binding CurrentUserControl}"/>
     </Grid>
 </Window>

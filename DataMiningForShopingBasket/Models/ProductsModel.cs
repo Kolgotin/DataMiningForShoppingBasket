@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace DataMiningForShopingBasket.Models
 {
-    class UserInterfaceModel : Products
+    class ProductsModel : Products
     {
         public int Count { get; set; }
 
-        public UserInterfaceModel(int i , string s)
+        public ProductsModel(int i, string s)
         {
             id = i;
             ProductName = s;

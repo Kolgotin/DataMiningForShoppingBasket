@@ -1,6 +1,6 @@
-﻿using DataMiningForShopingBasket.Events;
+﻿using System.Windows.Controls;
+using DataMiningForShopingBasket.Events;
 using DataMiningForShopingBasket.ViewModels;
-using System.Windows.Controls;
 
 namespace DataMiningForShopingBasket.Views
 {

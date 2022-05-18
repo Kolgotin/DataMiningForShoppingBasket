@@ -1,12 +1,8 @@
-﻿using DataMiningForShopingBasket.Events;
-using DataMiningForShopingBasket.Views;
+﻿using DataMiningForShopingBasket.CommonClasses;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+using DataMiningForShopingBasket.Events;
+using DataMiningForShopingBasket.Views;
 
 namespace DataMiningForShopingBasket
 {
@@ -20,26 +16,31 @@ namespace DataMiningForShopingBasket
         }
         #endregion
         
-        public IChangeWindowCaller CurrentUC { get; set; } 
+        public IChangeWindowCaller CurrentUserControl { get; set; } 
 
         public MainViewModel()
         {
-            //ChangeWindow(new AuthorizationView()); 
-            //ChangeWindow(new UserInterfaceView()); 
-            ChangeWindow(new ManagerInterfaceView()); 
+            ChangeWindow(new AuthorizationView());
         }
 
         private void ChangeWindowHandler(object sender, IChangeWindowCaller e)
         {
-            ChangeWindow(e);
+            try
+            {
+                ChangeWindow(e);
+            }
+            catch(Exception ex)
+            {
+                MessageWriter.ShowMessage(ex.Message);
+            }
         }
 
         private void ChangeWindow(IChangeWindowCaller newWindow)
         {
-            CurrentUC = newWindow;
-            CurrentUC.DataContext = CurrentUC.CustomDataContext;
-            CurrentUC.CustomDataContext.ChangeWindowCalled += ChangeWindowHandler;
-            RaisePropertyChanged("CurrentUC");
+            CurrentUserControl = newWindow;
+            CurrentUserControl.DataContext = CurrentUserControl.CustomDataContext;
+            CurrentUserControl.CustomDataContext.ChangeWindowCalled += ChangeWindowHandler;
+            RaisePropertyChanged(nameof(CurrentUserControl));
         }
     }
 }
