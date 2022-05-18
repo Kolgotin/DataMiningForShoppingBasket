@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:DataMiningForShopingBasket.Views"
              xmlns:viewModels="clr-namespace:DataMiningForShopingBasket.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance viewModels:AuthorizationViewModel}">
     <Grid>
         <Grid.Resources>
             <Style x:Key="TextStyle">
@@ -79,6 +80,7 @@
                Content="Пароль"/>
         <PasswordBox Grid.Row="5"
                      Grid.Column="1"
+                     Name="CurrentPasswordBox"
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Center"
                      FontSize="26"/>
@@ -86,8 +88,20 @@
         <Button Grid.Row="7"
                 Grid.Column="1"
                 Content="Войти"                
-                Style="{StaticResource ButtonStyle}"
-                Command="{Binding LoginClickCommand}">
+                Command="{Binding LoginClickCommandAsync}"
+                CommandParameter="{Binding ElementName=CurrentPasswordBox}">
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="LightGray"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="DarkGray"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
         </Button>
     </Grid>
 </UserControl>

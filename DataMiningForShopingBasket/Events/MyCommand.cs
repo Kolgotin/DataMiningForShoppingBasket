@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace DataMiningForShopingBasket.Events
 {
-    class MyCommand : ICommand
+    public class MyCommand : ICommand
     {
         private Predicate<object> _canExecute;
         private Action<object> _execute;

@@ -1,16 +1,41 @@
-﻿using DataMiningForShopingBasket.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataMiningForShopingBasket.Events;
+using DataMiningForShopingBasket.Models;
 
 namespace DataMiningForShopingBasket.ViewModels
 {
-    class ManagerInterfaceViewModel
+    class ManagerInterfaceViewModel : INotifyPropertyChanged, IChangeWindowCallerDataContext
     {
-        UserInterfaceViewModel UsIntDC = new UserInterfaceViewModel();
+        #region INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void RaisePropertyChanged(string prop)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
+        #endregion
+
+        public event ChangeWindowEventHandler ChangeWindowCalled;
+
+
+        ObservableCollection<ManagerInterfaceModel> _ProductsList;
+        public ObservableCollection<ManagerInterfaceModel> ProductsList
+        {
+            get => _ProductsList ?? (_ProductsList = GetListMIM());
+            set
+            {
+                _ProductsList = value;
+                RaisePropertyChanged(nameof(ProductsList));
+            }
+        }
+
+        public ObservableCollection<ManagerInterfaceModel> DiscountsList { get; set; }
 
         private ObservableCollection<ManagerInterfaceModel> GetListMIM()
         {

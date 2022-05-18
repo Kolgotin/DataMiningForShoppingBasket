@@ -1,12 +1,13 @@
 ﻿using DataMiningForShopingBasket.CommonClasses;
+using System;
+using System.ComponentModel;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Controls;
 using DataMiningForShopingBasket.Events;
 using DataMiningForShopingBasket.Views;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataMiningForShopingBasket.ViewModels
 {
@@ -19,43 +20,52 @@ namespace DataMiningForShopingBasket.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
-        #endregion
+        #endregion INotifyPropertyChanged
 
         public event ChangeWindowEventHandler ChangeWindowCalled;
 
         #region Commands
-        private MyCommand _LoginClickCommand;
-        public MyCommand LoginClickCommand =>
-            _LoginClickCommand ?? (_LoginClickCommand =
-                new MyCommand((obj) => true, (obj) => LoginClick_Handler()));
-        #endregion
+        private MyAsyncCommand<PasswordBox> _loginClickCommandAsync;
+        public MyAsyncCommand<PasswordBox> LoginClickCommandAsync =>
+            _loginClickCommandAsync ?? (_loginClickCommandAsync =
+                new MyAsyncCommand<PasswordBox>(Login_HandlerAsync, obj => !AuthInProcess));
+        #endregion Commands
 
-        public string Login { get; set; }
-        public string Password { get; set; }
+        public string Login { get; set; } = "";
+        public bool AuthInProcess => LoginClickCommandAsync?.IsActive == true;
 
-        private void LoginClick_Handler()
+        private async Task Login_HandlerAsync(PasswordBox passwordBox)
         {
-            var userTypeId = CheckProfile();
-            var userWindow = GetWindowType(userTypeId);
+            try
+            {
+                var password = passwordBox?.Password;
 
-            ChangeWindowCalled(this, userWindow);
+                var userTypeId = await CheckProfileAsync(password);
+                var userWindow = GetWindowType(userTypeId);
+
+                ChangeWindowCalled?.Invoke(this, userWindow);
+            }
+            catch (Exception ex)
+            {
+                MessageWriter.ShowMessage(ex.Message);
+            }
         }
 
-        private int? CheckProfile()
+        private async Task<int?> CheckProfileAsync(string password)
         {
-            using (var db = new DataMiningEntities())
+            var currentUser = GetData.Users.FirstOrDefault(x => x.UserName == Login.Trim());
+
+            if (currentUser is null)
             {
-                var currentUser = GetData.Users.FirstOrDefault(x => x.UserName.Trim() == Login.Trim());
-                if (currentUser is null)
-                {
-                    throw new MyException("Пользователь не найден");
-                }
-                if(currentUser.UserPassword.Trim() != Password.Trim())
-                {
-                    throw new MyException("Неверный пароль");
-                }
-                return currentUser.UserTypeId;
+                throw new MyException("Пользователь не найден");
+            } 
+
+            if (currentUser.UserPassword != password)
+            {
+                throw new MyException("Неверный пароль");
             }
+
+            return currentUser.UserTypeId;
         }
 
         private IChangeWindowCaller GetWindowType(int? userTypeId)
@@ -63,7 +73,9 @@ namespace DataMiningForShopingBasket.ViewModels
             switch (userTypeId)
             {
                 case 1:
-                    return new UserInterfaceView();
+                    return new ManagerInterfaceView();
+                case 2:
+                    return new CashierInterfaceView();
                 default:
                     throw new MyException("Тип пользователя не определён");
             }

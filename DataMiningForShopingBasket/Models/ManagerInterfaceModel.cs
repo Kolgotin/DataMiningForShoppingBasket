@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataMiningForShopingBasket.Models
+﻿namespace DataMiningForShopingBasket.Models
 {
-    class ManagerInterfaceModel : Products
+    class ManagerInterfaceModel : Discounts
     {
+        public Products Product { get; set; }
+
         public ManagerInterfaceModel(int i, string s)
         {
             id = i;
-            ProductName = s;
+            Product.ProductName = s;
         }
     }
 }

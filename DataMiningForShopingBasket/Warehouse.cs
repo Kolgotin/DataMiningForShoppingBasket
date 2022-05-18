@@ -12,18 +12,12 @@ namespace DataMiningForShopingBasket
     using System;
     using System.Collections.Generic;
     
-    public partial class Genders
+    public partial class Warehouse
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Genders()
-        {
-            this.Clients = new HashSet<Clients>();
-        }
-    
         public int id { get; set; }
-        public string Gender { get; set; }
+        public int ProductId { get; set; }
+        public int IncomeQuantity { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Clients> Clients { get; set; }
+        public virtual Products Products { get; set; }
     }
 }

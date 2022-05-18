@@ -1,6 +1,6 @@
-﻿using DataMiningForShopingBasket.Events;
+﻿using System.Windows.Controls;
+using DataMiningForShopingBasket.Events;
 using DataMiningForShopingBasket.ViewModels;
-using System.Windows.Controls;
 
 namespace DataMiningForShopingBasket.Views
 {
@@ -10,7 +10,7 @@ namespace DataMiningForShopingBasket.Views
     public partial class ManagerInterfaceView : UserControl, IChangeWindowCaller
     {
         public IChangeWindowCallerDataContext CustomDataContext { get; set; }
-            = new UserInterfaceViewModel();
+            = new CashierInterfaceViewModel();
 
         public ManagerInterfaceView()
         {

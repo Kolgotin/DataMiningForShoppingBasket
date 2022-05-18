@@ -1,18 +1,18 @@
-﻿using DataMiningForShopingBasket.Events;
+﻿using System.Windows.Controls;
+using DataMiningForShopingBasket.Events;
 using DataMiningForShopingBasket.ViewModels;
-using System.Windows.Controls;
 
 namespace DataMiningForShopingBasket.Views
 {
     /// <summary>
     /// Логика взаимодействия для UserInterfaceView.xaml
     /// </summary>
-    public partial class UserInterfaceView : UserControl, IChangeWindowCaller
+    public partial class CashierInterfaceView : UserControl, IChangeWindowCaller
     {
         public IChangeWindowCallerDataContext CustomDataContext { get; set; } 
-            = new UserInterfaceViewModel();
+            = new CashierInterfaceViewModel();
 
-        public UserInterfaceView()
+        public CashierInterfaceView()
         {
             InitializeComponent();
         }
