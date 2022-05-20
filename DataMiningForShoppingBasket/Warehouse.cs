@@ -14,7 +14,7 @@ namespace DataMiningForShoppingBasket
     
     public partial class Warehouse
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public int ProductId { get; set; }
         public int IncomeQuantity { get; set; }
     

@@ -12,7 +12,7 @@ namespace DataMiningForShoppingBasket.Models
 
         public ProductsModel(int i, string s)
         {
-            id = i;
+            Id = i;
             ProductName = s;
         }
     }

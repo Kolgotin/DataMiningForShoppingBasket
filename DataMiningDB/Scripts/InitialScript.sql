@@ -3,7 +3,7 @@
 IF NOT EXISTS (select * from sys.tables where name='UserTypes')
 BEGIN
     CREATE TABLE [dbo].[UserTypes](
-	    [Id] [int] NOT NULL,
+	    [Id] [int] IDENTITY(1,1) NOT NULL,
 	    [UserTypeName] [nvarchar](16) NOT NULL,
         CONSTRAINT [PK_UserTypes] PRIMARY KEY CLUSTERED ([Id]) ON [PRIMARY]
     ) ON [PRIMARY]
@@ -15,7 +15,7 @@ IF NOT EXISTS (select * from sys.tables where name='ProductTypes')
 BEGIN
     CREATE TABLE [dbo].[ProductTypes](
 	    [Id] [int] IDENTITY(1,1) NOT NULL,
-	    [ProductTypeName] [nvarchar](16) NOT NULL,
+	    [ProductTypeName] [nvarchar](32) NOT NULL,
 	    [ProductTypeDescription] [nvarchar](max) NULL,
         CONSTRAINT [PK_ProductTypes] PRIMARY KEY CLUSTERED ([Id]) ON [PRIMARY]
     ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]

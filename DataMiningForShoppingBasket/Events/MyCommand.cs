@@ -3,15 +3,15 @@ using System.Windows.Input;
 
 namespace DataMiningForShoppingBasket.Events
 {
-    public class MyCommand : ICommand
+    public class MyCommand<T> : ICommand
     {
-        private Predicate<object> _canExecute;
-        private Action<object> _execute;
+        private readonly Predicate<T> _canExecute;
+        private readonly Action<T> _execute;
 
-        public MyCommand(Predicate<object> canExecute, Action<object> execute)
+        public MyCommand(Action<T> execute, Predicate<T> canExecute)
         {
-            this._canExecute = canExecute;
-            this._execute = execute;
+            _canExecute = canExecute;
+            _execute = execute;
         }
 
         public event EventHandler CanExecuteChanged
@@ -22,12 +22,12 @@ namespace DataMiningForShoppingBasket.Events
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute(parameter);
+            return _canExecute((T)parameter);
         }
 
         public void Execute(object parameter)
         {
-            _execute(parameter);
+            _execute((T)parameter);
         }
     }
 }

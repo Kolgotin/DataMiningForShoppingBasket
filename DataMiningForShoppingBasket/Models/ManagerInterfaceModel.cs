@@ -6,7 +6,7 @@
 
         public ManagerInterfaceModel(int i, string s)
         {
-            id = i;
+            Id = i;
             Product.ProductName = s;
         }
     }

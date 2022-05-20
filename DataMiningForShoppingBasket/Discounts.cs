@@ -14,14 +14,14 @@ namespace DataMiningForShoppingBasket
     
     public partial class Discounts
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public string DiscountName { get; set; }
         public string DiscountDescription { get; set; }
         public System.DateTime StartDate { get; set; }
         public System.DateTime FinishDate { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }
-        public double DiscountCost { get; set; }
+        public decimal DiscountCost { get; set; }
     
         public virtual Products Products { get; set; }
     }
