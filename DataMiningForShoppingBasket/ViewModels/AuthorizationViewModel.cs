@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using DataMiningForShoppingBasket.CommonClasses;
 using DataMiningForShoppingBasket.Events;
+using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.Views;
 
 namespace DataMiningForShoppingBasket.ViewModels
@@ -38,6 +39,10 @@ namespace DataMiningForShoppingBasket.ViewModels
         {
             try
             {
+#if DEBUG
+                ChangeWindowCalled?.Invoke(this, new CashierInterfaceView());
+                return;
+#endif
                 var password = passwordBox?.Password;
 
                 var userTypeId = await CheckProfileAsync(password);

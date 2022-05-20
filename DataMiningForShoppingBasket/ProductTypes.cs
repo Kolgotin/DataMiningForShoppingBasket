@@ -20,7 +20,7 @@ namespace DataMiningForShoppingBasket
             this.Products = new HashSet<Products>();
         }
     
-        public int id { get; set; }
+        public int Id { get; set; }
         public string ProductTypeName { get; set; }
         public string ProductTypeDescription { get; set; }
     

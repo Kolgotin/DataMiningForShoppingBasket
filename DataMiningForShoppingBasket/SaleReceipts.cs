@@ -14,12 +14,20 @@ namespace DataMiningForShoppingBasket
     
     public partial class SaleReceipts
     {
-        public int id { get; set; }
-        public int SaleId { get; set; }
-        public int ProductId { get; set; }
-        public int Quantity { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public SaleReceipts()
+        {
+            this.SaleRows = new HashSet<SaleRows>();
+        }
     
-        public virtual Products Products { get; set; }
-        public virtual Sales Sales { get; set; }
+        public int Id { get; set; }
+        public System.DateTime SaleDateTime { get; set; }
+        public int CashierId { get; set; }
+        public Nullable<int> ClientId { get; set; }
+    
+        public virtual Clients Clients { get; set; }
+        public virtual Users Users { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SaleRows> SaleRows { get; set; }
     }
 }

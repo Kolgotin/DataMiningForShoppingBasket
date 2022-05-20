@@ -26,14 +26,13 @@ namespace DataMiningForShoppingBasket
         }
     
         public virtual DbSet<Clients> Clients { get; set; }
-        public virtual DbSet<Genders> Genders { get; set; }
+        public virtual DbSet<Discounts> Discounts { get; set; }
+        public virtual DbSet<Products> Products { get; set; }
+        public virtual DbSet<ProductTypes> ProductTypes { get; set; }
+        public virtual DbSet<SaleReceipts> SaleReceipts { get; set; }
+        public virtual DbSet<SaleRows> SaleRows { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<UserTypes> UserTypes { get; set; }
-        public virtual DbSet<Products> Products { get; set; }
-        public virtual DbSet<Discounts> Discounts { get; set; }
-        public virtual DbSet<ProductTypes> ProductTypes { get; set; }
-        public virtual DbSet<Sales> Sales { get; set; }
-        public virtual DbSet<SaleReceipts> SaleReceipts { get; set; }
         public virtual DbSet<Warehouse> Warehouse { get; set; }
     }
 }

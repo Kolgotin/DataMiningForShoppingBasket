@@ -103,13 +103,11 @@
     </Compile>
     <Compile Include="Events\AsyncCommandBase.cs" />
     <Compile Include="Events\IAsyncCommand.cs" />
-    <Compile Include="Events\IChangeWindowCaller.cs" />
+    <Compile Include="Interfaces\IChangeWindowCaller.cs" />
     <Compile Include="Events\MyAsyncCommand.cs" />
     <Compile Include="Events\MyCommand.cs" />
     <Compile Include="Events\NotifyTaskCompletion.cs" />
-    <Compile Include="Genders.cs">
-      <DependentUpon>DataMiningDB.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Interfaces\IChangeWindowCallerDataContext.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Models\ManagerInterfaceModel.cs" />
     <Compile Include="Models\CashierInterfaceModel.cs" />
@@ -123,7 +121,7 @@
     <Compile Include="SaleReceipts.cs">
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Sales.cs">
+    <Compile Include="SaleRows.cs">
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Users.cs">

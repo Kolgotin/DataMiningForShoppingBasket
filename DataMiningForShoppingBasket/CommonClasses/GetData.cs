@@ -23,12 +23,17 @@ namespace DataMiningForShoppingBasket.CommonClasses
 
         private static List<Products> _products;
         public static List<Products> Products => _products ??
-            (_products = dbContext.Products.ToList());
+            (_products = GetProductsAsync());
 
         public static List<Users> GetUsersAsync()
         {
             var users = dbContext.Users.AsQueryable().ToListAsync().Result;
             return users;
+        }
+
+        public static List<Products> GetProductsAsync()
+        {
+            return dbContext.Products.AsQueryable().ToListAsync().Result;
         }
 
         private static List<T> GetList<T>() where T : class

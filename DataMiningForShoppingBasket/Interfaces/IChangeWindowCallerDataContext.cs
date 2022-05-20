@@ -1,11 +1,5 @@
-﻿namespace DataMiningForShoppingBasket.Events
+﻿namespace DataMiningForShoppingBasket.Interfaces
 {
-    public interface IChangeWindowCaller
-    {
-        object DataContext { get; set; }
-        IChangeWindowCallerDataContext CustomDataContext { get; set; }
-    }
-
     public interface IChangeWindowCallerDataContext
     {
         event ChangeWindowEventHandler ChangeWindowCalled;

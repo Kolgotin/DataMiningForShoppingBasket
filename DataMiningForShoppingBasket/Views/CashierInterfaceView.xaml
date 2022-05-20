@@ -14,35 +14,82 @@
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        
-        <DataGrid VerticalAlignment="Stretch"
+
+        <DataGrid Grid.Column="0"
+                  Grid.Row="0"
+                  Margin="5"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  ItemsSource="{Binding Cart}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="5*"
+                                    Header="ProductName"
+                                    IsReadOnly="True"
+                                    Binding="{Binding ProductInstance.ProductName}"/>
+                <DataGridTextColumn Width="4*"
+                                    Header="Type"
+                                    IsReadOnly="True"
+                                    Binding="{Binding ProductInstance.ProductTypes.ProductTypeName}"/>
+                <DataGridTextColumn Width="2*"
+                                    Header="Quantity"
+                                    IsReadOnly="False"
+                                    Binding="{Binding Quantity}"/>
+                <DataGridTextColumn Width="2*"
+                                    Header="Cost"
+                                    IsReadOnly="True"
+                                    Binding="{Binding ProductInstance.Cost}"/>
+                <DataGridTextColumn Width="2*"
+                                    Header="TotalCost"
+                                    IsReadOnly="True"
+                                    Binding="{Binding TotalCost}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBlock Grid.Column="0"
+                   Grid.Row="1"
+                   Text="{Binding TotalCost, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+
+        <DataGrid Name="ProductsDataGrid"
+                  VerticalAlignment="Stretch"
                   Grid.Column="1"
                   Grid.Row="0"
-                  Grid.RowSpan="3"
+                  Grid.RowSpan="4"
                   Margin="5"
+                  AutoGenerateColumns="False"
                   ItemsSource="{Binding ProductsList}"
                   IsReadOnly="True">
+            <DataGrid.InputBindings>
+                <MouseBinding
+                    MouseAction="LeftDoubleClick"
+                    Command="{Binding ProductItemDoubleClickCommand}"
+                    CommandParameter="{Binding ElementName=ProductsDataGrid, Path=SelectedItem}"/>
+            </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Width="*"
-                                    Binding="{Binding ProductInstance.id}"/>
+                                    Header="Id"
+                                    Binding="{Binding Id}"/>
+                <DataGridTextColumn Width="5*"
+                                    Header="ProductName"
+                                    Binding="{Binding ProductName}"/>
                 <DataGridTextColumn Width="4*"
-                                    Binding="{Binding ProductInstance.ProductName}"/>
-                <DataGridTextColumn Width="*"
-                                    Binding="{Binding ProductInstance.ProductTypes.ProductTypeName}"/>
-                <DataGridTextColumn Width="*"
-                                    Binding="{Binding ProductInstance.Cost}"/>
+                                    Header="Type"
+                                    Binding="{Binding ProductTypes.ProductTypeName}"/>
+                <DataGridTextColumn Width="2*"
+                                    Header="Cost"
+                                    Binding="{Binding Cost}"/>
             </DataGrid.Columns>
         </DataGrid>
 
         <Button Grid.Column="1"
-                Grid.Row="3"
+                Grid.Row="4"
                 Content="Выход" 
-                Command="{Binding ButtonClickCommand}"
+                Command="{Binding ExitCommand}"
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Padding="15,3"/>

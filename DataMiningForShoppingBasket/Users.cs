@@ -17,16 +17,16 @@ namespace DataMiningForShoppingBasket
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Users()
         {
-            this.Sales = new HashSet<Sales>();
+            this.SaleReceipts = new HashSet<SaleReceipts>();
         }
     
-        public int id { get; set; }
+        public int Id { get; set; }
         public string UserName { get; set; }
         public string UserPassword { get; set; }
         public Nullable<int> UserTypeId { get; set; }
     
-        public virtual UserTypes UserTypes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Sales> Sales { get; set; }
+        public virtual ICollection<SaleReceipts> SaleReceipts { get; set; }
+        public virtual UserTypes UserTypes { get; set; }
     }
 }
