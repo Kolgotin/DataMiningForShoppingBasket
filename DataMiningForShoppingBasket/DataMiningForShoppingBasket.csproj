@@ -102,16 +102,15 @@
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Events\AsyncCommandBase.cs" />
-    <Compile Include="Events\IAsyncCommand.cs" />
+    <Compile Include="Interfaces\IAsyncCommand.cs" />
     <Compile Include="Interfaces\IChangeWindowCaller.cs" />
-    <Compile Include="Events\MyAsyncCommand.cs" />
-    <Compile Include="Events\MyCommand.cs" />
+    <Compile Include="Events\MyAsyncCommand`1.cs" />
+    <Compile Include="Events\MyCommand`1.cs" />
     <Compile Include="Events\NotifyTaskCompletion.cs" />
     <Compile Include="Interfaces\IChangeWindowCallerDataContext.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Models\ManagerInterfaceModel.cs" />
     <Compile Include="Models\CashierInterfaceModel.cs" />
-    <Compile Include="Models\ProductsModel.cs" />
     <Compile Include="Products.cs">
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>

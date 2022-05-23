@@ -1,8 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Data.Entity;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using DataMiningForShoppingBasket.CommonClasses;
@@ -23,7 +21,11 @@ namespace DataMiningForShoppingBasket.ViewModels
         }
         #endregion INotifyPropertyChanged
 
+        #region IChangeWindowCallerDataContext
         public event ChangeWindowEventHandler ChangeWindowCalled;
+
+        public string WindowLabel => "Авторизация";
+        #endregion
 
         #region Commands
         private MyAsyncCommand<PasswordBox> _loginClickCommandAsync;
