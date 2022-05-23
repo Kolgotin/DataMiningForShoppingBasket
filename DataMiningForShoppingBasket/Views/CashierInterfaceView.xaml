@@ -8,60 +8,121 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:CashierInterfaceViewModel}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+            <Style TargetType="DataGrid">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="AutoGenerateColumns" Value="False"/>
+                    <Setter Property="SelectionMode" Value="Single"/>
+                    <Setter Property="CanUserSortColumns" Value="False"/>
+                    <Setter Property="CanUserAddRows" Value="False"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="Button">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="Padding" Value="15,3"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="20"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="Button" x:Key="InsideButtonStyle">
+                <Setter Property="Margin" Value="10,0"/>
+                <Setter Property="Padding" Value="5,0"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="10"/>
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="FontSize" Value="30"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="13*"/>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <DataGrid Grid.Column="0"
-                  Grid.Row="0"
-                  Margin="5"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
+        <Label Grid.Row="0"
+               Grid.Column="0"
+               Grid.ColumnSpan="2"
+               Content="Корзина покупателя:"/>
+
+        <DataGrid Grid.Row="1"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
                   ItemsSource="{Binding Cart}">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="5*"
-                                    Header="ProductName"
+                                    Header="Наименование"
                                     IsReadOnly="True"
                                     Binding="{Binding ProductInstance.ProductName}"/>
                 <DataGridTextColumn Width="4*"
-                                    Header="Type"
+                                    Header="Тип"
                                     IsReadOnly="True"
                                     Binding="{Binding ProductInstance.ProductTypes.ProductTypeName}"/>
                 <DataGridTextColumn Width="2*"
-                                    Header="Quantity"
+                                    Header="Количество"
                                     IsReadOnly="False"
-                                    Binding="{Binding Quantity}"/>
+                                    Binding="{Binding Quantity, StringFormat=N3}"/>
                 <DataGridTextColumn Width="2*"
-                                    Header="Cost"
+                                    Header="Цена"
                                     IsReadOnly="True"
                                     Binding="{Binding ProductInstance.Cost}"/>
                 <DataGridTextColumn Width="2*"
-                                    Header="TotalCost"
+                                    Header="Сумма"
                                     IsReadOnly="True"
                                     Binding="{Binding TotalCost}"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <TextBlock Grid.Column="0"
-                   Grid.Row="1"
-                   Text="{Binding TotalCost, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+        <TextBox Grid.Row="0"
+                 Grid.Column="2"
+                 Name="SearchTextBox"
+                 TextChanged="SearchTextBox_OnTextChanged"
+                 Text="{Binding SearchString, UpdateSourceTrigger=Explicit}"/>
+
+        <Button Grid.Row="0"
+                Grid.Column="2"
+                Style="{StaticResource InsideButtonStyle}"
+                Content="X"
+                Command="{Binding ClearSearchCommand}"/>
+
+        <TextBlock Grid.Row="2"
+                   Grid.Column="0"
+                   Text="Сумма:"/>
+
+        <TextBlock Grid.Row="2"
+                   Grid.Column="1"
+                   Text="{Binding TotalCost, StringFormat=N2}"/>
 
         <DataGrid Name="ProductsDataGrid"
                   VerticalAlignment="Stretch"
-                  Grid.Column="1"
-                  Grid.Row="0"
+                  Grid.Column="2"
+                  Grid.Row="1"
                   Grid.RowSpan="4"
-                  Margin="5"
-                  AutoGenerateColumns="False"
                   ItemsSource="{Binding ProductsList}"
                   IsReadOnly="True">
             <DataGrid.InputBindings>
@@ -75,23 +136,59 @@
                                     Header="Id"
                                     Binding="{Binding Id}"/>
                 <DataGridTextColumn Width="5*"
-                                    Header="ProductName"
+                                    Header="Наименование"
                                     Binding="{Binding ProductName}"/>
                 <DataGridTextColumn Width="4*"
-                                    Header="Type"
+                                    Header="Тип"
                                     Binding="{Binding ProductTypes.ProductTypeName}"/>
                 <DataGridTextColumn Width="2*"
-                                    Header="Cost"
+                                    Header="Цена"
                                     Binding="{Binding Cost}"/>
             </DataGrid.Columns>
         </DataGrid>
 
+        <Label Grid.Row="3"
+               Grid.Column="0"
+               Grid.ColumnSpan="2"
+               Content="Дополнительное предложение:"/>
+
+        <DataGrid Name="AdditionalOfferDataGrid"
+                  Grid.Row="4"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding OfferProductList}">
+            <DataGrid.InputBindings>
+                <MouseBinding
+                    MouseAction="LeftDoubleClick"
+                    Command="{Binding ProductItemDoubleClickCommand}"
+                    CommandParameter="{Binding ElementName=AdditionalOfferDataGrid, Path=SelectedItem}"/>
+            </DataGrid.InputBindings>
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="5*"
+                                    Header="Наименование"
+                                    Binding="{Binding ProductName}"/>
+                <DataGridTextColumn Width="4*"
+                                    Header="Тип"
+                                    Binding="{Binding ProductTypes.ProductTypeName}"/>
+                <DataGridTextColumn Width="2*"
+                                    Header="Цена"
+                                    Binding="{Binding Cost}"/>
+            </DataGrid.Columns></DataGrid>
+
+        <Button Grid.Column="0"
+                Grid.Row="5"
+                Content="Предварительный чек" 
+                Command="{Binding PrepareOfferCommand}"/>
+
         <Button Grid.Column="1"
-                Grid.Row="4"
+                Grid.Row="5"
+                Content="Оформить" 
+                Command="{Binding PrepareOfferCommand}"/>
+
+        <Button Grid.Column="2"
+                Grid.Row="5"
                 Content="Выход" 
-                Command="{Binding ExitCommand}"
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center" 
-                Padding="15,3"/>
+                Command="{Binding ExitCommand}"/>
     </Grid>
 </UserControl>

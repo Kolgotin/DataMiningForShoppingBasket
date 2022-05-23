@@ -16,8 +16,8 @@ namespace DataMiningForShoppingBasket
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
         #endregion
-        
-        public IChangeWindowCaller CurrentUserControl { get; set; } 
+
+        public IChangeWindowCaller CurrentUserControl { get; set; }
 
         public MainViewModel()
         {

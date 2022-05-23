@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using DataMiningForShoppingBasket.CommonClasses;
 using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.Models;
 
@@ -16,31 +18,26 @@ namespace DataMiningForShoppingBasket.ViewModels
         }
         #endregion
 
+        #region IChangeWindowCallerDataContext
         public event ChangeWindowEventHandler ChangeWindowCalled;
 
+        public string WindowLabel => "Менеджер";
+        #endregion
 
-        ObservableCollection<ManagerInterfaceModel> _ProductsList;
-        public ObservableCollection<ManagerInterfaceModel> ProductsList
+        private ObservableCollection<CashierInterfaceModel> _cart = new ObservableCollection<CashierInterfaceModel>();
+        public ObservableCollection<CashierInterfaceModel> Cart
         {
-            get => _ProductsList ?? (_ProductsList = GetListMIM());
+            get => _cart;
             set
             {
-                _ProductsList = value;
-                RaisePropertyChanged(nameof(ProductsList));
+                _cart = value;
+                RaisePropertyChanged(nameof(Cart));
             }
         }
 
-        public ObservableCollection<ManagerInterfaceModel> DiscountsList { get; set; }
+        public List<Products> ProductsList => GetData.Products;
 
-        private ObservableCollection<ManagerInterfaceModel> GetListMIM()
-        {
-            var a = new ObservableCollection<ManagerInterfaceModel>();
-            a.Add(new ManagerInterfaceModel(1, "zzzz"));
-            a.Add(new ManagerInterfaceModel(2, "xxxx"));
-            a.Add(new ManagerInterfaceModel(3, "ssss"));
-            a.Add(new ManagerInterfaceModel(4, "aaaa"));
-            a.Add(new ManagerInterfaceModel(5, "yyyy"));
-            return a;
-        }
+        public ObservableCollection<ManagerInterfaceModel> DiscountsList { get; set; }
+        
     }
 }

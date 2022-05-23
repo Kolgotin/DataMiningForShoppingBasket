@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DataMiningForShoppingBasket.CommonClasses
 {
@@ -17,24 +11,13 @@ namespace DataMiningForShoppingBasket.CommonClasses
         public static List<Users> Users => _users ??
             (_users = GetUsersAsync());
 
-        private static List<UserTypes> _usersTypes;
-        public static List<UserTypes> UsersTypes => _usersTypes ??
-            (_usersTypes = dbContext.UserTypes.ToList());
-
         private static List<Products> _products;
         public static List<Products> Products => _products ??
             (_products = GetProductsAsync());
 
-        public static List<Users> GetUsersAsync()
-        {
-            var users = dbContext.Users.AsQueryable().ToListAsync().Result;
-            return users;
-        }
+        public static List<Users> GetUsersAsync() => dbContext.Users.AsQueryable().ToList();
 
-        public static List<Products> GetProductsAsync()
-        {
-            return dbContext.Products.AsQueryable().ToListAsync().Result;
-        }
+        public static List<Products> GetProductsAsync() => dbContext.Products.AsQueryable().ToList();
 
         private static List<T> GetList<T>() where T : class
         {

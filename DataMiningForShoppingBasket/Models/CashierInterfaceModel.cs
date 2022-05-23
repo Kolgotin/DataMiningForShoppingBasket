@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel;
+using System.Windows;
 
 namespace DataMiningForShoppingBasket.Models
 {
     public class CashierInterfaceModel : INotifyPropertyChanged
     {
+        private const int DefaultQuantity = 1;
+
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -19,7 +22,8 @@ namespace DataMiningForShoppingBasket.Models
             get => _quantity;
             set
             {
-                _quantity = value;
+                _quantity = ProductInstance?.FractionalAllowed == true ? value : decimal.Floor(value);
+                RaisePropertyChanged(nameof(Quantity));
                 RaisePropertyChanged(nameof(TotalCost));
             }
         }
@@ -27,21 +31,11 @@ namespace DataMiningForShoppingBasket.Models
         public decimal TotalCost => Quantity * ProductInstance.Cost.Value;
         
         public Products ProductInstance { get; set; }
-
-        public CashierInterfaceModel()
-        {
-            ProductInstance = new Products();
-        }
-
-        public CashierInterfaceModel(int i, string s) : this()
-        {
-            ProductInstance.Id = i;
-            ProductInstance.ProductName = s;
-        }
-
+        
         public CashierInterfaceModel(Products product)
         {
             ProductInstance = product;
+            Quantity = DefaultQuantity;
         }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DataMiningForShoppingBasket"
         xmlns:localViews="clr-namespace:DataMiningForShoppingBasket.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1600"
+        Title="{Binding CurrentUserControl.CustomDataContext.WindowLabel}" Height="900" Width="1600"
         MinHeight="500" MinWidth="500">
     <Window.DataContext>
         <local:MainViewModel/>

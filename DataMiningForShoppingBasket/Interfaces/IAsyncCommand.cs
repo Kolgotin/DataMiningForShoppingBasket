@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace DataMiningForShoppingBasket.Events
+namespace DataMiningForShoppingBasket.Interfaces
 {
     interface IAsyncCommand : ICommand
     {
