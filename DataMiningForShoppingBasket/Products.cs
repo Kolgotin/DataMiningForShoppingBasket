@@ -19,7 +19,6 @@ namespace DataMiningForShoppingBasket
         {
             this.Discounts = new HashSet<Discounts>();
             this.SaleRows = new HashSet<SaleRows>();
-            this.Warehouse = new HashSet<Warehouse>();
         }
     
         public int Id { get; set; }
@@ -27,13 +26,12 @@ namespace DataMiningForShoppingBasket
         public Nullable<int> ProductTypeid { get; set; }
         public Nullable<decimal> Cost { get; set; }
         public bool FractionalAllowed { get; set; }
+        public decimal WarehouseQuantity { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Discounts> Discounts { get; set; }
         public virtual ProductTypes ProductTypes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SaleRows> SaleRows { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Warehouse> Warehouse { get; set; }
     }
 }

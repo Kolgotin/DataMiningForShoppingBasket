@@ -70,10 +70,24 @@
                Grid.ColumnSpan="2"
                Content="Корзина покупателя:"/>
 
-        <DataGrid Grid.Row="1"
+        <DataGrid Name="CartDataGrid"
+                  Grid.Row="1"
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
-                  ItemsSource="{Binding Cart}">
+                  SelectedItem="{Binding SelectedCartItem}"
+                  ItemsSource="{Binding ConsumerCart}">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Delete">
+                        <MenuItem.InputBindings>
+                            <MouseBinding
+                                MouseAction="LeftClick"
+                                Command="{Binding DeleteProductFromCartCommand}"
+                                CommandParameter="{Binding  SelectedCartItem}"/>
+                        </MenuItem.InputBindings>
+                    </MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Width="5*"
                                     Header="Наименование"
@@ -144,6 +158,9 @@
                 <DataGridTextColumn Width="2*"
                                     Header="Цена"
                                     Binding="{Binding Cost}"/>
+                <DataGridTextColumn Width="2*"
+                                    Header="Остаток"
+                                    Binding="{Binding WarehouseQuantity}"/>
             </DataGrid.Columns>
         </DataGrid>
 

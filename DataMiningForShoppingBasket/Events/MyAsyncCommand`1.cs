@@ -23,24 +23,11 @@ namespace DataMiningForShoppingBasket.Events
         }
 
         /// <inheritdoc />
-        public override ICommand CancelCommand => null;
-
-        /// <inheritdoc />
         public override bool CanExecute(object parameter)
         {
             return _canExAction?.Invoke((TParam)parameter) != false && CanStartExecution();
         }
-
-        /// <inheritdoc />
-        protected override void NotifyCommandFinished()
-        {
-        }
-
-        /// <inheritdoc />
-        protected override void NotifyCommandStarting()
-        {
-        }
-
+        
         /// <inheritdoc />
         protected override NotifyTaskCompletion CreateNotifyTaskCompletion(
             object parameter)

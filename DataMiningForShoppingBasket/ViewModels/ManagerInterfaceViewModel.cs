@@ -9,6 +9,8 @@ namespace DataMiningForShoppingBasket.ViewModels
 {
     class ManagerInterfaceViewModel : INotifyPropertyChanged, IChangeWindowCallerDataContext
     {
+        private readonly IGetData _getData;
+
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -35,9 +37,13 @@ namespace DataMiningForShoppingBasket.ViewModels
             }
         }
 
-        public List<Products> ProductsList => GetData.Products;
+        public List<Products> ProductsList => _getData.GetProductsAsync().Result;
 
         public ObservableCollection<ManagerInterfaceModel> DiscountsList { get; set; }
-        
+
+        public ManagerInterfaceViewModel()
+        {
+            _getData = GetData.Instance;
+        }
     }
 }

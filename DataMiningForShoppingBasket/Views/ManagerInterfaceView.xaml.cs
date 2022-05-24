@@ -9,7 +9,7 @@ namespace DataMiningForShoppingBasket.Views
     public partial class ManagerInterfaceView : IChangeWindowCaller
     {
         public IChangeWindowCallerDataContext CustomDataContext { get; set; }
-            = new CashierInterfaceViewModel();
+            = new ManagerInterfaceViewModel();
 
         public ManagerInterfaceView()
         {

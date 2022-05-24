@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using DataMiningForShoppingBasket.CommonClasses;
 using DataMiningForShoppingBasket.Events;
+using DataMiningForShoppingBasket.Handlers;
 using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.Models;
 using DataMiningForShoppingBasket.Views;
@@ -15,14 +15,17 @@ namespace DataMiningForShoppingBasket.ViewModels
 {
     public class CashierInterfaceViewModel : INotifyPropertyChanged, IChangeWindowCallerDataContext
     {
-        private const int MaxOfferedProducts = 5;
+        private readonly IGetData _getData;
+        private readonly IPrepareOfferHandler _prepareOfferHandler;
 
         private MyAsyncCommand<object> _exitCommand;
         private MyAsyncCommand<object> _prepareOfferCommand;
         private MyCommand<object> _clearSearchCommand;
-        private MyCommand<Products> _productItemDoubleClickCommand;
+        private MyCommand<Products> _productItemDoubleClickCommand; 
+        private MyCommand<object> _deleteProductFromCartCommand;
         private string _searchString;
         private List<Products> _offerProductList;
+        private List<Products> _productsList;
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -52,14 +55,19 @@ namespace DataMiningForShoppingBasket.ViewModels
         public MyCommand<object> ClearSearchCommand =>
             _clearSearchCommand ?? (_clearSearchCommand =
                 new MyCommand<object>(ClearSearch, _ => true));
-
         
         public MyCommand<Products> ProductItemDoubleClickCommand =>
             _productItemDoubleClickCommand ?? (_productItemDoubleClickCommand =
                 new MyCommand<Products>(AddProductIntoCartAsync, obj => true));
+
+        public MyCommand<object> DeleteProductFromCartCommand =>
+            _deleteProductFromCartCommand ?? (_deleteProductFromCartCommand =
+                new MyCommand<object>(DeleteProductFromCart, obj => true));
         #endregion
 
-        public ObservableCollection<CashierInterfaceModel> Cart { get; set; }
+        public ObservableCollection<CashierInterfaceModel> ConsumerCart { get; set; }
+
+        public CashierInterfaceModel SelectedCartItem { get; set; }
 
         public List<Products> OfferProductList
         {
@@ -82,25 +90,29 @@ namespace DataMiningForShoppingBasket.ViewModels
             }
         }
 
-        public List<Products> ProductsList => GetData.Products
+        public List<Products> ProductsList => _productsList
             .Where(x => x.ProductName.ToLower().Contains(SearchString.ToLower()))
             .ToList();
 
-        public decimal TotalCost => Cart.Sum(x => x.TotalCost);
+        public decimal TotalCost => ConsumerCart.Sum(x => x.TotalCost);
         #endregion Properties
-
+        
         public CashierInterfaceViewModel()
         {
-            Cart = new ObservableCollection<CashierInterfaceModel>();
+            _productsList = new List<Products>();
+            _getData = GetData.Instance;
+            _ = RefreshActualProductsAsync();
+            ConsumerCart = new ObservableCollection<CashierInterfaceModel>();
             SearchString = string.Empty;
+            _prepareOfferHandler = PrepareOfferSimpleHandler.Instance;
         }
 
         private async Task PrepareOfferAsync(object obj)
         {
             try
             {
-                OfferProductList = GetData.Products
-                    .Except(Cart.Select(x => x.ProductInstance)).Take(MaxOfferedProducts).ToList();
+                var productsInCart = ConsumerCart.Select(x => x.ProductInstance);
+                OfferProductList = await _prepareOfferHandler.PrepareOffer(productsInCart);
             }
             catch (Exception e)
             {
@@ -134,15 +146,15 @@ namespace DataMiningForShoppingBasket.ViewModels
                     return;
                 }
 
-                if (Cart.Select(x => x.ProductInstance).Contains(product))
+                if (ConsumerCart.Select(x => x.ProductInstance).Contains(product))
                 {
-                    Cart.First(x => x.ProductInstance == product).Quantity++;
+                    ConsumerCart.First(x => x.ProductInstance == product).Quantity++;
                 }
                 else
                 {
                     var newProduct = new CashierInterfaceModel(product);
                     newProduct.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(TotalCost));
-                    Cart.Add(newProduct);
+                    ConsumerCart.Add(newProduct);
                 }
 
                 RaisePropertyChanged(nameof(TotalCost));
@@ -153,6 +165,34 @@ namespace DataMiningForShoppingBasket.ViewModels
             }
         }
 
-        private bool ProductIsValid(Products product) => product.Cost.HasValue;
+        private void DeleteProductFromCart(object item)
+        {
+            if (SelectedCartItem is null)
+            {
+                return;
+            }
+
+            _ = ConsumerCart.Remove(SelectedCartItem);
+        }
+
+        private bool ProductIsValid(Products product) => product.Cost.HasValue && product.WarehouseQuantity > 0;
+
+        private async Task RefreshActualProductsAsync()
+        {
+            try
+            {
+                if (_getData is null)
+                {
+                    return;
+                }
+
+                _productsList = await _getData.GetProductsAsync();
+                RaisePropertyChanged(nameof(ProductsList));
+            }
+            catch (Exception e)
+            {
+                MessageWriter.ShowMessage(e.Message);
+            }
+        }
     }
 }

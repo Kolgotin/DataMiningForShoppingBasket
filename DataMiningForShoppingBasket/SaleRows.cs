@@ -19,7 +19,7 @@ namespace DataMiningForShoppingBasket
         public int ProductId { get; set; }
         public decimal Quantity { get; set; }
     
-        public virtual Products Products { get; set; }
         public virtual SaleReceipts SaleReceipts { get; set; }
+        public virtual Products Products { get; set; }
     }
 }
