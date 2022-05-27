@@ -59,7 +59,8 @@ BEGIN
 	    [ProductName] [nvarchar](32) NOT NULL,
 	    [ProductTypeid] [int] NULL,
 	    [Cost] [decimal](9, 2) NULL,
-	    [FractionalAllowed] bit NOT NULL,
+	    [FractionalAllowed] bit NOT NULL CONSTRAINT [DF_Products_FractionalAllowed] default (0),
+	    [WarehouseQuantity] decimal(18,4) NOT NULL CONSTRAINT [DF_Products_WarehouseQuantity] default (0),
         CONSTRAINT [PK_Products] PRIMARY KEY CLUSTERED ([Id]) ON [PRIMARY],
         CONSTRAINT [FK_Products_ProductTypes] FOREIGN KEY([ProductTypeid]) REFERENCES [dbo].[ProductTypes] ([Id])
     ) ON [PRIMARY]
@@ -81,19 +82,6 @@ BEGIN
         CONSTRAINT [PK_Discounts] PRIMARY KEY CLUSTERED ([Id]) ON [PRIMARY],
         CONSTRAINT [FK_Products_Discounts] FOREIGN KEY([ProductId]) REFERENCES [dbo].[Products] ([Id])
     ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-END
-GO
-
-
-IF NOT EXISTS (select * from sys.tables where name='Warehouse')
-BEGIN
-    CREATE TABLE [dbo].[Warehouse](
-	    [Id] [int] IDENTITY(1,1) NOT NULL,
-	    [ProductId] [int] NOT NULL,
-	    [IncomeQuantity] [int] NOT NULL,
-        CONSTRAINT [PK_Warehouse] PRIMARY KEY CLUSTERED ([Id]) ON [PRIMARY],
-        CONSTRAINT [FK_Warehouse_Products] FOREIGN KEY([ProductId]) REFERENCES [dbo].[Products] ([Id])
-    ) ON [PRIMARY]
 END
 GO
 

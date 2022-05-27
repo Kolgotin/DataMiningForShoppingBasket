@@ -102,12 +102,15 @@
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Events\AsyncCommandBase.cs" />
+    <Compile Include="Handlers\PrepareOfferSimpleHandler.cs" />
     <Compile Include="Interfaces\IAsyncCommand.cs" />
     <Compile Include="Interfaces\IChangeWindowCaller.cs" />
     <Compile Include="Events\MyAsyncCommand`1.cs" />
     <Compile Include="Events\MyCommand`1.cs" />
     <Compile Include="Events\NotifyTaskCompletion.cs" />
     <Compile Include="Interfaces\IChangeWindowCallerDataContext.cs" />
+    <Compile Include="Interfaces\IGetData.cs" />
+    <Compile Include="Interfaces\IPrepareOfferHandler.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Models\ManagerInterfaceModel.cs" />
     <Compile Include="Models\CashierInterfaceModel.cs" />
@@ -140,9 +143,6 @@
     </Compile>
     <Compile Include="Views\CashierInterfaceView.xaml.cs">
       <DependentUpon>CashierInterfaceView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Warehouse.cs">
-      <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

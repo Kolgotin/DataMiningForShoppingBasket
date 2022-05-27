@@ -1,27 +1,41 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
+using DataMiningForShoppingBasket.Interfaces;
 
 namespace DataMiningForShoppingBasket.CommonClasses
 {
-    public static class GetData
+    public class GetData : IGetData
     {
-        static DataMiningEntities dbContext = new DataMiningEntities();
+        private readonly DataMiningEntities _dbContext;
 
-        private static List<Users> _users;
-        public static List<Users> Users => _users ??
-            (_users = GetUsersAsync());
+        private static GetData _instance;
+        public static GetData Instance => _instance ?? (_instance = new GetData());
 
-        private static List<Products> _products;
-        public static List<Products> Products => _products ??
-            (_products = GetProductsAsync());
-
-        public static List<Users> GetUsersAsync() => dbContext.Users.AsQueryable().ToList();
-
-        public static List<Products> GetProductsAsync() => dbContext.Products.AsQueryable().ToList();
-
-        private static List<T> GetList<T>() where T : class
+        private GetData()
         {
-            var res = dbContext.Set<T>().ToList();
+            _dbContext = new DataMiningEntities();
+        }
+
+        public async Task<List<Users>> GetUsersAsync()
+            => await _dbContext.Users.AsQueryable().ToListAsync().ConfigureAwait(false);
+
+        public async Task<Users> GetUserAsync(string loginStr)
+        {
+            var login = loginStr.Trim();
+            var user = await _dbContext.Users.AsQueryable()
+                .FirstOrDefaultAsync(x => x.UserName == login)
+                .ConfigureAwait(false);
+            return user;
+        }
+
+        public async Task<List<Products>> GetProductsAsync()
+            => await _dbContext.Products.AsQueryable().ToListAsync().ConfigureAwait(false);
+
+        private async Task<List<T>> GetList<T>() where T : class
+        {
+            var res = await _dbContext.Set<T>().ToListAsync();
             /*dbContext.Set(dbContext.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
              * .FirstOrDefault(y => y.PropertyType.GetTypeInfo().GenericTypeArguments[0].Name == nameType)
              * .PropertyType.GetTypeInfo().GenericTypeArguments[0]).ToListAsync().Result.ToList();

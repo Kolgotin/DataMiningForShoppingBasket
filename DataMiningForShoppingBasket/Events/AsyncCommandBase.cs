@@ -19,8 +19,6 @@ namespace DataMiningForShoppingBasket.Events
             Execution = null;
         }
 
-        /// <inheritdoc />
-        public abstract ICommand CancelCommand { get; }
 
         /// <summary>
         /// Объект, наблюдающий за выполнением асинхронной операции
@@ -39,8 +37,6 @@ namespace DataMiningForShoppingBasket.Events
             set => throw new InvalidOperationException();
         }
 
-        /// <inheritdoc />
-        public event EventHandler IsActiveChanged;
 
         /// <inheritdoc cref="ICommand.CanExecute(object)"/>
         public abstract bool CanExecute(object parameter);
@@ -49,8 +45,11 @@ namespace DataMiningForShoppingBasket.Events
         async void ICommand.Execute(object parameter)
         {
             await InnerExecuteAsync(parameter);
+            
             if (Execution?.IsFaulted == true)
+            {
                 throw Execution.Exception;
+            }
         }
 
         /// <inheritdoc cref="ICommand.CanExecuteChanged"/>
@@ -66,18 +65,13 @@ namespace DataMiningForShoppingBasket.Events
         /// <param name="parameter">Параметр, передаваемый при вызове команды.</param>
         /// <returns>Класс слежения за процессом и результатом выполнения команды.</returns>
         protected abstract NotifyTaskCompletion CreateNotifyTaskCompletion(object parameter);
-
-        protected abstract void NotifyCommandStarting();
-
-        protected abstract void NotifyCommandFinished();
-
+        
         /// <summary>
         /// Выполнение действия команды.
         /// </summary>
         /// <param name="parameter">Параметр команды.</param>
         protected async Task InnerExecuteAsync(object parameter)
         {
-            NotifyCommandStarting();
             Execution = CreateNotifyTaskCompletion(parameter);
             if (Execution.TaskCompletion != null)
             {
@@ -85,7 +79,6 @@ namespace DataMiningForShoppingBasket.Events
                 await Execution.TaskCompletion;
                 RaiseCanExecuteChanged(false);
             }
-            NotifyCommandFinished();
         }
 
         /// <summary>
@@ -104,7 +97,6 @@ namespace DataMiningForShoppingBasket.Events
         {
             _isActive = value;
             CommandManager.InvalidateRequerySuggested();
-            IsActiveChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

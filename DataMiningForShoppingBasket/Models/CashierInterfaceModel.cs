@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Windows;
 
 namespace DataMiningForShoppingBasket.Models
 {
@@ -22,13 +21,20 @@ namespace DataMiningForShoppingBasket.Models
             get => _quantity;
             set
             {
-                _quantity = ProductInstance?.FractionalAllowed == true ? value : decimal.Floor(value);
+                var oldVal = _quantity;
+
+                if (value > ProductInstance.WarehouseQuantity)
+                {
+                    value = ProductInstance.WarehouseQuantity;
+                }
+
+                _quantity = ProductInstance.FractionalAllowed ? value : decimal.Floor(value);
                 RaisePropertyChanged(nameof(Quantity));
                 RaisePropertyChanged(nameof(TotalCost));
             }
         }
 
-        public decimal TotalCost => Quantity * ProductInstance.Cost.Value;
+        public decimal TotalCost => ProductInstance.Cost.HasValue ? Quantity * ProductInstance.Cost.Value : default;
         
         public Products ProductInstance { get; set; }
         

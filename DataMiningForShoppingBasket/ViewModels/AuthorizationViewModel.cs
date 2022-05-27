@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using DataMiningForShoppingBasket.CommonClasses;
@@ -10,8 +9,10 @@ using DataMiningForShoppingBasket.Views;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
-    class AuthorizationViewModel : INotifyPropertyChanged, IChangeWindowCallerDataContext
+    public class AuthorizationViewModel : INotifyPropertyChanged, IChangeWindowCallerDataContext
     {
+        private readonly IGetData _getData;
+
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -37,6 +38,11 @@ namespace DataMiningForShoppingBasket.ViewModels
         public string Login { get; set; } = "";
         public bool AuthInProcess => LoginClickCommandAsync?.IsActive == true;
 
+        public AuthorizationViewModel()
+        {
+            _getData = GetData.Instance;
+        }
+
         private async Task Login_HandlerAsync(PasswordBox passwordBox)
         {
             try
@@ -60,7 +66,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         private async Task<int?> CheckProfileAsync(string password)
         {
-            var currentUser = GetData.Users.FirstOrDefault(x => x.UserName == Login.Trim());
+            var currentUser = await _getData.GetUserAsync(Login);
 
             if (currentUser is null)
             {
