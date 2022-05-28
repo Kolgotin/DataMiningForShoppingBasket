@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using DataMiningForShoppingBasket.CommonClasses;
-using DataMiningForShoppingBasket.Events;
 using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.Views;
 

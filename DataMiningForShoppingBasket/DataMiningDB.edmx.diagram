@@ -5,19 +5,20 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="cd25483273074b13b2b883dcaf259bb2" Name="Diagram1" ZoomLevel="109">
-        <EntityTypeShape EntityType="DataMiningModel.Clients" Width="1.5" PointX="2.75" PointY="4.625" />
-        <EntityTypeShape EntityType="DataMiningModel.Discounts" Width="1.625" PointX="5" PointY="4.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataMiningModel.ProductTypes" Width="1.5" PointX="7.25" PointY="5" />
-        <EntityTypeShape EntityType="DataMiningModel.SaleReceipts" Width="1.5" PointX="2.75" PointY="1.25" />
-        <EntityTypeShape EntityType="DataMiningModel.SaleRows" Width="1.5" PointX="5" PointY="1.25" />
-        <EntityTypeShape EntityType="DataMiningModel.Users" Width="1.5" PointX="0.5" PointY="1.25" />
-        <EntityTypeShape EntityType="DataMiningModel.UserTypes" Width="1.5" PointX="0.5" PointY="4.625" />
+        <EntityTypeShape EntityType="DataMiningModel.Clients" Width="1.5" PointX="2.75" PointY="2.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DataMiningModel.Discounts" Width="1.625" PointX="7.25" PointY="2.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DataMiningModel.ProductTypes" Width="1.5" PointX="5" PointY="2.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="DataMiningModel.SaleReceipts" Width="1.5" PointX="2.75" PointY="1.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="DataMiningModel.SaleRows" Width="1.5" PointX="5" PointY="1.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="DataMiningModel.Users" Width="1.5" PointX="0.5" PointY="1.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="DataMiningModel.UserTypes" Width="1.5" PointX="0.5" PointY="2.5" IsExpanded="false" />
         <AssociationConnector Association="DataMiningModel.FK_SaleReceipts_Clients" />
         <AssociationConnector Association="DataMiningModel.FK_SaleReceipts_Users" />
         <AssociationConnector Association="DataMiningModel.FK_SaleRows_SaleReceipts" />
         <AssociationConnector Association="DataMiningModel.FK_Users_UserTypes" />
-        <EntityTypeShape EntityType="DataMiningModel.Products" Width="1.625" PointX="7.25" PointY="1.25" />
-        <AssociationConnector Association="DataMiningModel.FK_Products_Discounts" />
+        <EntityTypeShape EntityType="DataMiningModel.Products" Width="1.625" PointX="7.25" PointY="1.25" IsExpanded="false" />
+        <AssociationConnector Association="DataMiningModel.FK_Products_Discounts" ManuallyRouted="false" >
+        </AssociationConnector>
         <AssociationConnector Association="DataMiningModel.FK_Products_ProductTypes" />
         <AssociationConnector Association="DataMiningModel.FK_SaleRows_Products" />
       </Diagram>

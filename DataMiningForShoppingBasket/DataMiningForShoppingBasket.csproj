@@ -112,7 +112,6 @@
     <Compile Include="Interfaces\IGetData.cs" />
     <Compile Include="Interfaces\IPrepareOfferHandler.cs" />
     <Compile Include="MainViewModel.cs" />
-    <Compile Include="Models\ManagerInterfaceModel.cs" />
     <Compile Include="Models\CashierInterfaceModel.cs" />
     <Compile Include="Products.cs">
       <DependentUpon>DataMiningDB.tt</DependentUpon>

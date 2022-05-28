@@ -8,6 +8,39 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:ManagerInterfaceViewModel}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+            <Style TargetType="DataGrid">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="AutoGenerateColumns" Value="False"/>
+                    <Setter Property="SelectionMode" Value="Single"/>
+                    <Setter Property="CanUserSortColumns" Value="False"/>
+                    <Setter Property="CanUserAddRows" Value="False"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="Button">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="Padding" Value="15,3"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="20"/>
+                </Style.Setters>
+            </Style>
+            <Style x:Key="AddButton"
+                   TargetType="Button"
+                   BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Width" Value="20"/>
+                <Setter Property="Height" Value="20"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Padding" Value="3,-7,3,-2"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="13*"/>
@@ -16,43 +49,193 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
+        <Grid Name="Discounts"
+              Grid.Row="0"
+              Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="13*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <Label Grid.Row="0"
+                   Grid.Column="0"
+                   Content="Список акций"/>
 
+            <Label Grid.Row="1"
+                   Grid.Column="0"
+                   Content="Наименование"/>
 
-        <DataGrid VerticalAlignment="Stretch"
-                  Grid.Column="0"
-                  Grid.Row="1"
-                  Grid.RowSpan="2"
-                  Margin="5"
-                  ItemsSource="{Binding DiscountsList}"
-                  IsReadOnly="True">
-        </DataGrid>
-        
-        <DataGrid VerticalAlignment="Stretch"
-                  Grid.Column="1"
-                  Grid.Row="0"
-                  Grid.RowSpan="3"
-                  Margin="5"
-                  ItemsSource="{Binding ProductsList}"
-                  IsReadOnly="True">
-        </DataGrid>
+            <Label Grid.Row="1"
+                   Grid.Column="1"
+                   Content="Начало"/>
 
-        <DataGrid VerticalAlignment="Stretch"
-                  Grid.Column="1"
-                  Grid.Row="0"
-                  Grid.RowSpan="3"
-                  Margin="5"
-                  ItemsSource="{Binding ProductsList}"
-                  IsReadOnly="True">
-        </DataGrid>
+            <Label Grid.Row="1"
+                   Grid.Column="2"
+                   Content="Завершение"/>
+
+            <Label Grid.Row="1"
+                   Grid.Column="3"
+                   Content="ИдТовара"/>
+
+            <Label Grid.Row="1"
+                   Grid.Column="4"
+                   Content="Количество"/>
+
+            <Label Grid.Row="1"
+                   Grid.Column="5"
+                   Content="Цена"/>
+
+            <Button Grid.Row="1"
+                    Grid.Column="6"
+                    Content="+"
+                    Style="{StaticResource AddButton}"
+                    Command="{Binding AddDiscountCommand}"
+                    CommandParameter="{Binding NewDiscount}"/>
+
+            <TextBox Grid.Row="2"
+                     Grid.Column="0"
+                     Text="{Binding NewDiscount.DiscountName}"/>
+
+            <DatePicker Grid.Row="2"
+                        Grid.Column="1"
+                        SelectedDate="{Binding NewDiscount.StartDate}"/>
+
+            <DatePicker Grid.Row="2"
+                        Grid.Column="2"
+                        SelectedDate="{Binding NewDiscount.FinishDate}"/>
+
+            <TextBox Grid.Row="2"
+                     Grid.Column="3"
+                     Text="{Binding NewDiscount.ProductId, StringFormat=N0}"/>
+
+            <TextBox Grid.Row="2"
+                     Grid.Column="4"
+                     Text="{Binding NewDiscount.Quantity, StringFormat=N0}"/>
+
+            <TextBox Grid.Row="2"
+                     Grid.Column="5"
+                     Text="{Binding NewDiscount.DiscountCost, StringFormat=N2}"/>
+
+            <DataGrid VerticalAlignment="Stretch"
+                      Grid.Column="0"
+                      Grid.Row="3"
+                      Grid.ColumnSpan="7"
+                      ItemsSource="{Binding DiscountsList}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="*"
+                                        Header="Id"
+                                        Binding="{Binding Id}"/>
+                    <DataGridTextColumn Width="5*"
+                                        Header="Наименование"
+                                        Binding="{Binding DiscountName}"/>
+                    <DataGridTextColumn Width="1*"
+                                        Header="Описание"
+                                        Binding="{Binding DiscountDescription}"/>
+                    <DataGridTextColumn Width="2*"
+                                        Header="Начало"
+                                        Binding="{Binding StartDate}"/>
+                    <DataGridTextColumn Width="2*"
+                                        Header="Завершение"
+                                        Binding="{Binding FinishDate}"/>
+                    <DataGridTextColumn Width="2*"
+                                        Header="Ид Товара"
+                                        Binding="{Binding ProductId}"/>
+                    <DataGridTextColumn Width="5*"
+                                        Header="Наименование товара"
+                                        Binding="{Binding Products.ProductName}"/>
+                    <DataGridTextColumn Width="2*"
+                                        Header="Количество"
+                                        Binding="{Binding Quantity}"/>
+                    <DataGridTextColumn Width="2*"
+                                        Header="Акционная цена"
+                                        Binding="{Binding DiscountCost}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </Grid>
+
+        <Grid Name="Products"
+              Grid.Row="0"
+              Grid.Column="1"
+              Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="13*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0"
+                   Grid.Column="0"
+                   Content="Список товаров"/>
+
+            <Label Grid.Row="1"
+                   Grid.Column="0"
+                   Content="Наименование"/>
+
+            <Label Grid.Row="1"
+                   Grid.Column="1"
+                   Content="Тип"/>
+
+            <Label Grid.Row="1"
+                   Grid.Column="2"
+                   Content="Цена"/>
+
+            <Button Grid.Row="1"
+                    Grid.Column="3"
+                    Content="+"
+                    Style="{StaticResource AddButton}"
+                    Command="{Binding AddProductCommand}"/>
+
+            <DataGrid VerticalAlignment="Stretch"
+                      Grid.Column="0"
+                      Grid.Row="3"
+                      Grid.ColumnSpan="4"
+                      ItemsSource="{Binding ProductsList}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="*"
+                                        Header="Id"
+                                        Binding="{Binding Id}"/>
+                    <DataGridTextColumn Width="5*"
+                                        Header="Наименование"
+                                        Binding="{Binding ProductName}"/>
+                    <DataGridTextColumn Width="4*"
+                                        Header="Тип"
+                                        Binding="{Binding ProductTypes.ProductTypeName}"/>
+                    <DataGridTextColumn Width="2*"
+                                        Header="Цена"
+                                        Binding="{Binding Cost}"/>
+                    <DataGridTextColumn Width="2*"
+                                        Header="Остаток"
+                                        Binding="{Binding WarehouseQuantity}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
 
         <Button Grid.Column="1"
                 Grid.Row="3"
                 Content="Выход" 
-                Command="{Binding ButtonClickCommand}"
+                Command="{Binding CloseCommand}"
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Padding="15,3"/>

@@ -8,5 +8,7 @@ namespace DataMiningForShoppingBasket.Interfaces
         Task<List<Users>> GetUsersAsync();
         Task<Users> GetUserAsync(string login);
         Task<List<Products>> GetProductsAsync();
+        Task<List<Discounts>> GetDiscountsAsync();
+        Task<int> SaveDiscountsAsync(Discounts discount);
     }
 }
