@@ -11,14 +11,10 @@ namespace DataMiningForShoppingBasket.Events
         private bool _isActive;
         private NotifyTaskCompletion _execution;
 
-        /// <summary>
-        /// Создание класса.
-        /// </summary>
         protected AsyncCommandBase()
         {
             Execution = null;
         }
-
 
         /// <summary>
         /// Объект, наблюдающий за выполнением асинхронной операции

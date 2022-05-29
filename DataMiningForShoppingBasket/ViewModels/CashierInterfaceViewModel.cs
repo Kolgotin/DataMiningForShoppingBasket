@@ -56,7 +56,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             _clearSearchCommand ?? (_clearSearchCommand =
                 new MyCommand<object>(ClearSearch, _ => true));
         
-        public MyCommand<Products> ProductItemDoubleClickCommand =>
+        public MyCommand<Products> AddProductIntoCartCommand =>
             _productItemDoubleClickCommand ?? (_productItemDoubleClickCommand =
                 new MyCommand<Products>(AddProductIntoCartAsync, obj => true));
 
@@ -90,6 +90,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             }
         }
 
+        //todo: добавить фильтрацию по наличию на складе
         public List<Products> ProductsList => _productsList
             .Where(x => x.ProductName.ToLower().Contains(SearchString.ToLower()))
             .ToList();

@@ -78,7 +78,7 @@ BEGIN
 	    [FinishDate] [datetime] NOT NULL,
 	    [ProductId] [int] NOT NULL,
 	    [Quantity] [int] NOT NULL,
-	    [DiscountCost] decimal(9, 0) NOT NULL,
+	    [DiscountCost] decimal(9, 2) NOT NULL,
         CONSTRAINT [PK_Discounts] PRIMARY KEY CLUSTERED ([Id]) ON [PRIMARY],
         CONSTRAINT [FK_Products_Discounts] FOREIGN KEY([ProductId]) REFERENCES [dbo].[Products] ([Id])
     ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]

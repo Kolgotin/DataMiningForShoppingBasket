@@ -33,14 +33,19 @@ namespace DataMiningForShoppingBasket.CommonClasses
         public async Task<List<Products>> GetProductsAsync()
             => await _dbContext.Products.AsQueryable().ToListAsync().ConfigureAwait(false);
 
+        public async Task<List<Discounts>> GetDiscountsAsync()
+            => await _dbContext.Discounts.AsQueryable().ToListAsync().ConfigureAwait(false);
+
+        public async Task<int> SaveDiscountsAsync(Discounts discount)
+        {
+            _ =_dbContext.Discounts.Add(discount);
+            await _dbContext.SaveChangesAsync();
+            return discount.Id;
+        }
+
         private async Task<List<T>> GetList<T>() where T : class
         {
-            var res = await _dbContext.Set<T>().ToListAsync();
-            /*dbContext.Set(dbContext.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
-             * .FirstOrDefault(y => y.PropertyType.GetTypeInfo().GenericTypeArguments[0].Name == nameType)
-             * .PropertyType.GetTypeInfo().GenericTypeArguments[0]).ToListAsync().Result.ToList();
-                   */
-            return res;
+            return await _dbContext.Set<T>().ToListAsync();
         }
     }
 }
