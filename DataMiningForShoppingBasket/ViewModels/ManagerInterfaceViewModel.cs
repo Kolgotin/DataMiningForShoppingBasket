@@ -1,24 +1,19 @@
-﻿using System;
+﻿using DataMiningForShoppingBasket.CommonClasses;
+using DataMiningForShoppingBasket.Events;
+using DataMiningForShoppingBasket.Interfaces;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
-using DataMiningForShoppingBasket.CommonClasses;
-using DataMiningForShoppingBasket.Events;
-using DataMiningForShoppingBasket.Interfaces;
-using DataMiningForShoppingBasket.Models;
+using DataMiningForShoppingBasket.Views;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
     class ManagerInterfaceViewModel : INotifyPropertyChanged, IChangeWindowCallerDataContext
     {
         private readonly IGetData _getData;
-
-        private MyAsyncCommand<Products> _addProductCommand;
-        private MyAsyncCommand<Discounts> _addDiscountCommand;
-        private MyAsyncCommand<Window> _closeCommand;
-
+        
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -30,43 +25,42 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         #region IChangeWindowCallerDataContext
         public event ChangeWindowEventHandler ChangeWindowCalled;
-
         public string WindowLabel => "Менеджер";
         #endregion
 
         #region Properties
 
         #region Commands
-        public MyAsyncCommand<Products> AddProductCommand =>
-            _addProductCommand ?? (_addProductCommand =
-                new MyAsyncCommand<Products>(AddProductAsync, obj => _addProductCommand?.IsActive == false));
-
-        public MyAsyncCommand<Discounts> AddDiscountCommand =>
-            _addDiscountCommand ?? (_addDiscountCommand =
-                new MyAsyncCommand<Discounts>(AddDiscountAsync, obj => _addDiscountCommand?.IsActive == false));
-
-        public MyAsyncCommand<Window> CloseCommand =>
-            _closeCommand ?? (_closeCommand =
-                new MyAsyncCommand<Window>(CloseAsync, obj => _closeCommand?.IsActive == false));
+        public MyAsyncCommand<Products> AddProductCommand { get; }
+        public MyAsyncCommand<Discounts> AddDiscountCommand { get; }
+        public MyAsyncCommand ExitCommand { get; }
         #endregion
 
-        public List<Products> ProductsList => _getData.GetProductsAsync().Result;
-
+        public List<Products> ProductList => _getData.GetProductsAsync().Result;
         public List<Discounts> DiscountsList => _getData.GetDiscountsAsync().Result;
 
         public Products NewProduct { get; set; }
-
         public Discounts NewDiscount { get; set; }
         #endregion
 
         public ManagerInterfaceViewModel()
         {
+            AddProductCommand = new MyAsyncCommand<Products>(
+                ExecuteAddProductAsync,
+                obj => AddProductCommand?.IsActive == false);
+            AddDiscountCommand = new MyAsyncCommand<Discounts>(
+                ExecuteAddDiscountAsync,
+                obj => AddDiscountCommand?.IsActive == false);
+            ExitCommand = new MyAsyncCommand(
+                ExecuteExitAsync,
+                _ => ExitCommand?.IsActive == false);
+
             _getData = GetData.Instance;
             NewProduct = CreateNewProduct();
             NewDiscount = CreateNewDiscount();
         }
 
-        private async Task AddProductAsync(Products obj)
+        private Task ExecuteAddProductAsync(Products obj)
         {
             try
             {
@@ -76,9 +70,11 @@ namespace DataMiningForShoppingBasket.ViewModels
             {
                 MessageWriter.ShowMessage(e.Message);
             }
+
+            return Task.CompletedTask;
         }
 
-        private async Task AddDiscountAsync(Discounts obj)
+        private async Task ExecuteAddDiscountAsync(Discounts obj)
         {
             try
             {
@@ -93,15 +89,18 @@ namespace DataMiningForShoppingBasket.ViewModels
             }
         }
 
-        private async Task CloseAsync(Window window)
+        private Task ExecuteExitAsync()
         {
             try
             {
+                ChangeWindowCalled?.Invoke(this, new AuthorizationView());
             }
             catch (Exception e)
             {
                 MessageWriter.ShowMessage(e.Message);
             }
+
+            return Task.CompletedTask;
         }
 
         private Products CreateNewProduct()

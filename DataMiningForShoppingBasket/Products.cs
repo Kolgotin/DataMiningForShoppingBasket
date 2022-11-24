@@ -24,7 +24,7 @@ namespace DataMiningForShoppingBasket
         public int Id { get; set; }
         public string ProductName { get; set; }
         public Nullable<int> ProductTypeid { get; set; }
-        public Nullable<decimal> Cost { get; set; }
+        public Nullable<decimal> ProductCost { get; set; }
         public bool FractionalAllowed { get; set; }
         public decimal WarehouseQuantity { get; set; }
     

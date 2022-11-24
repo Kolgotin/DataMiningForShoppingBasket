@@ -34,7 +34,7 @@ namespace DataMiningForShoppingBasket.Models
             }
         }
 
-        public decimal TotalCost => ProductInstance.Cost.HasValue ? Quantity * ProductInstance.Cost.Value : default;
+        public decimal TotalCost => ProductInstance.ProductCost.HasValue ? Quantity * ProductInstance.ProductCost.Value : default;
         
         public Products ProductInstance { get; set; }
         
