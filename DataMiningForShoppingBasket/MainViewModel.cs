@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Windows;
 using DataMiningForShoppingBasket.CommonClasses;
+using DataMiningForShoppingBasket.Events;
 using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.Views;
 
@@ -8,6 +11,8 @@ namespace DataMiningForShoppingBasket
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        private MyAsyncCommand<Window> _exitCommand;
+
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         public void RaisePropertyChanged(string prop)
@@ -16,31 +21,36 @@ namespace DataMiningForShoppingBasket
         }
         #endregion
 
-        public IChangeWindowCaller CurrentUserControl { get; set; }
+        public MyAsyncCommand<Window> ExitCommand =>
+            _exitCommand ?? (_exitCommand =
+                new MyAsyncCommand<Window>(ExitHandlerAsync, obj => _exitCommand?.IsActive == false));
 
-        public MainViewModel()
+        public IUserControl CurrentUserControl { get; set; }
+
+        public MainViewModel(IUserControl userControl)
         {
-            ChangeWindow(new AuthorizationView());
+            ChangeWindow(userControl);
         }
 
-        private void ChangeWindowHandler(object sender, IChangeWindowCaller e)
+        private void ChangeWindow(IUserControl userControl)
+        {
+            CurrentUserControl = userControl;
+            CurrentUserControl.DataContext = CurrentUserControl.CustomDataContext;
+            RaisePropertyChanged(nameof(CurrentUserControl));
+        }
+
+        private async Task ExitHandlerAsync(Window window)
         {
             try
             {
-                ChangeWindow(e);
+                var newWindow = new AuthorizationView();
+                window.Close();
+                newWindow.Show();
             }
-            catch(Exception ex)
+            catch (Exception e)
             {
-                MessageWriter.ShowMessage(ex.Message);
+                MessageWriter.ShowMessage(e.Message);
             }
-        }
-
-        private void ChangeWindow(IChangeWindowCaller newWindow)
-        {
-            CurrentUserControl = newWindow;
-            CurrentUserControl.DataContext = CurrentUserControl.CustomDataContext;
-            CurrentUserControl.CustomDataContext.ChangeWindowCalled += ChangeWindowHandler;
-            RaisePropertyChanged(nameof(CurrentUserControl));
         }
     }
 }

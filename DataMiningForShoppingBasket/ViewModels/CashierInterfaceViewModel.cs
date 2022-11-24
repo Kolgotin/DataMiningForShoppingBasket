@@ -13,7 +13,7 @@ using DataMiningForShoppingBasket.Views;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
-    public class CashierInterfaceViewModel : INotifyPropertyChanged, IChangeWindowCallerDataContext
+    public class CashierInterfaceViewModel : INotifyPropertyChanged, IUserWindowDataContext
     {
         private readonly IGetData _getData;
         private readonly IPrepareOfferHandler _prepareOfferHandler;
@@ -31,9 +31,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         }
         #endregion
 
-        #region IChangeWindowCallerDataContext
-        public event ChangeWindowEventHandler ChangeWindowCalled;
-
+        #region IUserWindowDataContext
         public string WindowLabel => "Кассир";
         #endregion
 
@@ -115,20 +113,6 @@ namespace DataMiningForShoppingBasket.ViewModels
         private void ClearSearch(object obj)
         {
             SearchString = string.Empty;
-        }
-
-        private Task ExecuteExitAsync()
-        {
-            try
-            {
-                ChangeWindowCalled?.Invoke(this, new AuthorizationView());
-            }
-            catch (Exception e)
-            {
-                MessageWriter.ShowMessage(e.Message);
-            }
-
-            return Task.CompletedTask;
         }
 
         private void AddProductIntoCartAsync(Products product)

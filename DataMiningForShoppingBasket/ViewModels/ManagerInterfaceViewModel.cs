@@ -3,14 +3,19 @@ using DataMiningForShoppingBasket.Events;
 using DataMiningForShoppingBasket.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using DataMiningForShoppingBasket.Views;
+using DataMiningForShoppingBasket.CommonClasses;
+using DataMiningForShoppingBasket.Events;
+using DataMiningForShoppingBasket.Interfaces;
+using DataMiningForShoppingBasket.Models;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
-    class ManagerInterfaceViewModel : INotifyPropertyChanged, IChangeWindowCallerDataContext
+    class ManagerInterfaceViewModel : INotifyPropertyChanged, IUserWindowDataContext
     {
         private readonly IGetData _getData;
         
@@ -23,8 +28,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         }
         #endregion
 
-        #region IChangeWindowCallerDataContext
-        public event ChangeWindowEventHandler ChangeWindowCalled;
+        #region IUserWindowDataContext
         public string WindowLabel => "Менеджер";
         #endregion
 
@@ -87,20 +91,6 @@ namespace DataMiningForShoppingBasket.ViewModels
             {
                 MessageWriter.ShowMessage(e.Message);
             }
-        }
-
-        private Task ExecuteExitAsync()
-        {
-            try
-            {
-                ChangeWindowCalled?.Invoke(this, new AuthorizationView());
-            }
-            catch (Exception e)
-            {
-                MessageWriter.ShowMessage(e.Message);
-            }
-
-            return Task.CompletedTask;
         }
 
         private Products CreateNewProduct()

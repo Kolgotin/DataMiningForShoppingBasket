@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using DataMiningForShoppingBasket.Interfaces;
+using System.Windows;
 
 namespace DataMiningForShoppingBasket
 {
@@ -7,9 +8,10 @@ namespace DataMiningForShoppingBasket
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(IUserControl userControl)
         {
             InitializeComponent();
+            DataContext = new MainViewModel(userControl);
         }
     }
 }

@@ -105,11 +105,13 @@
     <Compile Include="Events\MyAsyncCommand.cs" />
     <Compile Include="Handlers\PrepareOfferSimpleHandler.cs" />
     <Compile Include="Interfaces\IAsyncCommand.cs" />
-    <Compile Include="Interfaces\IChangeWindowCaller.cs" />
     <Compile Include="Events\MyAsyncCommand`1.cs" />
     <Compile Include="Events\MyCommand`1.cs" />
     <Compile Include="Events\NotifyTaskCompletion.cs" />
-    <Compile Include="Interfaces\IChangeWindowCallerDataContext.cs" />
+    <Compile Include="Interfaces\IUserControl.cs" />
+    <Compile Include="Interfaces\IUserWindowDataContext.cs" />
+    <Compile Include="Interfaces\ICloseable.cs" />
+    <Compile Include="Interfaces\IAddNewEntityDialogService.cs" />
     <Compile Include="Interfaces\IGetData.cs" />
     <Compile Include="Interfaces\IPrepareOfferHandler.cs" />
     <Compile Include="MainViewModel.cs" />
@@ -132,6 +134,8 @@
     <Compile Include="UserTypes.cs">
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AddNewDiscountDialog.cs" />
+    <Compile Include="ViewModels\AddNewProductDialog.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\ManagerInterfaceViewModel.cs" />
     <Compile Include="ViewModels\CashierInterfaceViewModel.cs" />

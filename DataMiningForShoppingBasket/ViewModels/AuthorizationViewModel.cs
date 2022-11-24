@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using DataMiningForShoppingBasket.CommonClasses;
 using DataMiningForShoppingBasket.Events;
@@ -9,9 +11,11 @@ using DataMiningForShoppingBasket.Views;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
-    public class AuthorizationViewModel : INotifyPropertyChanged, IChangeWindowCallerDataContext
+    public class AuthorizationViewModel : INotifyPropertyChanged
     {
         private readonly IGetData _getData;
+        private MyAsyncCommand<PasswordBox> _loginClickCommandAsync;
+        private readonly Window _window;
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -22,12 +26,6 @@ namespace DataMiningForShoppingBasket.ViewModels
         }
         #endregion INotifyPropertyChanged
 
-        #region IChangeWindowCallerDataContext
-        public event ChangeWindowEventHandler ChangeWindowCalled;
-
-        public string WindowLabel => "Авторизация";
-        #endregion
-
         #region Commands
         public MyAsyncCommand<PasswordBox> LoginCommand { get; }
         #endregion Commands
@@ -35,9 +33,10 @@ namespace DataMiningForShoppingBasket.ViewModels
         public string Login { get; set; } = "";
         public bool AuthInProcess => LoginCommand?.IsActive == true;
 
-        public AuthorizationViewModel()
+        public AuthorizationViewModel(Window window)
         {
             _getData = GetData.Instance;
+            _window = window;
 
             LoginCommand = new MyAsyncCommand<PasswordBox>(
                 ExecuteLoginAsync,
@@ -48,16 +47,21 @@ namespace DataMiningForShoppingBasket.ViewModels
         {
             try
             {
+                IUserControl userControl;
 #if DEBUG
-                ChangeWindowCalled?.Invoke(this, new CashierInterfaceView());
-                return;
+                userControl = new ManagerInterfaceView();
 #endif
+
+#if !DEBUG
                 var password = passwordBox?.Password;
 
                 var userTypeId = await CheckProfileAsync(password);
-                var userWindow = GetWindowType(userTypeId);
+                userControl = GetWindowType(userTypeId);
+#endif
 
-                ChangeWindowCalled?.Invoke(this, userWindow);
+                var newWindow = new MainWindow(userControl);
+                _window.Close();
+                newWindow.Show();
             }
             catch (Exception ex)
             {
@@ -82,7 +86,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             return currentUser.UserTypeId;
         }
 
-        private IChangeWindowCaller GetWindowType(int? userTypeId)
+        private IUserControl GetWindowType(int? userTypeId)
         {
             switch (userTypeId)
             {

@@ -1,19 +1,16 @@
-﻿using DataMiningForShoppingBasket.Interfaces;
-using DataMiningForShoppingBasket.ViewModels;
+﻿using DataMiningForShoppingBasket.ViewModels;
 
 namespace DataMiningForShoppingBasket.Views
 {
     /// <summary>
     /// Логика взаимодействия для AuthorizationView.xaml
     /// </summary>
-    public partial class AuthorizationView : IChangeWindowCaller
+    public partial class AuthorizationView
     {
-        public IChangeWindowCallerDataContext CustomDataContext { get; set; }
-            = new AuthorizationViewModel();
-
         public AuthorizationView()
         {
             InitializeComponent();
+            DataContext = new AuthorizationViewModel(this);
         }
     }
 }

@@ -3,15 +3,61 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DataMiningForShoppingBasket"
         xmlns:localViews="clr-namespace:DataMiningForShoppingBasket.Views"
+        xmlns:localViewModels="clr-namespace:DataMiningForShoppingBasket.ViewModels"
+        xmlns:local="clr-namespace:DataMiningForShoppingBasket"
         mc:Ignorable="d"
-        Title="{Binding CurrentUserControl.CustomDataContext.WindowLabel}" Height="900" Width="1600"
-        MinHeight="500" MinWidth="500">
-    <Window.DataContext>
-        <local:MainViewModel/>
-    </Window.DataContext>
+        Title="{Binding CurrentUserControl.CustomDataContext.WindowLabel}"
+        Height="900" Width="1600"
+        MinHeight="500" MinWidth="500"
+        Name="CurrentWindow"
+        d:DataContext="{d:DesignInstance local:MainViewModel}">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontFamily" Value="MS Gothic"/>
+            <Setter Property="FontSize" Value="26"/>
+            <Setter Property="FontWeight" Value="ExtraBlack"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Rectangle RadiusX="5"
+                                       RadiusY="5"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch"
+                                       Stroke="Transparent"
+                                       Fill="{TemplateBinding Background}"/>
+                            <DockPanel Margin="20,5">
+                                <ContentPresenter Content="{TemplateBinding Content}"/>
+                            </DockPanel>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightGray"></Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="DarkGray"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
-        <UserControl Content="{Binding CurrentUserControl}"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <UserControl Grid.Row="0"
+                Content="{Binding CurrentUserControl}"/>
+
+        <Button Grid.Row="1"
+                Content="Выход"
+                Command="{Binding ExitCommand}"
+                CommandParameter="{Binding ElementName=CurrentWindow}"/>
     </Grid>
 </Window>

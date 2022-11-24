@@ -50,7 +50,6 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Grid Name="Discounts"
@@ -232,13 +231,5 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-
-        <Button Grid.Column="1"
-                Grid.Row="2"
-                Content="{x:Static properties:Resources.Exit}" 
-                Command="{Binding ExitCommand}"
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center" 
-                Padding="15,3"/>
     </Grid>
 </UserControl>
