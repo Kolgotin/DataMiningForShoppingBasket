@@ -29,21 +29,22 @@ namespace DataMiningForShoppingBasket.ViewModels
         #endregion
 
         #region Commands
-        private MyAsyncCommand<PasswordBox> _loginClickCommandAsync;
-        public MyAsyncCommand<PasswordBox> LoginClickCommandAsync =>
-            _loginClickCommandAsync ?? (_loginClickCommandAsync =
-                new MyAsyncCommand<PasswordBox>(Login_HandlerAsync, obj => !AuthInProcess));
+        public MyAsyncCommand<PasswordBox> LoginCommand { get; }
         #endregion Commands
 
         public string Login { get; set; } = "";
-        public bool AuthInProcess => LoginClickCommandAsync?.IsActive == true;
+        public bool AuthInProcess => LoginCommand?.IsActive == true;
 
         public AuthorizationViewModel()
         {
             _getData = GetData.Instance;
+
+            LoginCommand = new MyAsyncCommand<PasswordBox>(
+                ExecuteLoginAsync,
+                obj => !AuthInProcess);
         }
 
-        private async Task Login_HandlerAsync(PasswordBox passwordBox)
+        private async Task ExecuteLoginAsync(PasswordBox passwordBox)
         {
             try
             {

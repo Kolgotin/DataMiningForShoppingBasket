@@ -8,6 +8,11 @@ namespace DataMiningForShoppingBasket.Events
         private readonly Predicate<T> _canExecute;
         private readonly Action<T> _execute;
 
+        public MyCommand(Action<T> execute)
+            : this(execute, _ => true)
+        {
+        }
+
         public MyCommand(Action<T> execute, Predicate<T> canExecute)
         {
             _canExecute = canExecute;

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DataMiningForShoppingBasket.Views"
              xmlns:viewModels="clr-namespace:DataMiningForShoppingBasket.ViewModels"
+             xmlns:properties="clr-namespace:DataMiningForShoppingBasket.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:ManagerInterfaceViewModel}">
@@ -73,31 +74,31 @@
             
             <Label Grid.Row="0"
                    Grid.Column="0"
-                   Content="Список акций"/>
+                   Content="{x:Static properties:Resources.DiscountList}"/>
 
             <Label Grid.Row="1"
                    Grid.Column="0"
-                   Content="Наименование"/>
+                   Content="{x:Static properties:Resources.Name}"/>
 
             <Label Grid.Row="1"
                    Grid.Column="1"
-                   Content="Начало"/>
+                   Content="{x:Static properties:Resources.StartDate}"/>
 
             <Label Grid.Row="1"
                    Grid.Column="2"
-                   Content="Завершение"/>
+                   Content="{x:Static properties:Resources.FinishDate}"/>
 
             <Label Grid.Row="1"
                    Grid.Column="3"
-                   Content="ИдТовара"/>
+                   Content="{x:Static properties:Resources.ProductId}"/>
 
             <Label Grid.Row="1"
                    Grid.Column="4"
-                   Content="Количество"/>
+                   Content="{x:Static properties:Resources.Quantity}"/>
 
             <Label Grid.Row="1"
                    Grid.Column="5"
-                   Content="Цена"/>
+                   Content="{x:Static properties:Resources.Cost}"/>
 
             <Button Grid.Row="1"
                     Grid.Column="6"
@@ -124,7 +125,7 @@
 
             <TextBox Grid.Row="2"
                      Grid.Column="4"
-                     Text="{Binding NewDiscount.Quantity, StringFormat=N0}"/>
+                     Text="{Binding NewDiscount.DiscountQuantity, StringFormat=N0}"/>
 
             <TextBox Grid.Row="2"
                      Grid.Column="5"
@@ -140,28 +141,28 @@
                                         Header="Id"
                                         Binding="{Binding Id}"/>
                     <DataGridTextColumn Width="5*"
-                                        Header="Наименование"
+                                        Header="{x:Static properties:Resources.Name}"
                                         Binding="{Binding DiscountName}"/>
                     <DataGridTextColumn Width="1*"
-                                        Header="Описание"
+                                        Header="{x:Static properties:Resources.Description}"
                                         Binding="{Binding DiscountDescription}"/>
                     <DataGridTextColumn Width="2*"
-                                        Header="Начало"
+                                        Header="{x:Static properties:Resources.StartDate}"
                                         Binding="{Binding StartDate}"/>
                     <DataGridTextColumn Width="2*"
-                                        Header="Завершение"
+                                        Header="{x:Static properties:Resources.FinishDate}"
                                         Binding="{Binding FinishDate}"/>
                     <DataGridTextColumn Width="2*"
-                                        Header="Ид Товара"
+                                        Header="{x:Static properties:Resources.ProductId}"
                                         Binding="{Binding ProductId}"/>
                     <DataGridTextColumn Width="5*"
-                                        Header="Наименование товара"
+                                        Header="{x:Static properties:Resources.ProductName}"
                                         Binding="{Binding Products.ProductName}"/>
                     <DataGridTextColumn Width="2*"
-                                        Header="Количество"
-                                        Binding="{Binding Quantity}"/>
+                                        Header="{x:Static properties:Resources.Quantity}"
+                                        Binding="{Binding DiscountQuantity}"/>
                     <DataGridTextColumn Width="2*"
-                                        Header="Акционная цена"
+                                        Header="{x:Static properties:Resources.DiscountCost}"
                                         Binding="{Binding DiscountCost}"/>
                 </DataGrid.Columns>
             </DataGrid>
@@ -187,11 +188,11 @@
 
             <Label Grid.Row="0"
                    Grid.Column="0"
-                   Content="Список товаров"/>
+                   Content="{x:Static properties:Resources.ProductList}"/>
 
             <Label Grid.Row="1"
                    Grid.Column="0"
-                   Content="Наименование"/>
+                   Content="{x:Static properties:Resources.Name}"/>
 
             <Label Grid.Row="1"
                    Grid.Column="1"
@@ -199,7 +200,7 @@
 
             <Label Grid.Row="1"
                    Grid.Column="2"
-                   Content="Цена"/>
+                   Content="{x:Static properties:Resources.Cost}"/>
 
             <Button Grid.Row="1"
                     Grid.Column="3"
@@ -211,31 +212,31 @@
                       Grid.Column="0"
                       Grid.Row="3"
                       Grid.ColumnSpan="4"
-                      ItemsSource="{Binding ProductsList}">
+                      ItemsSource="{Binding ProductList}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="*"
                                         Header="Id"
                                         Binding="{Binding Id}"/>
                     <DataGridTextColumn Width="5*"
-                                        Header="Наименование"
+                                        Header="{x:Static properties:Resources.Name}"
                                         Binding="{Binding ProductName}"/>
                     <DataGridTextColumn Width="4*"
-                                        Header="Тип"
+                                        Header="{x:Static properties:Resources.Type}"
                                         Binding="{Binding ProductTypes.ProductTypeName}"/>
                     <DataGridTextColumn Width="2*"
-                                        Header="Цена"
-                                        Binding="{Binding Cost}"/>
+                                        Header="{x:Static properties:Resources.Cost}"
+                                        Binding="{Binding ProductCost}"/>
                     <DataGridTextColumn Width="2*"
-                                        Header="Остаток"
+                                        Header="{x:Static properties:Resources.WarehouseQuantity}"
                                         Binding="{Binding WarehouseQuantity}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
 
         <Button Grid.Column="1"
-                Grid.Row="3"
-                Content="Выход" 
-                Command="{Binding CloseCommand}"
+                Grid.Row="2"
+                Content="{x:Static properties:Resources.Exit}" 
+                Command="{Binding ExitCommand}"
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Padding="15,3"/>

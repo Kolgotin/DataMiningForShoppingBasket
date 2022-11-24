@@ -17,12 +17,7 @@ namespace DataMiningForShoppingBasket.ViewModels
     {
         private readonly IGetData _getData;
         private readonly IPrepareOfferHandler _prepareOfferHandler;
-
-        private MyAsyncCommand<object> _exitCommand;
-        private MyAsyncCommand<object> _prepareOfferCommand;
-        private MyCommand<object> _clearSearchCommand;
-        private MyCommand<Products> _productItemDoubleClickCommand; 
-        private MyCommand<object> _deleteProductFromCartCommand;
+        
         private string _searchString;
         private List<Products> _offerProductList;
         private List<Products> _productsList;
@@ -43,28 +38,6 @@ namespace DataMiningForShoppingBasket.ViewModels
         #endregion
 
         #region Properties
-        #region Commands
-        public MyAsyncCommand<object> ExitCommand =>
-            _exitCommand ?? (_exitCommand =
-                new MyAsyncCommand<object>(ExitHandlerAsync, obj => _exitCommand?.IsActive == false));
-        
-        public MyAsyncCommand<object> PrepareOfferCommand =>
-            _prepareOfferCommand ?? (_prepareOfferCommand =
-                new MyAsyncCommand<object>(PrepareOfferAsync, obj => _prepareOfferCommand?.IsActive == false));
-
-        public MyCommand<object> ClearSearchCommand =>
-            _clearSearchCommand ?? (_clearSearchCommand =
-                new MyCommand<object>(ClearSearch, _ => true));
-        
-        public MyCommand<Products> AddProductIntoCartCommand =>
-            _productItemDoubleClickCommand ?? (_productItemDoubleClickCommand =
-                new MyCommand<Products>(AddProductIntoCartAsync, obj => true));
-
-        public MyCommand<object> DeleteProductFromCartCommand =>
-            _deleteProductFromCartCommand ?? (_deleteProductFromCartCommand =
-                new MyCommand<object>(DeleteProductFromCart, obj => true));
-        #endregion
-
         public ObservableCollection<CashierInterfaceModel> ConsumerCart { get; set; }
 
         public CashierInterfaceModel SelectedCartItem { get; set; }
@@ -96,10 +69,28 @@ namespace DataMiningForShoppingBasket.ViewModels
             .ToList();
 
         public decimal TotalCost => ConsumerCart.Sum(x => x.TotalCost);
+
+        #region Commands
+        public MyAsyncCommand ExitCommand { get; }
+        public MyAsyncCommand<object> PrepareOfferCommand { get; }
+
+        public MyCommand<object> ClearSearchCommand { get; }
+        public MyCommand<Products> AddProductIntoCartCommand { get; }
+        public MyCommand<object> DeleteProductFromCartCommand { get; }
+        #endregion
+
         #endregion Properties
-        
+
         public CashierInterfaceViewModel()
         {
+            ExitCommand = new MyAsyncCommand(ExecuteExitAsync, 
+                _ => ExitCommand?.IsActive == false);
+            PrepareOfferCommand  = new MyAsyncCommand<object>(PrepareOfferAsync,
+                _ => PrepareOfferCommand?.IsActive == false);
+            ClearSearchCommand  = new MyCommand<object>(ClearSearch);
+            AddProductIntoCartCommand = new MyCommand<Products>(AddProductIntoCartAsync);
+            DeleteProductFromCartCommand  = new MyCommand<object>(DeleteProductFromCart);
+
             _productsList = new List<Products>();
             _getData = GetData.Instance;
             _ = RefreshActualProductsAsync();
@@ -126,7 +117,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             SearchString = string.Empty;
         }
 
-        private async Task ExitHandlerAsync(object obj)
+        private Task ExecuteExitAsync()
         {
             try
             {
@@ -136,6 +127,8 @@ namespace DataMiningForShoppingBasket.ViewModels
             {
                 MessageWriter.ShowMessage(e.Message);
             }
+
+            return Task.CompletedTask;
         }
 
         private void AddProductIntoCartAsync(Products product)
@@ -176,7 +169,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             _ = ConsumerCart.Remove(SelectedCartItem);
         }
 
-        private bool ProductIsValid(Products product) => product.Cost.HasValue && product.WarehouseQuantity > 0;
+        private static bool ProductIsValid(Products product) => product.ProductCost.HasValue && product.WarehouseQuantity > 0;
 
         private async Task RefreshActualProductsAsync()
         {
