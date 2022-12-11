@@ -1,20 +1,18 @@
-﻿using System;
+﻿using DataMiningForShoppingBasket.CommonClasses;
+using DataMiningForShoppingBasket.Commands;
+using DataMiningForShoppingBasket.Interfaces;
+using DataMiningForShoppingBasket.Views;
+using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using DataMiningForShoppingBasket.CommonClasses;
-using DataMiningForShoppingBasket.Events;
-using DataMiningForShoppingBasket.Interfaces;
-using DataMiningForShoppingBasket.Views;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
     public class AuthorizationViewModel : INotifyPropertyChanged
     {
         private readonly IGetData _getData;
-        private MyAsyncCommand<PasswordBox> _loginClickCommandAsync;
         private readonly Window _window;
 
         #region INotifyPropertyChanged

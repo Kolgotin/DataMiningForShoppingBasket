@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>DataMiningForShoppingBasket.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DynamicData, Version=7.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicData.7.7.14\lib\net462\DynamicData.dll</HintPath>
@@ -101,13 +104,13 @@
     <Compile Include="Discounts.cs">
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Events\AsyncCommandBase.cs" />
-    <Compile Include="Events\MyAsyncCommand.cs" />
+    <Compile Include="Commands\AsyncCommandBase.cs" />
+    <Compile Include="Commands\MyAsyncCommand.cs" />
     <Compile Include="Handlers\PrepareOfferSimpleHandler.cs" />
     <Compile Include="Interfaces\IAsyncCommand.cs" />
-    <Compile Include="Events\MyAsyncCommand`1.cs" />
-    <Compile Include="Events\MyCommand`1.cs" />
-    <Compile Include="Events\NotifyTaskCompletion.cs" />
+    <Compile Include="Commands\MyAsyncCommand`1.cs" />
+    <Compile Include="Commands\MyCommand`1.cs" />
+    <Compile Include="Commands\NotifyTaskCompletion.cs" />
     <Compile Include="Interfaces\IUserControl.cs" />
     <Compile Include="Interfaces\IUserWindowDataContext.cs" />
     <Compile Include="Interfaces\ICloseable.cs" />

@@ -7,9 +7,7 @@
              xmlns:properties="clr-namespace:DataMiningForShoppingBasket.Properties"
              d:DataContext="{d:DesignInstance Type=viewModels:AuthorizationViewModel}"
              mc:Ignorable="d" 
-             Name="AuthorizationWindow"
-             d:DesignHeight="600" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance viewModels:AuthorizationViewModel}">
+             d:DesignHeight="600" d:DesignWidth="800">
     <Window.Resources>
         <Style TargetType="Label">
             <Setter Property="FontFamily" Value="MS Gothic"/>

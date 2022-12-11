@@ -4,7 +4,7 @@ using System.Windows.Input;
 using DataMiningForShoppingBasket.Interfaces;
 using DynamicData.Binding;
 
-namespace DataMiningForShoppingBasket.Events
+namespace DataMiningForShoppingBasket.Commands
 {
     public abstract class  AsyncCommandBase : AbstractNotifyPropertyChanged, IAsyncCommand
     {

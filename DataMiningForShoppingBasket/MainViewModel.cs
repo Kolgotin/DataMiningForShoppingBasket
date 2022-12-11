@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using DataMiningForShoppingBasket.CommonClasses;
-using DataMiningForShoppingBasket.Events;
+using DataMiningForShoppingBasket.Commands;
 using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.Views;
 
@@ -11,8 +11,6 @@ namespace DataMiningForShoppingBasket
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private MyAsyncCommand<Window> _exitCommand;
-
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         public void RaisePropertyChanged(string prop)
@@ -21,14 +19,13 @@ namespace DataMiningForShoppingBasket
         }
         #endregion
 
-        public MyAsyncCommand<Window> ExitCommand =>
-            _exitCommand ?? (_exitCommand =
-                new MyAsyncCommand<Window>(ExitHandlerAsync, obj => _exitCommand?.IsActive == false));
+        public MyAsyncCommand<Window> ExitCommand { get; }
 
         public IUserControl CurrentUserControl { get; set; }
 
         public MainViewModel(IUserControl userControl)
         {
+            ExitCommand = new MyAsyncCommand<Window>(ExitHandlerAsync, obj => ExitCommand?.IsActive == false);
             ChangeWindow(userControl);
         }
 
@@ -39,7 +36,7 @@ namespace DataMiningForShoppingBasket
             RaisePropertyChanged(nameof(CurrentUserControl));
         }
 
-        private async Task ExitHandlerAsync(Window window)
+        private Task ExitHandlerAsync(Window window)
         {
             try
             {
@@ -51,6 +48,8 @@ namespace DataMiningForShoppingBasket
             {
                 MessageWriter.ShowMessage(e.Message);
             }
+
+            return Task.CompletedTask;
         }
     }
 }

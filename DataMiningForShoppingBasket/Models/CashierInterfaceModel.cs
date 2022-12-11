@@ -21,8 +21,6 @@ namespace DataMiningForShoppingBasket.Models
             get => _quantity;
             set
             {
-                var oldVal = _quantity;
-
                 if (value > ProductInstance.WarehouseQuantity)
                 {
                     value = ProductInstance.WarehouseQuantity;

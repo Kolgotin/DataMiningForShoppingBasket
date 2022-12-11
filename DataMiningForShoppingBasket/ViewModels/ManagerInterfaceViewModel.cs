@@ -1,17 +1,10 @@
 ﻿using DataMiningForShoppingBasket.CommonClasses;
-using DataMiningForShoppingBasket.Events;
+using DataMiningForShoppingBasket.Commands;
 using DataMiningForShoppingBasket.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using System.Windows;
-using DataMiningForShoppingBasket.Views;
-using DataMiningForShoppingBasket.CommonClasses;
-using DataMiningForShoppingBasket.Events;
-using DataMiningForShoppingBasket.Interfaces;
-using DataMiningForShoppingBasket.Models;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
@@ -37,7 +30,6 @@ namespace DataMiningForShoppingBasket.ViewModels
         #region Commands
         public MyAsyncCommand<Products> AddProductCommand { get; }
         public MyAsyncCommand<Discounts> AddDiscountCommand { get; }
-        public MyAsyncCommand ExitCommand { get; }
         #endregion
 
         public List<Products> ProductList => _getData.GetProductsAsync().Result;
@@ -49,25 +41,23 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         public ManagerInterfaceViewModel()
         {
+            _getData = GetData.Instance;
+            NewProduct = CreateNewProduct();
+            NewDiscount = CreateNewDiscount();
+
             AddProductCommand = new MyAsyncCommand<Products>(
                 ExecuteAddProductAsync,
                 obj => AddProductCommand?.IsActive == false);
             AddDiscountCommand = new MyAsyncCommand<Discounts>(
                 ExecuteAddDiscountAsync,
                 obj => AddDiscountCommand?.IsActive == false);
-            ExitCommand = new MyAsyncCommand(
-                ExecuteExitAsync,
-                _ => ExitCommand?.IsActive == false);
-
-            _getData = GetData.Instance;
-            NewProduct = CreateNewProduct();
-            NewDiscount = CreateNewDiscount();
         }
 
         private Task ExecuteAddProductAsync(Products obj)
         {
             try
             {
+
                 MessageWriter.ShowMessage("Продукт добавлен");
             }
             catch (Exception e)
