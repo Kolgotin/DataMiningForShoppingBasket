@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace DataMiningForShoppingBasket.Events
+namespace DataMiningForShoppingBasket.Commands
 {
     public class MyCommand<T> : ICommand
     {

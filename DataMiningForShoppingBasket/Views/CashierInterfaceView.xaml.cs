@@ -8,9 +8,9 @@ namespace DataMiningForShoppingBasket.Views
     /// <summary>
     /// Логика взаимодействия для UserInterfaceView.xaml
     /// </summary>
-    public partial class CashierInterfaceView : IChangeWindowCaller
+    public partial class CashierInterfaceView : IUserControl
     {
-        public IChangeWindowCallerDataContext CustomDataContext { get; set; } 
+        public IUserWindowDataContext CustomDataContext { get; set; } 
             = new CashierInterfaceViewModel();
 
         public CashierInterfaceView()

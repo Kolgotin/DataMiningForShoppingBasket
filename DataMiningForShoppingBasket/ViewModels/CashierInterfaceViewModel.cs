@@ -1,19 +1,18 @@
-﻿using System;
+﻿using DataMiningForShoppingBasket.CommonClasses;
+using DataMiningForShoppingBasket.Commands;
+using DataMiningForShoppingBasket.Handlers;
+using DataMiningForShoppingBasket.Interfaces;
+using DataMiningForShoppingBasket.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using DataMiningForShoppingBasket.CommonClasses;
-using DataMiningForShoppingBasket.Events;
-using DataMiningForShoppingBasket.Handlers;
-using DataMiningForShoppingBasket.Interfaces;
-using DataMiningForShoppingBasket.Models;
-using DataMiningForShoppingBasket.Views;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
-    public class CashierInterfaceViewModel : INotifyPropertyChanged, IChangeWindowCallerDataContext
+    public class CashierInterfaceViewModel : INotifyPropertyChanged, IUserWindowDataContext
     {
         private readonly IGetData _getData;
         private readonly IPrepareOfferHandler _prepareOfferHandler;
@@ -31,9 +30,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         }
         #endregion
 
-        #region IChangeWindowCallerDataContext
-        public event ChangeWindowEventHandler ChangeWindowCalled;
-
+        #region IUserWindowDataContext
         public string WindowLabel => "Кассир";
         #endregion
 
@@ -71,7 +68,6 @@ namespace DataMiningForShoppingBasket.ViewModels
         public decimal TotalCost => ConsumerCart.Sum(x => x.TotalCost);
 
         #region Commands
-        public MyAsyncCommand ExitCommand { get; }
         public MyAsyncCommand<object> PrepareOfferCommand { get; }
 
         public MyCommand<object> ClearSearchCommand { get; }
@@ -83,20 +79,18 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         public CashierInterfaceViewModel()
         {
-            ExitCommand = new MyAsyncCommand(ExecuteExitAsync, 
-                _ => ExitCommand?.IsActive == false);
-            PrepareOfferCommand  = new MyAsyncCommand<object>(PrepareOfferAsync,
-                _ => PrepareOfferCommand?.IsActive == false);
-            ClearSearchCommand  = new MyCommand<object>(ClearSearch);
-            AddProductIntoCartCommand = new MyCommand<Products>(AddProductIntoCartAsync);
-            DeleteProductFromCartCommand  = new MyCommand<object>(DeleteProductFromCart);
-
             _productsList = new List<Products>();
             _getData = GetData.Instance;
             _ = RefreshActualProductsAsync();
             ConsumerCart = new ObservableCollection<CashierInterfaceModel>();
             SearchString = string.Empty;
             _prepareOfferHandler = PrepareOfferSimpleHandler.Instance;
+
+            PrepareOfferCommand = new MyAsyncCommand<object>(PrepareOfferAsync,
+                _ => PrepareOfferCommand?.IsActive == false);
+            ClearSearchCommand = new MyCommand<object>(ClearSearch);
+            AddProductIntoCartCommand = new MyCommand<Products>(AddProductIntoCartAsync);
+            DeleteProductFromCartCommand = new MyCommand<object>(DeleteProductFromCart);
         }
 
         private async Task PrepareOfferAsync(object obj)
@@ -115,20 +109,6 @@ namespace DataMiningForShoppingBasket.ViewModels
         private void ClearSearch(object obj)
         {
             SearchString = string.Empty;
-        }
-
-        private Task ExecuteExitAsync()
-        {
-            try
-            {
-                ChangeWindowCalled?.Invoke(this, new AuthorizationView());
-            }
-            catch (Exception e)
-            {
-                MessageWriter.ShowMessage(e.Message);
-            }
-
-            return Task.CompletedTask;
         }
 
         private void AddProductIntoCartAsync(Products product)

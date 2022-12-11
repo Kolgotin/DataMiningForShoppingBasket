@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Windows;
 using DataMiningForShoppingBasket.CommonClasses;
+using DataMiningForShoppingBasket.Commands;
 using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.Views;
 
@@ -16,31 +19,37 @@ namespace DataMiningForShoppingBasket
         }
         #endregion
 
-        public IChangeWindowCaller CurrentUserControl { get; set; }
+        public MyAsyncCommand<Window> ExitCommand { get; }
 
-        public MainViewModel()
+        public IUserControl CurrentUserControl { get; set; }
+
+        public MainViewModel(IUserControl userControl)
         {
-            ChangeWindow(new AuthorizationView());
+            ExitCommand = new MyAsyncCommand<Window>(ExitHandlerAsync, obj => ExitCommand?.IsActive == false);
+            ChangeWindow(userControl);
         }
 
-        private void ChangeWindowHandler(object sender, IChangeWindowCaller e)
+        private void ChangeWindow(IUserControl userControl)
+        {
+            CurrentUserControl = userControl;
+            CurrentUserControl.DataContext = CurrentUserControl.CustomDataContext;
+            RaisePropertyChanged(nameof(CurrentUserControl));
+        }
+
+        private Task ExitHandlerAsync(Window window)
         {
             try
             {
-                ChangeWindow(e);
+                var newWindow = new AuthorizationView();
+                window.Close();
+                newWindow.Show();
             }
-            catch(Exception ex)
+            catch (Exception e)
             {
-                MessageWriter.ShowMessage(ex.Message);
+                MessageWriter.ShowMessage(e.Message);
             }
-        }
 
-        private void ChangeWindow(IChangeWindowCaller newWindow)
-        {
-            CurrentUserControl = newWindow;
-            CurrentUserControl.DataContext = CurrentUserControl.CustomDataContext;
-            CurrentUserControl.CustomDataContext.ChangeWindowCalled += ChangeWindowHandler;
-            RaisePropertyChanged(nameof(CurrentUserControl));
+            return Task.CompletedTask;
         }
     }
 }

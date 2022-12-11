@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using DynamicData.Binding;
 
-namespace DataMiningForShoppingBasket.Events
+namespace DataMiningForShoppingBasket.Commands
 {
     public class NotifyTaskCompletion : AbstractNotifyPropertyChanged
     {

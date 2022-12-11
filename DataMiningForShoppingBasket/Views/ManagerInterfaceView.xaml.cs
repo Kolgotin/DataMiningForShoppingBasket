@@ -6,9 +6,9 @@ namespace DataMiningForShoppingBasket.Views
     /// <summary>
     /// Логика взаимодействия для ManagerInterfaceView.xaml
     /// </summary>
-    public partial class ManagerInterfaceView : IChangeWindowCaller
+    public partial class ManagerInterfaceView : IUserControl
     {
-        public IChangeWindowCallerDataContext CustomDataContext { get; set; }
+        public IUserWindowDataContext CustomDataContext { get; set; }
             = new ManagerInterfaceViewModel();
 
         public ManagerInterfaceView()
