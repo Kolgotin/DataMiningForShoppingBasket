@@ -5,10 +5,8 @@ namespace DataMiningForShoppingBasket.Interfaces
 {
     public interface IGetData
     {
-        Task<List<Users>> GetUsersAsync();
         Task<Users> GetUserAsync(string login);
-        Task<List<Products>> GetProductsAsync();
-        Task<List<Discounts>> GetDiscountsAsync();
-        Task<int> SaveDiscountsAsync(Discounts discount);
+        Task<List<T>> GetListAsync<T>() where T : class;
+        Task<T> SaveEntityAsync<T>(T entity) where T : class;
     }
 }

@@ -1,29 +1,19 @@
-﻿using DataMiningForShoppingBasket.CommonClasses;
-using DataMiningForShoppingBasket.Commands;
+﻿using DataMiningForShoppingBasket.Commands;
+using DataMiningForShoppingBasket.CommonClasses;
 using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.Views;
 using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
-    public class AuthorizationViewModel : INotifyPropertyChanged
+    public class AuthorizationViewModel : NotifyPropertyChangedImplementation
     {
         private readonly IGetData _getData;
         private readonly Window _window;
-
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged(string prop)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-        #endregion INotifyPropertyChanged
-
+        
         #region Commands
         public MyAsyncCommand<PasswordBox> LoginCommand { get; }
         #endregion Commands
@@ -33,7 +23,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         public AuthorizationViewModel(Window window)
         {
-            _getData = GetData.Instance;
+            _getData = GetData.GetInstance();
             _window = window;
 
             LoginCommand = new MyAsyncCommand<PasswordBox>(

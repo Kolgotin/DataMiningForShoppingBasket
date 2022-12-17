@@ -1,24 +1,16 @@
-﻿using System;
-using System.ComponentModel;
+﻿using DataMiningForShoppingBasket.Commands;
+using DataMiningForShoppingBasket.CommonClasses;
+using DataMiningForShoppingBasket.Interfaces;
+using DataMiningForShoppingBasket.ViewModels;
+using DataMiningForShoppingBasket.Views;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
-using DataMiningForShoppingBasket.CommonClasses;
-using DataMiningForShoppingBasket.Commands;
-using DataMiningForShoppingBasket.Interfaces;
-using DataMiningForShoppingBasket.Views;
 
 namespace DataMiningForShoppingBasket
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : NotifyPropertyChangedImplementation
     {
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void RaisePropertyChanged(string prop)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-        #endregion
-
         public MyAsyncCommand<Window> ExitCommand { get; }
 
         public IUserControl CurrentUserControl { get; set; }

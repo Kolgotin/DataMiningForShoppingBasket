@@ -6,7 +6,7 @@ using DynamicData.Binding;
 
 namespace DataMiningForShoppingBasket.Commands
 {
-    public abstract class  AsyncCommandBase : AbstractNotifyPropertyChanged, IAsyncCommand
+    public abstract class AsyncCommandBase : AbstractNotifyPropertyChanged, IAsyncCommand
     {
         private bool _isActive;
         private NotifyTaskCompletion _execution;

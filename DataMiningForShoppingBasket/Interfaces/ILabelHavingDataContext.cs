@@ -1,6 +1,6 @@
 ﻿namespace DataMiningForShoppingBasket.Interfaces
 {
-    public interface IUserWindowDataContext
+    public interface ILabelHavingDataContext
     {
         string WindowLabel { get; }
     }

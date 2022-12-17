@@ -3,6 +3,6 @@
     public interface IUserControl
     {
         object DataContext { get; set; }
-        IUserWindowDataContext CustomDataContext { get; set; }
+        ILabelHavingDataContext CustomDataContext { get; set; }
     }
 }

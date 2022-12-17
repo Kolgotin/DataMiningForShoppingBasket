@@ -1,81 +1,78 @@
-﻿using DataMiningForShoppingBasket.CommonClasses;
-using DataMiningForShoppingBasket.Commands;
+﻿using DataMiningForShoppingBasket.Commands;
+using DataMiningForShoppingBasket.CommonClasses;
 using DataMiningForShoppingBasket.Interfaces;
+using DataMiningForShoppingBasket.Views;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
-    class ManagerInterfaceViewModel : INotifyPropertyChanged, IUserWindowDataContext
+    public class ManagerInterfaceViewModel : NotifyPropertyChangedImplementation, ILabelHavingDataContext
     {
         private readonly IGetData _getData;
-        
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
+        private List<Products> _productList;
+        private List<Discounts> _discountsList;
 
-        public void RaisePropertyChanged(string prop)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-        #endregion
-
-        #region IUserWindowDataContext
+        #region ILabelHavingDataContext
         public string WindowLabel => "Менеджер";
         #endregion
 
         #region Properties
 
         #region Commands
-        public MyAsyncCommand<Products> AddProductCommand { get; }
-        public MyAsyncCommand<Discounts> AddDiscountCommand { get; }
+        public MyAsyncCommand<Products> AddOrEditProductCommand { get; }
+        public MyAsyncCommand<Discounts> AddOrEditDiscountCommand { get; }
         #endregion
 
-        public List<Products> ProductList => _getData.GetProductsAsync().Result;
-        public List<Discounts> DiscountsList => _getData.GetDiscountsAsync().Result;
+        public List<Products> ProductList
+        {
+            get => _productList;
+            private set => SetProperty(ref _productList, value);
+        }
 
-        public Products NewProduct { get; set; }
-        public Discounts NewDiscount { get; set; }
+        public List<Discounts> DiscountsList
+        {
+            get => _discountsList;
+            private set => SetProperty(ref _discountsList, value);
+        }
+
         #endregion
 
         public ManagerInterfaceViewModel()
         {
-            _getData = GetData.Instance;
-            NewProduct = CreateNewProduct();
-            NewDiscount = CreateNewDiscount();
+            _getData = GetData.GetInstance();
 
-            AddProductCommand = new MyAsyncCommand<Products>(
+            //todo: вызвать по-нормальному
+            InitializeExecuteAsync();
+
+            AddOrEditProductCommand = new MyAsyncCommand<Products>(
                 ExecuteAddProductAsync,
-                obj => AddProductCommand?.IsActive == false);
-            AddDiscountCommand = new MyAsyncCommand<Discounts>(
+                _ => AddOrEditProductCommand?.IsActive == false);
+            AddOrEditDiscountCommand = new MyAsyncCommand<Discounts>(
                 ExecuteAddDiscountAsync,
-                obj => AddDiscountCommand?.IsActive == false);
+                obj => AddOrEditDiscountCommand?.IsActive == false);
         }
 
-        private Task ExecuteAddProductAsync(Products obj)
+        private async Task InitializeExecuteAsync()
+        {
+            ProductList = await _getData.GetListAsync<Products>();
+            DiscountsList = await _getData.GetListAsync<Discounts>();
+        }
+
+        private async Task ExecuteAddProductAsync(Products product)
         {
             try
             {
+                var view = new ProductDialogView(product);
+                var res = view.ShowDialog();
 
-                MessageWriter.ShowMessage("Продукт добавлен");
-            }
-            catch (Exception e)
-            {
-                MessageWriter.ShowMessage(e.Message);
-            }
-
-            return Task.CompletedTask;
-        }
-
-        private async Task ExecuteAddDiscountAsync(Discounts obj)
-        {
-            try
-            {
-                await _getData.SaveDiscountsAsync(obj);
-                NewDiscount = CreateNewDiscount();
-                RaisePropertyChanged(nameof(DiscountsList));
-                RaisePropertyChanged(nameof(NewDiscount));
+                if (res is true)
+                {
+                    ProductList = await _getData.GetListAsync<Products>();
+                    MessageWriter.ShowMessage("Продукт сохранен");
+                }
             }
             catch (Exception e)
             {
@@ -83,23 +80,23 @@ namespace DataMiningForShoppingBasket.ViewModels
             }
         }
 
-        private Products CreateNewProduct()
+        private async Task ExecuteAddDiscountAsync(Discounts discount)
         {
-            return new Products
+            try
             {
-                ProductName = string.Empty,
-            };
-        }
+                var view = new DiscountDialogView(discount);
+                var res = view.ShowDialog();
 
-        private Discounts CreateNewDiscount()
-        {
-            return new Discounts
+                if (res is true)
+                {
+                    DiscountsList = await _getData.GetListAsync<Discounts>();
+                    MessageWriter.ShowMessage("Акция сохранена");
+                }
+            }
+            catch (Exception e)
             {
-                DiscountName = string.Empty,
-                DiscountDescription = string.Empty,
-                StartDate = DateTime.Today,
-                FinishDate = DateTime.Today
-            };
+                MessageWriter.ShowMessage(e.Message);
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace DataMiningForShoppingBasket.Views
     /// </summary>
     public partial class ManagerInterfaceView : IUserControl
     {
-        public IUserWindowDataContext CustomDataContext { get; set; }
+        public ILabelHavingDataContext CustomDataContext { get; set; }
             = new ManagerInterfaceViewModel();
 
         public ManagerInterfaceView()
