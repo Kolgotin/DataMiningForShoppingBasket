@@ -61,11 +61,29 @@ namespace DataMiningForShoppingBasket.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить акцию.
+        /// </summary>
+        public static string AddDiscount {
+            get {
+                return ResourceManager.GetString("AddDiscount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Дополнительное предложение:.
         /// </summary>
         public static string AdditionalOffer {
             get {
                 return ResourceManager.GetString("AdditionalOffer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Добавить продукт.
+        /// </summary>
+        public static string AddProduct {
+            get {
+                return ResourceManager.GetString("AddProduct", resourceCulture);
             }
         }
         
@@ -151,6 +169,15 @@ namespace DataMiningForShoppingBasket.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Разрешены дробные.
+        /// </summary>
+        public static string FractionalAllowed {
+            get {
+                return ResourceManager.GetString("FractionalAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Id.
         /// </summary>
         public static string Id {
@@ -196,6 +223,15 @@ namespace DataMiningForShoppingBasket.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Товар.
+        /// </summary>
+        public static string Product {
+            get {
+                return ResourceManager.GetString("Product", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ИдТовара.
         /// </summary>
         public static string ProductId {
@@ -228,6 +264,15 @@ namespace DataMiningForShoppingBasket.Properties {
         public static string Quantity {
             get {
                 return ResourceManager.GetString("Quantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сохранить.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         

@@ -1,18 +1,17 @@
-﻿using DataMiningForShoppingBasket.CommonClasses;
-using DataMiningForShoppingBasket.Commands;
+﻿using DataMiningForShoppingBasket.Commands;
+using DataMiningForShoppingBasket.CommonClasses;
 using DataMiningForShoppingBasket.Handlers;
 using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
-    public class CashierInterfaceViewModel : INotifyPropertyChanged, IUserWindowDataContext
+    public class CashierInterfaceViewModel : NotifyPropertyChangedImplementation, ILabelHavingDataContext
     {
         private readonly IGetData _getData;
         private readonly IPrepareOfferHandler _prepareOfferHandler;
@@ -20,17 +19,8 @@ namespace DataMiningForShoppingBasket.ViewModels
         private string _searchString;
         private List<Products> _offerProductList;
         private List<Products> _productsList;
-
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged(string prop)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-        #endregion
-
-        #region IUserWindowDataContext
+        
+        #region ILabelHavingDataContext
         public string WindowLabel => "Кассир";
         #endregion
 
@@ -80,11 +70,11 @@ namespace DataMiningForShoppingBasket.ViewModels
         public CashierInterfaceViewModel()
         {
             _productsList = new List<Products>();
-            _getData = GetData.Instance;
+            _getData = GetData.GetInstance();
             _ = RefreshActualProductsAsync();
             ConsumerCart = new ObservableCollection<CashierInterfaceModel>();
             SearchString = string.Empty;
-            _prepareOfferHandler = PrepareOfferSimpleHandler.Instance;
+            _prepareOfferHandler = PrepareOfferSimpleHandler.GetInstance();
 
             PrepareOfferCommand = new MyAsyncCommand<object>(PrepareOfferAsync,
                 _ => PrepareOfferCommand?.IsActive == false);
@@ -116,9 +106,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             try
             {
                 if (!ProductIsValid(product))
-                {
                     return;
-                }
 
                 if (ConsumerCart.Select(x => x.ProductInstance).Contains(product))
                 {
@@ -156,11 +144,9 @@ namespace DataMiningForShoppingBasket.ViewModels
             try
             {
                 if (_getData is null)
-                {
                     return;
-                }
 
-                _productsList = await _getData.GetProductsAsync();
+                _productsList = await _getData.GetListAsync<Products>();
                 RaisePropertyChanged(nameof(ProductsList));
             }
             catch (Exception e)

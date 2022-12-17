@@ -189,4 +189,19 @@
   <data name="Password" xml:space="preserve">
     <value>Пароль</value>
   </data>
+  <data name="FractionalAllowed" xml:space="preserve">
+    <value>Разрешены дробные</value>
+  </data>
+  <data name="AddDiscount" xml:space="preserve">
+    <value>Добавить акцию</value>
+  </data>
+  <data name="AddProduct" xml:space="preserve">
+    <value>Добавить продукт</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Товар</value>
+  </data>
 </root>

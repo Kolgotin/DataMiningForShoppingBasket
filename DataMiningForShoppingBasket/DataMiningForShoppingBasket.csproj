@@ -112,7 +112,7 @@
     <Compile Include="Commands\MyCommand`1.cs" />
     <Compile Include="Commands\NotifyTaskCompletion.cs" />
     <Compile Include="Interfaces\IUserControl.cs" />
-    <Compile Include="Interfaces\IUserWindowDataContext.cs" />
+    <Compile Include="Interfaces\ILabelHavingDataContext.cs" />
     <Compile Include="Interfaces\ICloseable.cs" />
     <Compile Include="Interfaces\IAddNewEntityDialogService.cs" />
     <Compile Include="Interfaces\IGetData.cs" />
@@ -140,16 +140,25 @@
     <Compile Include="ViewModels\AddNewDiscountDialog.cs" />
     <Compile Include="ViewModels\AddNewProductDialog.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
+    <Compile Include="ViewModels\DiscountDialogViewModel.cs" />
+    <Compile Include="ViewModels\NotifyPropertyChangedImplementation.cs" />
     <Compile Include="ViewModels\ManagerInterfaceViewModel.cs" />
     <Compile Include="ViewModels\CashierInterfaceViewModel.cs" />
+    <Compile Include="ViewModels\ProductDialogViewModel.cs" />
     <Compile Include="Views\AuthorizationView.xaml.cs">
       <DependentUpon>AuthorizationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiscountDialogView.xaml.cs">
+      <DependentUpon>DiscountDialogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ManagerInterfaceView.xaml.cs">
       <DependentUpon>ManagerInterfaceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CashierInterfaceView.xaml.cs">
       <DependentUpon>CashierInterfaceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProductDialogView.xaml.cs">
+      <DependentUpon>ProductDialogView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -167,11 +176,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\DiscountDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ManagerInterfaceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CashierInterfaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProductDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

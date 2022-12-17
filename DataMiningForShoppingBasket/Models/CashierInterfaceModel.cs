@@ -1,20 +1,11 @@
-﻿using System.ComponentModel;
+﻿using DataMiningForShoppingBasket.ViewModels;
 
 namespace DataMiningForShoppingBasket.Models
 {
-    public class CashierInterfaceModel : INotifyPropertyChanged
+    public class CashierInterfaceModel : NotifyPropertyChangedImplementation
     {
         private const int DefaultQuantity = 1;
-
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged(string prop)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-        #endregion
-
+        
         private decimal _quantity;
         public decimal Quantity
         {
