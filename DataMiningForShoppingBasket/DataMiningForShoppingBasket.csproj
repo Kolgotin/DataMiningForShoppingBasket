@@ -114,7 +114,6 @@
     <Compile Include="Interfaces\IUserControl.cs" />
     <Compile Include="Interfaces\ILabelHavingDataContext.cs" />
     <Compile Include="Interfaces\ICloseable.cs" />
-    <Compile Include="Interfaces\IAddNewEntityDialogService.cs" />
     <Compile Include="Interfaces\IGetData.cs" />
     <Compile Include="Interfaces\IPrepareOfferHandler.cs" />
     <Compile Include="MainViewModel.cs" />
@@ -137,8 +136,6 @@
     <Compile Include="UserTypes.cs">
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\AddNewDiscountDialog.cs" />
-    <Compile Include="ViewModels\AddNewProductDialog.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\DiscountDialogViewModel.cs" />
     <Compile Include="ViewModels\NotifyPropertyChangedImplementation.cs" />
