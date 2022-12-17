@@ -46,6 +46,7 @@ namespace DataMiningForShoppingBasket.CommonClasses
 
         public async Task<T> SaveEntityAsync<T>(T entity) where T : class
         {
+
             _dbContext.Set<T>().AddOrUpdate(entity);
             await _dbContext.SaveChangesAsync();
             return entity;

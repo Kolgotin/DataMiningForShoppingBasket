@@ -16,10 +16,13 @@ namespace DataMiningForShoppingBasket.ViewModels
     {
         private readonly Products _product;
         private readonly IGetData _getData;
+        private readonly INotifier<Products, int> _productsINotifier;
 
         public ProductDialogViewModel(Products product = null)
         {
             _getData = GetData.GetInstance();
+            _productsINotifier = DefaultNotifier<Products, int>.GetInstance(x => x.Id);
+
             ProductTypes = _getData.GetListAsync<ProductTypes>().Result
                 .OrderBy(x => x.ProductTypeName).ToList();
             SaveCommand = new MyAsyncCommand<Window>(SaveExecuteAsync);
@@ -62,7 +65,8 @@ namespace DataMiningForShoppingBasket.ViewModels
             _product.FractionalAllowed = FractionalAllowed;
             _product.WarehouseQuantity = WarehouseQuantity;
             await _getData.SaveEntityAsync(_product);
-            
+            _productsINotifier.NotifyAddOrUpdate(_product);
+
             window.DialogResult = true;
             window.Close();
         }

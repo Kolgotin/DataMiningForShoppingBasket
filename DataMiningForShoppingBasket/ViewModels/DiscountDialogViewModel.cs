@@ -14,10 +14,12 @@ namespace DataMiningForShoppingBasket.ViewModels
     {
         private readonly Discounts _discount;
         private readonly IGetData _getData;
+        private readonly INotifier<Discounts, int> _discountsINotifier;
 
         public DiscountDialogViewModel(Discounts discount = null)
         {
             _getData = GetData.GetInstance();
+            _discountsINotifier = DefaultNotifier<Discounts, int>.GetInstance(x => x.Id);
 
             ProductList = _getData.GetListAsync<Products>().Result
                 .OrderBy(x=>x.ProductName).ToList();
@@ -62,13 +64,14 @@ namespace DataMiningForShoppingBasket.ViewModels
         private async Task SaveExecuteAsync(Window window)
         {
             _discount.DiscountName = DiscountName;
-            _discount.DiscountDescription = DiscountDescription;
+            _discount.DiscountDescription = DiscountDescription ?? string.Empty;
             _discount.StartDate = StartDate;
             _discount.FinishDate = FinishDate;
             _discount.ProductId = ProductId;
             _discount.DiscountQuantity = DiscountQuantity;
             _discount.DiscountCost = DiscountCost;
             await _getData.SaveEntityAsync(_discount);
+            _discountsINotifier.NotifyAddOrUpdate(_discount);
 
             window.DialogResult = true;
             window.Close();

@@ -111,6 +111,7 @@
     <Compile Include="Commands\MyAsyncCommand`1.cs" />
     <Compile Include="Commands\MyCommand`1.cs" />
     <Compile Include="Commands\NotifyTaskCompletion.cs" />
+    <Compile Include="Interfaces\INotifier`2.cs" />
     <Compile Include="Interfaces\IUserControl.cs" />
     <Compile Include="Interfaces\ILabelHavingDataContext.cs" />
     <Compile Include="Interfaces\ICloseable.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Interfaces\IPrepareOfferHandler.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Models\CashierInterfaceModel.cs" />
+    <Compile Include="CommonClasses\DefaultNotifier`2.cs" />
     <Compile Include="Products.cs">
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
