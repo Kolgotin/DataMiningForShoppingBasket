@@ -83,6 +83,7 @@
     <Compile Include="Clients.cs">
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Commands\MyCommand.cs" />
     <Compile Include="CommonClasses\GetData.cs" />
     <Compile Include="CommonClasses\MessageWriter.cs" />
     <Compile Include="CommonClasses\MyException.cs" />
@@ -101,6 +102,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataMiningDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DbPartialEntities.cs" />
     <Compile Include="Discounts.cs">
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
@@ -112,13 +114,13 @@
     <Compile Include="Commands\MyCommand`1.cs" />
     <Compile Include="Commands\NotifyTaskCompletion.cs" />
     <Compile Include="Interfaces\INotifier`2.cs" />
+    <Compile Include="Interfaces\IHavingId`1.cs" />
     <Compile Include="Interfaces\IUserControl.cs" />
     <Compile Include="Interfaces\ILabelHavingDataContext.cs" />
-    <Compile Include="Interfaces\ICloseable.cs" />
     <Compile Include="Interfaces\IGetData.cs" />
     <Compile Include="Interfaces\IPrepareOfferHandler.cs" />
     <Compile Include="MainViewModel.cs" />
-    <Compile Include="Models\CashierInterfaceModel.cs" />
+    <Compile Include="ViewModels\CartRowViewModel.cs" />
     <Compile Include="CommonClasses\DefaultNotifier`2.cs" />
     <Compile Include="Products.cs">
       <DependentUpon>DataMiningDB.tt</DependentUpon>

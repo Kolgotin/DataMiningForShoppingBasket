@@ -37,7 +37,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             {
                 IUserControl userControl;
 #if DEBUG
-                userControl = new ManagerInterfaceView();
+                userControl = new CashierInterfaceView();
 #endif
 
 #if !DEBUG

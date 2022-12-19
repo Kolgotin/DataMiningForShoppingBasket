@@ -44,11 +44,21 @@ namespace DataMiningForShoppingBasket.CommonClasses
         public async Task<List<T>> GetListAsync<T>() where T : class
             => await _dbContext.Set<T>().ToListAsync().ConfigureAwait(false);
 
-        public async Task<T> SaveEntityAsync<T>(T entity) where T : class
+        public async Task<T> SaveEntityAsync<T>(T entity)
+            where T : class
         {
-
             _dbContext.Set<T>().AddOrUpdate(entity);
             await _dbContext.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<TEntity> SaveAndNotifyHavingIdEntityAsync<TEntity, TId>(TEntity entity)
+            where TEntity : class, IHavingId<TId>, new()
+        {
+            _dbContext.Set<TEntity>().AddOrUpdate(entity);
+            await _dbContext.SaveChangesAsync();
+            var notifier = DefaultNotifier<TEntity, TId>.GetInstance();
+            notifier.NotifyAddOrUpdate(entity);
             return entity;
         }
     }

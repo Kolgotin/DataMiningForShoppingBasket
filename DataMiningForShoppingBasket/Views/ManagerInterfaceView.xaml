@@ -75,7 +75,7 @@
                       x:Name="DiscountsDataGrid"
                       IsReadOnly="True"
                       VerticalAlignment="Stretch"
-                      ItemsSource="{Binding Discounts}">
+                      ItemsSource="{Binding DiscountList}">
                 <DataGrid.InputBindings>
                     <MouseBinding
                         MouseAction="LeftDoubleClick"
@@ -143,7 +143,7 @@
                       VerticalAlignment="Stretch"
                       x:Name="ProductsDataGrid"
                       IsReadOnly="True"
-                      ItemsSource="{Binding Products}">
+                      ItemsSource="{Binding ProductList}">
                 <DataGrid.InputBindings>
                     <MouseBinding
                         MouseAction="LeftDoubleClick"

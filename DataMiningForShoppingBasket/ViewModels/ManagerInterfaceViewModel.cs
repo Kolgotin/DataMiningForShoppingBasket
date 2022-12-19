@@ -4,21 +4,24 @@ using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.Views;
 using DynamicData;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
-    public class ManagerInterfaceViewModel : NotifyPropertyChangedImplementation, ILabelHavingDataContext
+    public sealed class ManagerInterfaceViewModel : NotifyPropertyChangedImplementation,
+        ILabelHavingDataContext, IDisposable
     {
         private readonly IGetData _getData;
-        private List<Products> _productList;
-        private List<Discounts> _discountsList;
+        private readonly INotifier<Products, int> _productsINotifier;
+        private readonly INotifier<Discounts, int> _discountsINotifier;
+
+        private readonly CompositeDisposable _cleanup;
+
+        private readonly ReadOnlyObservableCollection<Products> _productList;
+        private readonly ReadOnlyObservableCollection<Discounts> _discountList;
 
         #region ILabelHavingDataContext
         public string WindowLabel => "Менеджер";
@@ -31,25 +34,20 @@ namespace DataMiningForShoppingBasket.ViewModels
         public MyAsyncCommand<Discounts> AddOrEditDiscountCommand { get; }
         #endregion
 
-        private INotifier<Products, int> _productsINotifier;
-        private INotifier<Discounts, int> _discountsINotifier;
-
-        private readonly ReadOnlyObservableCollection<Products> _products;
-        private readonly ReadOnlyObservableCollection<Discounts> _discounts;
-
-        public ReadOnlyObservableCollection<Products> Products => _products;
-        public ReadOnlyObservableCollection<Discounts> Discounts => _discounts;
+        public ReadOnlyObservableCollection<Products> ProductList => _productList;
+        public ReadOnlyObservableCollection<Discounts> DiscountList => _discountList;
         
         #endregion
 
         public ManagerInterfaceViewModel()
         {
             _getData = GetData.GetInstance();
-            _productsINotifier = DefaultNotifier<Products, int>.GetInstance(x => x.Id);
-            _discountsINotifier = DefaultNotifier<Discounts, int>.GetInstance(x => x.Id);
+            _productsINotifier = DefaultNotifier<Products, int>.GetInstance();
+            _discountsINotifier = DefaultNotifier<Discounts, int>.GetInstance();
 
             //todo: вызвать по-нормальному
-            InitializeExecuteAsync();
+            var init = new MyAsyncCommand(InitializeExecuteAsync);
+            init.Execute();
 
             AddOrEditProductCommand = new MyAsyncCommand<Products>(
                 ExecuteAddProductAsync,
@@ -58,12 +56,13 @@ namespace DataMiningForShoppingBasket.ViewModels
                 ExecuteAddDiscountAsync,
                 obj => AddOrEditDiscountCommand?.IsActive == false);
 
-            _productsINotifier.Changes
-                .Bind(out _products)
-                .Subscribe();
-            _discountsINotifier.Changes
-                .Bind(out _discounts)
-                .Subscribe();
+            _cleanup = new CompositeDisposable();
+            _cleanup.Add(_productsINotifier.Changes
+                .Bind(out _productList)
+                .Subscribe());
+            _cleanup.Add(_discountsINotifier.Changes
+                .Bind(out _discountList)
+                .Subscribe());
         }
 
         private async Task InitializeExecuteAsync()
@@ -75,7 +74,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             discountsList.ForEach(_discountsINotifier.NotifyAddOrUpdate);
         }
         
-        private async Task ExecuteAddProductAsync(Products product)
+        private Task ExecuteAddProductAsync(Products product)
         {
             try
             {
@@ -91,9 +90,11 @@ namespace DataMiningForShoppingBasket.ViewModels
             {
                 MessageWriter.ShowMessage(e.Message);
             }
+
+            return Task.CompletedTask;
         }
 
-        private async Task ExecuteAddDiscountAsync(Discounts discount)
+        private Task ExecuteAddDiscountAsync(Discounts discount)
         {
             try
             {
@@ -109,6 +110,13 @@ namespace DataMiningForShoppingBasket.ViewModels
             {
                 MessageWriter.ShowMessage(e.Message);
             }
+
+            return Task.CompletedTask; 
+        }
+
+        public void Dispose()
+        {
+            _cleanup?.Dispose();
         }
     }
 }

@@ -71,11 +71,11 @@
                Grid.ColumnSpan="2"
                Content="{x:Static properties:Resources.ShoppingBasket}"/>
 
-        <DataGrid Name="CartDataGrid"
+        <DataGrid x:Name="CartDataGrid"
                   Grid.Row="1"
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
-                  SelectedItem="{Binding SelectedCartItem}"
+                  SelectedItem="{Binding SelectedCartRowItem}"
                   ItemsSource="{Binding ConsumerCart}">
             <DataGrid.ContextMenu>
                 <ContextMenu>
@@ -83,8 +83,7 @@
                         <MenuItem.InputBindings>
                             <MouseBinding
                                 MouseAction="LeftClick"
-                                Command="{Binding DeleteProductFromCartCommand}"
-                                CommandParameter="{Binding  SelectedCartItem}"/>
+                                Command="{Binding DeleteProductFromCartCommand}"/>
                         </MenuItem.InputBindings>
                     </MenuItem>
                 </ContextMenu>
@@ -93,11 +92,11 @@
                 <DataGridTextColumn Width="5*"
                                     Header="{x:Static properties:Resources.Name}"
                                     IsReadOnly="True"
-                                    Binding="{Binding ProductInstance.ProductName}"/>
+                                    Binding="{Binding Product.ProductName}"/>
                 <DataGridTextColumn Width="4*"
                                     Header="{x:Static properties:Resources.Type}"
                                     IsReadOnly="True"
-                                    Binding="{Binding ProductInstance.ProductTypes.ProductTypeName}"/>
+                                    Binding="{Binding Product.ProductTypes.ProductTypeName}"/>
                 <DataGridTextColumn Width="2*"
                                     Header="{x:Static properties:Resources.Quantity}"
                                     IsReadOnly="False"
@@ -105,7 +104,7 @@
                 <DataGridTextColumn Width="2*"
                                     Header="{x:Static properties:Resources.Cost}"
                                     IsReadOnly="True"
-                                    Binding="{Binding ProductInstance.ProductCost}"/>
+                                    Binding="{Binding Product.ProductCost}"/>
                 <DataGridTextColumn Width="2*"
                                     Header="{x:Static properties:Resources.Total}"
                                     IsReadOnly="True"
@@ -124,7 +123,7 @@
                 Grid.Column="2"
                 Style="{StaticResource InsideButtonStyle}"
                 Content="X"
-                Command="{Binding ClearSearchCommand}"/>
+                Command="{Binding ClearTextBoxCommand}"/>
 
         <TextBlock Grid.Row="2"
                    Grid.Column="0"

@@ -17,7 +17,8 @@ namespace DataMiningForShoppingBasket
 
         public MainViewModel(IUserControl userControl)
         {
-            ExitCommand = new MyAsyncCommand<Window>(ExitHandlerAsync, obj => ExitCommand?.IsActive == false);
+            ExitCommand = new MyAsyncCommand<Window>(ExitHandlerAsync,
+                obj => ExitCommand?.IsActive == false);
             ChangeWindow(userControl);
         }
 
@@ -28,7 +29,7 @@ namespace DataMiningForShoppingBasket
             RaisePropertyChanged(nameof(CurrentUserControl));
         }
 
-        private Task ExitHandlerAsync(Window window)
+        private static Task ExitHandlerAsync(Window window)
         {
             try
             {
@@ -39,6 +40,7 @@ namespace DataMiningForShoppingBasket
             catch (Exception e)
             {
                 MessageWriter.ShowMessage(e.Message);
+                Application.Current.Shutdown();
             }
 
             return Task.CompletedTask;

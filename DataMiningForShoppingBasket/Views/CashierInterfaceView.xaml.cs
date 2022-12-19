@@ -20,8 +20,8 @@ namespace DataMiningForShoppingBasket.Views
 
         private void SearchTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            BindingExpression be = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
-            be.UpdateSource();
+            var bindingExpression = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
+            bindingExpression?.UpdateSource();
         }
     }
 }

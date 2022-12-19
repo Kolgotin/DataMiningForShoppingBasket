@@ -6,30 +6,28 @@ using DynamicData;
 namespace DataMiningForShoppingBasket.CommonClasses
 {
     public class DefaultNotifier<TEntity, TId> : INotifier<TEntity, TId>
-        where TEntity : class, new()
+        where TEntity : class, IHavingId<TId>, new()
     {
         private readonly Subject<IChangeSet<TEntity, TId>> _previewChangeSubject;
-        private readonly Func<TEntity, TId> _keySelector;
 
         private static DefaultNotifier<TEntity, TId> _instance;
         private static readonly TEntity Locker = new TEntity();
 
-        private DefaultNotifier(Func<TEntity, TId> keySelector)
+        private DefaultNotifier()
         {
             _previewChangeSubject = new Subject<IChangeSet<TEntity, TId>>();
-            _keySelector = keySelector;
         }
 
         public IObservable<IChangeSet<TEntity, TId>> Changes => _previewChangeSubject;
 
-        public static DefaultNotifier<TEntity, TId> GetInstance(Func<TEntity, TId> keySelector)
+        public static DefaultNotifier<TEntity, TId> GetInstance()
         {
             if (_instance != null)
                 return _instance;
 
             lock (Locker)
             {
-                return _instance ?? (_instance = new DefaultNotifier<TEntity, TId>(keySelector));
+                return _instance ?? (_instance = new DefaultNotifier<TEntity, TId>());
             }
         }
         
@@ -44,7 +42,7 @@ namespace DataMiningForShoppingBasket.CommonClasses
         {
             _previewChangeSubject.OnNext(new ChangeSet<TEntity, TId>
             {
-                new Change<TEntity, TId>(ChangeReason.Add, _keySelector(entity), entity)
+                new Change<TEntity, TId>(ChangeReason.Add, entity.Id, entity)
             });
         }
 
