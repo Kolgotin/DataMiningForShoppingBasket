@@ -8,7 +8,6 @@ namespace DataMiningForShoppingBasket.Commands
 {
     public abstract class AsyncCommandBase : AbstractNotifyPropertyChanged, IAsyncCommand
     {
-        private bool _isActive;
         private NotifyTaskCompletion _execution;
 
         protected AsyncCommandBase()
@@ -27,18 +26,13 @@ namespace DataMiningForShoppingBasket.Commands
         }
 
         /// <inheritdoc />
-        public bool IsActive
-        {
-            get => _isActive;
-            set => throw new InvalidOperationException();
-        }
-
+        public bool IsActive { get; private set; }
 
         /// <inheritdoc cref="ICommand.CanExecute(object)"/>
         public abstract bool CanExecute(object parameter);
 
         /// <inheritdoc cref="ICommand.Execute(object)"/>
-        async void ICommand.Execute(object parameter)
+        public async void Execute(object parameter)
         {
             await InnerExecuteAsync(parameter);
             
@@ -49,7 +43,7 @@ namespace DataMiningForShoppingBasket.Commands
         }
 
         /// <inheritdoc cref="ICommand.CanExecuteChanged"/>
-        event EventHandler ICommand.CanExecuteChanged
+        public event EventHandler CanExecuteChanged
         {
             add => CommandManager.RequerySuggested += value;
             remove => CommandManager.RequerySuggested -= value;
@@ -91,7 +85,7 @@ namespace DataMiningForShoppingBasket.Commands
         /// </summary>
         private void RaiseCanExecuteChanged(bool value)
         {
-            _isActive = value;
+            IsActive = value;
             CommandManager.InvalidateRequerySuggested();
         }
     }

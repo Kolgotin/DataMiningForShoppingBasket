@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace DataMiningForShoppingBasket.ViewModels
+namespace DataMiningForShoppingBasket.Common
 {
     public abstract class NotifyPropertyChangedImplementation : INotifyPropertyChanged
     {

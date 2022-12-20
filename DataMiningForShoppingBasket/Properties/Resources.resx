@@ -196,12 +196,15 @@
     <value>Добавить акцию</value>
   </data>
   <data name="AddProduct" xml:space="preserve">
-    <value>Добавить продукт</value>
+    <value>Добавить товар</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
   <data name="Product" xml:space="preserve">
     <value>Товар</value>
+  </data>
+  <data name="Discount" xml:space="preserve">
+    <value>Акция</value>
   </data>
 </root>

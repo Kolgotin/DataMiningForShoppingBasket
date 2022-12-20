@@ -1,7 +1,6 @@
 ﻿using DataMiningForShoppingBasket.Commands;
-using DataMiningForShoppingBasket.CommonClasses;
+using DataMiningForShoppingBasket.Common;
 using DataMiningForShoppingBasket.Interfaces;
-using DataMiningForShoppingBasket.ViewModels;
 using DataMiningForShoppingBasket.Views;
 using System;
 using System.Threading.Tasks;
@@ -17,7 +16,8 @@ namespace DataMiningForShoppingBasket
 
         public MainViewModel(IUserControl userControl)
         {
-            ExitCommand = new MyAsyncCommand<Window>(ExitHandlerAsync, obj => ExitCommand?.IsActive == false);
+            ExitCommand = new MyAsyncCommand<Window>(ExitHandlerAsync,
+                obj => ExitCommand?.IsActive == false);
             ChangeWindow(userControl);
         }
 
@@ -28,17 +28,19 @@ namespace DataMiningForShoppingBasket
             RaisePropertyChanged(nameof(CurrentUserControl));
         }
 
-        private Task ExitHandlerAsync(Window window)
+        private static Task ExitHandlerAsync(Window window)
         {
             try
             {
                 var newWindow = new AuthorizationView();
                 window.Close();
+                CurrentSession.Clear();
                 newWindow.Show();
             }
             catch (Exception e)
             {
                 MessageWriter.ShowMessage(e.Message);
+                Application.Current.Shutdown();
             }
 
             return Task.CompletedTask;

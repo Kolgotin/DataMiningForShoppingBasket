@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using DataMiningForShoppingBasket.Interfaces;
 
 namespace DataMiningForShoppingBasket.Commands
 {
@@ -19,6 +21,8 @@ namespace DataMiningForShoppingBasket.Commands
             _exAction = exAction;
             _canExAction = canExAction;
         }
+
+        public void Execute() => Execute(null);
 
         /// <inheritdoc />
         public override bool CanExecute(object parameter)

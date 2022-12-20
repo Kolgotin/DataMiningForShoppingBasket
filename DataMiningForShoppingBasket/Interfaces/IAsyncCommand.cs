@@ -4,6 +4,6 @@ namespace DataMiningForShoppingBasket.Interfaces
 {
     interface IAsyncCommand : ICommand
     {
-        bool IsActive { get; set; }
+        bool IsActive { get; }
     }
 }

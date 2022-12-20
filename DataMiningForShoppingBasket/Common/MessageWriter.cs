@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace DataMiningForShoppingBasket.CommonClasses
+namespace DataMiningForShoppingBasket.Common
 {
     public static class MessageWriter
     {

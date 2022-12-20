@@ -1,7 +1,7 @@
 ﻿namespace DataMiningForShoppingBasket.Interfaces
 {
-    public interface ICloseable
+    public interface IHavingId<TId>
     {
-        void Close();
+        TId Id { get; set; }
     }
 }

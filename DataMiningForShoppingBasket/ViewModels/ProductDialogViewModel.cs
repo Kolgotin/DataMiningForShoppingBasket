@@ -1,14 +1,11 @@
-﻿using DataMiningForShoppingBasket.Interfaces;
-using System;
+﻿using DataMiningForShoppingBasket.Commands;
+using DataMiningForShoppingBasket.Common;
+using DataMiningForShoppingBasket.Interfaces;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using DataMiningForShoppingBasket.Commands;
-using DataMiningForShoppingBasket.CommonClasses;
-using System.Linq;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
@@ -20,6 +17,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         public ProductDialogViewModel(Products product = null)
         {
             _getData = GetData.GetInstance();
+
             ProductTypes = _getData.GetListAsync<ProductTypes>().Result
                 .OrderBy(x => x.ProductTypeName).ToList();
             SaveCommand = new MyAsyncCommand<Window>(SaveExecuteAsync);
@@ -52,8 +50,6 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         #endregion
 
-        #region Methods
-
         private async Task SaveExecuteAsync(Window window)
         {
             _product.ProductName = ProductName;
@@ -61,12 +57,10 @@ namespace DataMiningForShoppingBasket.ViewModels
             _product.ProductCost = ProductCost;
             _product.FractionalAllowed = FractionalAllowed;
             _product.WarehouseQuantity = WarehouseQuantity;
-            await _getData.SaveEntityAsync(_product);
-            
+            await _getData.SaveAndNotifyHavingIdEntityAsync<Products, int>(_product);
+
             window.DialogResult = true;
             window.Close();
         }
-
-        #endregion
     }
 }

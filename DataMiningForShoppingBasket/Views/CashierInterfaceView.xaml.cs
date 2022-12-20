@@ -1,7 +1,6 @@
-﻿using System.Windows.Controls;
-using System.Windows.Data;
-using DataMiningForShoppingBasket.Interfaces;
+﻿using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.ViewModels;
+using System.Windows.Controls;
 
 namespace DataMiningForShoppingBasket.Views
 {
@@ -20,8 +19,8 @@ namespace DataMiningForShoppingBasket.Views
 
         private void SearchTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            BindingExpression be = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
-            be.UpdateSource();
+            var bindingExpression = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
+            bindingExpression?.UpdateSource();
         }
     }
 }

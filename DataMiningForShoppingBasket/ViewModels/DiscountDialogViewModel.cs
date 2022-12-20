@@ -1,5 +1,5 @@
 ﻿using DataMiningForShoppingBasket.Commands;
-using DataMiningForShoppingBasket.CommonClasses;
+using DataMiningForShoppingBasket.Common;
 using DataMiningForShoppingBasket.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -57,23 +57,19 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         #endregion
 
-        #region Methods
-
         private async Task SaveExecuteAsync(Window window)
         {
             _discount.DiscountName = DiscountName;
-            _discount.DiscountDescription = DiscountDescription;
+            _discount.DiscountDescription = DiscountDescription ?? string.Empty;
             _discount.StartDate = StartDate;
             _discount.FinishDate = FinishDate;
             _discount.ProductId = ProductId;
             _discount.DiscountQuantity = DiscountQuantity;
             _discount.DiscountCost = DiscountCost;
-            await _getData.SaveEntityAsync(_discount);
+            await _getData.SaveAndNotifyHavingIdEntityAsync<Discounts, int>(_discount);
 
             window.DialogResult = true;
             window.Close();
         }
-
-        #endregion
     }
 }

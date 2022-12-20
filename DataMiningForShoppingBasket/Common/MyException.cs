@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataMiningForShoppingBasket.CommonClasses
+namespace DataMiningForShoppingBasket.Common
 {
     public class MyException : Exception
     {
