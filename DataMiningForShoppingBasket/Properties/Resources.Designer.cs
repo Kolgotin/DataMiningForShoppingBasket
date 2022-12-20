@@ -79,7 +79,7 @@ namespace DataMiningForShoppingBasket.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавить продукт.
+        ///   Looks up a localized string similar to Добавить товар.
         /// </summary>
         public static string AddProduct {
             get {
@@ -102,6 +102,15 @@ namespace DataMiningForShoppingBasket.Properties {
         public static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Акция.
+        /// </summary>
+        public static string Discount {
+            get {
+                return ResourceManager.GetString("Discount", resourceCulture);
             }
         }
         

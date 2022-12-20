@@ -202,6 +202,6 @@
         <Button Grid.Column="1"
                 Grid.Row="5"
                 Content="{x:Static properties:Resources.FinalizeSale}" 
-                Command="{Binding PrepareOfferCommand}"/>
+                Command="{Binding FinalizeSaleCommand}"/>
     </Grid>
 </UserControl>

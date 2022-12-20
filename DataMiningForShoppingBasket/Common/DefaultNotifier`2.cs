@@ -3,7 +3,7 @@ using System.Reactive.Subjects;
 using DataMiningForShoppingBasket.Interfaces;
 using DynamicData;
 
-namespace DataMiningForShoppingBasket.CommonClasses
+namespace DataMiningForShoppingBasket.Common
 {
     public class DefaultNotifier<TEntity, TId> : INotifier<TEntity, TId>
         where TEntity : class, IHavingId<TId>, new()
@@ -38,11 +38,19 @@ namespace DataMiningForShoppingBasket.CommonClasses
         /// <remarks>Т.к. подписчиком является <see cref="IObservableCache{TObject,TKey}"/>,
         /// она опирается на метод <see cref="ChangeAwareCache{TObject,TKey}.AddOrUpdate"/>,
         /// то делить эти истории мы не будем </remarks>
-        public virtual void NotifyAddOrUpdate(TEntity entity)
+        public virtual void NotifyAdd(TEntity entity)
         {
             _previewChangeSubject.OnNext(new ChangeSet<TEntity, TId>
             {
                 new Change<TEntity, TId>(ChangeReason.Add, entity.Id, entity)
+            });
+        }
+        
+        public virtual void NotifyUpdate(TEntity entity)
+        {
+            _previewChangeSubject.OnNext(new ChangeSet<TEntity, TId>
+            {
+                new Change<TEntity, TId>(ChangeReason.Update, entity.Id, entity, entity)
             });
         }
 

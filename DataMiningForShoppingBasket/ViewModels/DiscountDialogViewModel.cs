@@ -1,5 +1,5 @@
 ﻿using DataMiningForShoppingBasket.Commands;
-using DataMiningForShoppingBasket.CommonClasses;
+using DataMiningForShoppingBasket.Common;
 using DataMiningForShoppingBasket.Interfaces;
 using System;
 using System.Collections.Generic;

@@ -1,14 +1,11 @@
-﻿using DataMiningForShoppingBasket.Interfaces;
-using System;
+﻿using DataMiningForShoppingBasket.Commands;
+using DataMiningForShoppingBasket.Common;
+using DataMiningForShoppingBasket.Interfaces;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using DataMiningForShoppingBasket.Commands;
-using DataMiningForShoppingBasket.CommonClasses;
-using System.Linq;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {

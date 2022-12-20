@@ -1,16 +1,16 @@
 ﻿using DataMiningForShoppingBasket.Commands;
-using DataMiningForShoppingBasket.CommonClasses;
+using DataMiningForShoppingBasket.Common;
 using DataMiningForShoppingBasket.Handlers;
 using DataMiningForShoppingBasket.Interfaces;
 using DynamicData;
+using DynamicData.Binding;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using DynamicData.Binding;
-using System.Reactive.Disposables;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
@@ -24,7 +24,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         private string _searchString;
         private List<Products> _offerProductList;
-        private readonly ReadOnlyObservableCollection<Products> _productsList;
+        private readonly ReadOnlyObservableCollection<ProductViewModel> _productsList;
 
         #region ILabelHavingDataContext
         public string WindowLabel => "Кассир";
@@ -48,15 +48,16 @@ namespace DataMiningForShoppingBasket.ViewModels
         }
 
         //todo: добавить фильтрацию по наличию на складе
-        public ReadOnlyObservableCollection<Products> ProductsList => _productsList;
+        public ReadOnlyObservableCollection<ProductViewModel> ProductsList => _productsList;
 
         public decimal TotalCost => ConsumerCart.Sum(x => x.TotalCost);
 
         #region Commands
-        public MyAsyncCommand<object> PrepareOfferCommand { get; }
-
+        public MyCommand<ProductViewModel> AddProductIntoCartCommand { get; }
+        public MyAsyncCommand PrepareOfferCommand { get; }
+        public MyAsyncCommand FinalizeSaleCommand { get; }
+        
         public MyCommand ClearSearchCommand { get; }
-        public MyCommand<Products> AddProductIntoCartCommand { get; }
         public MyCommand DeleteProductFromCartCommand { get; }
         #endregion
 
@@ -75,17 +76,21 @@ namespace DataMiningForShoppingBasket.ViewModels
             ConsumerCart = new ObservableCollection<CartRowViewModel>();
             SearchString = string.Empty;
 
-            PrepareOfferCommand = new MyAsyncCommand<object>(PrepareOfferAsync,
+            PrepareOfferCommand = new MyAsyncCommand(ExecutePrepareOfferAsync,
                 _ => PrepareOfferCommand?.IsActive == false);
-            ClearSearchCommand = new MyCommand(ClearSearch);
-            AddProductIntoCartCommand = new MyCommand<Products>(AddProductIntoCartAsync);
-            DeleteProductFromCartCommand = new MyCommand(DeleteProductFromCart);
+            FinalizeSaleCommand = new MyAsyncCommand(ExecuteFinalizeSaleAsync);
+            ClearSearchCommand = new MyCommand(ExecuteClearSearch);
+            AddProductIntoCartCommand = new MyCommand<ProductViewModel>(ExecuteAddProductIntoCartAsync);
+            DeleteProductFromCartCommand = new MyCommand(ExecuteDeleteProductFromCart);
+            SourceCache<int, int> a = new SourceCache<int, int>(x => x);
+            SourceList<int> b = new SourceList<int>();
 
             _cleanup = new CompositeDisposable();
             _cleanup.Add(_productsINotifier.Changes
                 .Filter(
                     this.WhenValueChanged(x => x.SearchString)
                     .Select(SearchFilter))
+                .Transform(x=> new ProductViewModel(x))
                 .Bind(out _productsList)
                 .Subscribe());
         }
@@ -93,10 +98,10 @@ namespace DataMiningForShoppingBasket.ViewModels
         private async Task InitializeExecuteAsync()
         {
             var productList = await _getData.GetListAsync<Products>();
-            productList.ForEach(_productsINotifier.NotifyAddOrUpdate);
+            productList.ForEach(_productsINotifier.NotifyAdd);
         }
 
-        private async Task PrepareOfferAsync(object obj)
+        private async Task ExecutePrepareOfferAsync()
         {
             try
             {
@@ -109,13 +114,41 @@ namespace DataMiningForShoppingBasket.ViewModels
             }
         }
 
-        private void ClearSearch()
+        private async Task ExecuteFinalizeSaleAsync()
+        {
+            try
+            {
+                var receipt = new SaleReceipts()
+                {
+                    SaleDateTime = DateTime.Now,
+                    CashierId = 2,
+                    ClientId = null,
+                    SaleRows = ConsumerCart.Select(x =>
+                        new SaleRows()
+                        {
+                            ProductId = x.Product.Id,
+                            SaleQuantity = x.Quantity,
+                            TotalCost = x.TotalCost
+                        }).ToList()
+                };
+
+                await _getData.SaveSale(receipt);
+                ConsumerCart.Clear();
+            }
+            catch (Exception e)
+            {
+                MessageWriter.ShowMessage(e.Message);
+            }
+        }
+        
+        private void ExecuteClearSearch()
         {
             SearchString = string.Empty;
         }
 
-        private void AddProductIntoCartAsync(Products product)
+        private void ExecuteAddProductIntoCartAsync(ProductViewModel productVm)
         {
+            var product = productVm.Product;
             try
             {
                 if (!ProductIsValid(product))
@@ -140,7 +173,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             }
         }
 
-        private void DeleteProductFromCart()
+        private void ExecuteDeleteProductFromCart()
         {
             if (SelectedCartRowItem is null)
             {

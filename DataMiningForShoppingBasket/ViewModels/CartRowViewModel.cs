@@ -1,4 +1,6 @@
-﻿namespace DataMiningForShoppingBasket.ViewModels
+﻿using DataMiningForShoppingBasket.Common;
+
+namespace DataMiningForShoppingBasket.ViewModels
 {
     public class CartRowViewModel : NotifyPropertyChangedImplementation
     {

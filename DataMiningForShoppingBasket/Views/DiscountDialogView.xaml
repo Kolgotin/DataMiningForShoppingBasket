@@ -7,19 +7,48 @@
         xmlns:properties="clr-namespace:DataMiningForShoppingBasket.Properties"
         xmlns:viewModels="clr-namespace:DataMiningForShoppingBasket.ViewModels"
         mc:Ignorable="d"
-        Title="DiscountDialogView" Height="450" Width="800"
+        Title="{x:Static properties:Resources.Discount}" Height="450" Width="800"
         x:Name="DiscountDialogWindow"
         d:DataContext="{d:DesignInstance viewModels:DiscountDialogViewModel}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+            <Style TargetType="Button">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="Padding" Value="15,3"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="20"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+            <Style TargetType="DatePicker">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -32,6 +61,7 @@
 
         <TextBox Grid.Row="0"
                  Grid.Column="1"
+                 MaxLength="32"
                  Text="{Binding DiscountName}"/>
 
         <Label Grid.Row="1"
@@ -40,6 +70,7 @@
 
         <TextBox Grid.Row="1"
                  Grid.Column="1"
+                 TextWrapping="Wrap"
                  Text="{Binding DiscountDescription}"/>
 
         <Label Grid.Row="2"

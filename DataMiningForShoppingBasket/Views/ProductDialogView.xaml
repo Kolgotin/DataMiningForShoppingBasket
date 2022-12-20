@@ -7,17 +7,52 @@
         xmlns:viewModels="clr-namespace:DataMiningForShoppingBasket.ViewModels"
         xmlns:properties="clr-namespace:DataMiningForShoppingBasket.Properties"
         mc:Ignorable="d"
-        Title="ProductDialogView" Height="450" Width="800"
+        Title="{x:Static properties:Resources.Product}" Height="450" Width="800"
         x:Name="ProductDialogWindow"
         d:DataContext="{d:DesignInstance viewModels:ProductDialogViewModel}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+            <Style TargetType="Button">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="Padding" Value="15,3"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="20"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+            <Style TargetType="CheckBox">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="LayoutTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -30,6 +65,7 @@
 
         <TextBox Grid.Row="0"
                  Grid.Column="1"
+                 MaxLength="32"
                  Text="{Binding ProductName}"/>
 
         <Label Grid.Row="1"

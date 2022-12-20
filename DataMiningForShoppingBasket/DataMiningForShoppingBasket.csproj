@@ -38,6 +38,9 @@
     <StartupObject>DataMiningForShoppingBasket.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="DynamicData, Version=7.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicData.7.7.14\lib\net462\DynamicData.dll</HintPath>
     </Reference>
@@ -84,9 +87,11 @@
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Commands\MyCommand.cs" />
-    <Compile Include="CommonClasses\GetData.cs" />
-    <Compile Include="CommonClasses\MessageWriter.cs" />
-    <Compile Include="CommonClasses\MyException.cs" />
+    <Compile Include="Common\CurrentSession.cs" />
+    <Compile Include="Common\GetData.cs" />
+    <Compile Include="Common\MessageWriter.cs" />
+    <Compile Include="Common\MyException.cs" />
+    <Compile Include="Common\UserType.cs" />
     <Compile Include="DataMiningDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -121,7 +126,7 @@
     <Compile Include="Interfaces\IPrepareOfferHandler.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="ViewModels\CartRowViewModel.cs" />
-    <Compile Include="CommonClasses\DefaultNotifier`2.cs" />
+    <Compile Include="Common\DefaultNotifier`2.cs" />
     <Compile Include="Products.cs">
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
@@ -142,10 +147,12 @@
     </Compile>
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\DiscountDialogViewModel.cs" />
-    <Compile Include="ViewModels\NotifyPropertyChangedImplementation.cs" />
+    <Compile Include="Common\NotifyPropertyChangedImplementation.cs" />
+    <Compile Include="ViewModels\DiscountViewModel.cs" />
     <Compile Include="ViewModels\ManagerInterfaceViewModel.cs" />
     <Compile Include="ViewModels\CashierInterfaceViewModel.cs" />
     <Compile Include="ViewModels\ProductDialogViewModel.cs" />
+    <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="Views\AuthorizationView.xaml.cs">
       <DependentUpon>AuthorizationView.xaml</DependentUpon>
     </Compile>

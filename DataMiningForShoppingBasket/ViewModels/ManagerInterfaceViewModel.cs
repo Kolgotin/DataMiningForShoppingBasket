@@ -1,5 +1,5 @@
 ﻿using DataMiningForShoppingBasket.Commands;
-using DataMiningForShoppingBasket.CommonClasses;
+using DataMiningForShoppingBasket.Common;
 using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.Views;
 using DynamicData;
@@ -20,8 +20,8 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         private readonly CompositeDisposable _cleanup;
 
-        private readonly ReadOnlyObservableCollection<Products> _productList;
-        private readonly ReadOnlyObservableCollection<Discounts> _discountList;
+        private readonly ReadOnlyObservableCollection<ProductViewModel> _productList;
+        private readonly ReadOnlyObservableCollection<DiscountViewModel> _discountList;
 
         #region ILabelHavingDataContext
         public string WindowLabel => "Менеджер";
@@ -30,12 +30,12 @@ namespace DataMiningForShoppingBasket.ViewModels
         #region Properties
 
         #region Commands
-        public MyAsyncCommand<Products> AddOrEditProductCommand { get; }
-        public MyAsyncCommand<Discounts> AddOrEditDiscountCommand { get; }
+        public MyAsyncCommand<ProductViewModel> AddOrEditProductCommand { get; }
+        public MyAsyncCommand<DiscountViewModel> AddOrEditDiscountCommand { get; }
         #endregion
 
-        public ReadOnlyObservableCollection<Products> ProductList => _productList;
-        public ReadOnlyObservableCollection<Discounts> DiscountList => _discountList;
+        public ReadOnlyObservableCollection<ProductViewModel> ProductList => _productList;
+        public ReadOnlyObservableCollection<DiscountViewModel> DiscountList => _discountList;
         
         #endregion
 
@@ -49,18 +49,20 @@ namespace DataMiningForShoppingBasket.ViewModels
             var init = new MyAsyncCommand(InitializeExecuteAsync);
             init.Execute();
 
-            AddOrEditProductCommand = new MyAsyncCommand<Products>(
+            AddOrEditProductCommand = new MyAsyncCommand<ProductViewModel>(
                 ExecuteAddProductAsync,
                 _ => AddOrEditProductCommand?.IsActive == false);
-            AddOrEditDiscountCommand = new MyAsyncCommand<Discounts>(
+            AddOrEditDiscountCommand = new MyAsyncCommand<DiscountViewModel>(
                 ExecuteAddDiscountAsync,
                 obj => AddOrEditDiscountCommand?.IsActive == false);
 
             _cleanup = new CompositeDisposable();
             _cleanup.Add(_productsINotifier.Changes
+                .Transform(x=> new ProductViewModel(x))
                 .Bind(out _productList)
                 .Subscribe());
             _cleanup.Add(_discountsINotifier.Changes
+                .Transform(x=> new DiscountViewModel(x))
                 .Bind(out _discountList)
                 .Subscribe());
         }
@@ -70,12 +72,13 @@ namespace DataMiningForShoppingBasket.ViewModels
             var productList = await _getData.GetListAsync<Products>();
             var discountsList = await _getData.GetListAsync<Discounts>();
 
-            productList.ForEach(_productsINotifier.NotifyAddOrUpdate);
-            discountsList.ForEach(_discountsINotifier.NotifyAddOrUpdate);
+            productList.ForEach(_productsINotifier.NotifyAdd);
+            discountsList.ForEach(_discountsINotifier.NotifyAdd);
         }
         
-        private Task ExecuteAddProductAsync(Products product)
+        private Task ExecuteAddProductAsync(ProductViewModel productVm)
         {
+            var product = productVm?.Product;
             try
             {
                 var view = new ProductDialogView(product);
@@ -94,8 +97,9 @@ namespace DataMiningForShoppingBasket.ViewModels
             return Task.CompletedTask;
         }
 
-        private Task ExecuteAddDiscountAsync(Discounts discount)
+        private Task ExecuteAddDiscountAsync(DiscountViewModel discountVm)
         {
+            var discount = discountVm?.Discount;
             try
             {
                 var view = new DiscountDialogView(discount);

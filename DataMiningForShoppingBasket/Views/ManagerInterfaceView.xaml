@@ -103,7 +103,7 @@
                                         Binding="{Binding ProductId}"/>
                     <DataGridTextColumn Width="5*"
                                         Header="{x:Static properties:Resources.ProductName}"
-                                        Binding="{Binding Products.ProductName}"/>
+                                        Binding="{Binding Discount.Products.ProductName}"/>
                     <DataGridTextColumn Width="2*"
                                         Header="{x:Static properties:Resources.Quantity}"
                                         Binding="{Binding DiscountQuantity}"/>
@@ -159,7 +159,7 @@
                                         Binding="{Binding ProductName}"/>
                     <DataGridTextColumn Width="4*"
                                         Header="{x:Static properties:Resources.Type}"
-                                        Binding="{Binding ProductTypes.ProductTypeName}"/>
+                                        Binding="{Binding Product.ProductTypes.ProductTypeName}"/>
                     <DataGridTextColumn Width="2*"
                                         Header="{x:Static properties:Resources.Cost}"
                                         Binding="{Binding ProductCost}"/>

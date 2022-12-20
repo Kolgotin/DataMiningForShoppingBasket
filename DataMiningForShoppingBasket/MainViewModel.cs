@@ -1,7 +1,6 @@
 ﻿using DataMiningForShoppingBasket.Commands;
-using DataMiningForShoppingBasket.CommonClasses;
+using DataMiningForShoppingBasket.Common;
 using DataMiningForShoppingBasket.Interfaces;
-using DataMiningForShoppingBasket.ViewModels;
 using DataMiningForShoppingBasket.Views;
 using System;
 using System.Threading.Tasks;
@@ -35,6 +34,7 @@ namespace DataMiningForShoppingBasket
             {
                 var newWindow = new AuthorizationView();
                 window.Close();
+                CurrentSession.Clear();
                 newWindow.Show();
             }
             catch (Exception e)

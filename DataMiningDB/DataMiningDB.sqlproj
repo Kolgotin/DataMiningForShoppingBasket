@@ -59,9 +59,11 @@
     <Folder Include="Properties" />
     <Folder Include="Scripts" />
     <Folder Include="Tables" />
+    <Folder Include="Triggers" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\InitialScript.sql" />
+    <None Include="Triggers\SaleRows_INSERT.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\UserTypes.sql" />
