@@ -155,7 +155,7 @@
                                     Binding="{Binding ProductName}"/>
                 <DataGridTextColumn Width="4*"
                                     Header="{x:Static properties:Resources.Type}"
-                                    Binding="{Binding ProductTypes.ProductTypeName}"/>
+                                    Binding="{Binding Product.ProductTypes.ProductTypeName}"/>
                 <DataGridTextColumn Width="2*"
                                     Header="{x:Static properties:Resources.Cost}"
                                     Binding="{Binding ProductCost}"/>
@@ -188,7 +188,7 @@
                                     Binding="{Binding ProductName}"/>
                 <DataGridTextColumn Width="4*"
                                     Header="{x:Static properties:Resources.Type}"
-                                    Binding="{Binding ProductTypes.ProductTypeName}"/>
+                                    Binding="{Binding Product.ProductTypes.ProductTypeName}"/>
                 <DataGridTextColumn Width="2*"
                                     Header="{x:Static properties:Resources.Cost}"
                                     Binding="{Binding ProductCost}"/>
