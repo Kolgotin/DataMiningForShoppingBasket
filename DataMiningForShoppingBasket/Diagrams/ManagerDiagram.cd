@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DataMiningForShoppingBasket.Views.ManagerInterfaceView">
+    <Position X="5" Y="1.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\ManagerInterfaceView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CustomDataContext" />
+    </ShowAsAssociation>
+    <Lollipop Orientation="Left" Position="0.329" />
+  </Class>
+  <Class Name="DataMiningForShoppingBasket.ViewModels.ManagerInterfaceViewModel">
+    <Position X="7.25" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAgAAKAAAAAAACAAAAgABAEAAAAIIhAAAgAAAAg=</HashCode>
+      <FileName>ViewModels\ManagerInterfaceViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_getData" />
+      <Property Name="AddOrEditProductCommand" />
+      <Property Name="AddOrEditDiscountCommand" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ProductList" />
+      <Property Name="DiscountList" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="1.7" />
+  </Class>
+  <Class Name="DataMiningForShoppingBasket.Commands.MyAsyncCommand&lt;TParam&gt;">
+    <Position X="2.75" Y="3" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAQAAAAEAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\MyAsyncCommand`1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DataMiningForShoppingBasket.ViewModels.DiscountViewModel">
+    <Position X="11" Y="1.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EAACAAAAAAACAAAAAAAAAACAAAAAACAAAgCAAEAAAAA=</HashCode>
+      <FileName>ViewModels\DiscountViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Discount" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DataMiningForShoppingBasket.ViewModels.ProductViewModel">
+    <Position X="11" Y="5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAQACAAAAAAAAAAAQAAAAAAgAAAAAAAAIAAA=</HashCode>
+      <FileName>ViewModels\ProductViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Product" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DataMiningForShoppingBasket.Products">
+    <Position X="14.5" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAQAQACAAAAAAAAAAAQAAAIAAgAAgAAAAAIAAA=</HashCode>
+      <FileName>Products.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Discounts" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="1.427" Collapsed="true" />
+  </Class>
+  <Class Name="DataMiningForShoppingBasket.Discounts">
+    <Position X="14.5" Y="1.25" Width="1.5" />
+    <AssociationLine Name="Products" Type="DataMiningForShoppingBasket.Products">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.859" Y="0.279" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EAACAAAAAAACAAAAAAAAAACAAAAAACAAAACAAEAAAAQ=</HashCode>
+      <FileName>Discounts.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Products" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataMiningForShoppingBasket.Common.GetData">
+    <Position X="2.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAABAAAAAAAAAAAAAAAAAAABRAACAAAAEAAAAQAAAAA=</HashCode>
+      <FileName>Common\GetData.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Right" Position="0.623" />
+  </Class>
+  <Interface Name="DataMiningForShoppingBasket.Interfaces.ILabelHavingDataContext">
+    <Position X="8.75" Y="1.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ILabelHavingDataContext.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DataMiningForShoppingBasket.Interfaces.IUserControl">
+    <Position X="2" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IUserControl.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DataMiningForShoppingBasket.Interfaces.IGetData">
+    <Position X="4.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAABQAACAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Interfaces\IGetData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

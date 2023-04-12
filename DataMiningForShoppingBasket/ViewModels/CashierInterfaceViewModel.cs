@@ -23,7 +23,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         private readonly CompositeDisposable _cleanup;
 
         private string _searchString;
-        private List<Products> _offerProductList;
+        private List<ProductViewModel> _offerProductList;
         private readonly ReadOnlyObservableCollection<ProductViewModel> _productsList;
 
         #region ILabelHavingDataContext
@@ -35,7 +35,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         public CartRowViewModel SelectedCartRowItem { get; set; }
 
-        public List<Products> OfferProductList
+        public List<ProductViewModel> OfferProductList
         {
             get => _offerProductList;
             set => SetProperty(ref _offerProductList, value);
@@ -106,7 +106,8 @@ namespace DataMiningForShoppingBasket.ViewModels
             try
             {
                 var productsInCart = ConsumerCart.Select(x => x.Product);
-                OfferProductList = await _prepareOfferHandler.PrepareOffer(productsInCart);
+                var productsList = await _prepareOfferHandler.PrepareOffer(productsInCart);
+                OfferProductList = productsList.Select(x => new ProductViewModel(x)).ToList();
             }
             catch (Exception e)
             {
