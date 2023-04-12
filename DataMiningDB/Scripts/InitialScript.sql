@@ -126,9 +126,9 @@ AS
 BEGIN
 
 SELECT Products.Id,
-    ResultWarehouseQuantity = Products.WarehouseQuantity - INSERTED.SaleQuantity,
+    ResultWarehouseQuantity = Products.WarehouseQuantity - INSERTED.Quantity,
     Products.FractionalAllowed,
-    INSERTED.SaleQuantity
+    INSERTED.Quantity
 INTO #Prepare
 FROM Products
 INNER JOIN
@@ -141,7 +141,7 @@ IF (
 SELECT COUNT(*)
 FROM #Prepare
 WHERE #Prepare.ResultWarehouseQuantity < 0
-OR (#Prepare.SaleQuantity != ROUND(#Prepare.SaleQuantity , 0) AND #Prepare.FractionalAllowed = 0)
+OR (#Prepare.Quantity != ROUND(#Prepare.Quantity , 0) AND #Prepare.FractionalAllowed = 0)
 ) > 0
 THROW 51000, 'WarehouseQuantity не может быть отрицательным', 1;
 
