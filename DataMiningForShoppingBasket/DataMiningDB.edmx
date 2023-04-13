@@ -26,7 +26,7 @@
           <Property Name="StartDate" Type="datetime" Nullable="false" />
           <Property Name="FinishDate" Type="datetime" Nullable="false" />
           <Property Name="ProductId" Type="int" Nullable="false" />
-          <Property Name="DiscountQuantity" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="DiscountCost" Type="decimal" Precision="9" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="Products">
@@ -36,7 +36,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProductName" Type="nvarchar" MaxLength="32" Nullable="false" />
           <Property Name="ProductTypeId" Type="int" />
-          <Property Name="ProductCost" Type="decimal" Precision="9" Scale="2" />
+          <Property Name="Cost" Type="decimal" Precision="9" Scale="2" />
           <Property Name="FractionalAllowed" Type="bit" Nullable="false" />
           <Property Name="WarehouseQuantity" Type="decimal" Precision="18" Scale="4" Nullable="false" />
         </EntityType>
@@ -64,7 +64,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SaleId" Type="int" Nullable="false" />
           <Property Name="ProductId" Type="int" Nullable="false" />
-          <Property Name="SaleQuantity" Type="decimal" Precision="18" Scale="4" Nullable="false" />
+          <Property Name="Quantity" Type="decimal" Precision="18" Scale="4" Nullable="false" />
           <Property Name="TotalCost" Type="decimal" Precision="9" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
@@ -269,7 +269,7 @@
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="FinishDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <Property Name="DiscountQuantity" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="DiscountCost" Type="Decimal" Nullable="false" Precision="9" Scale="2" />
           <NavigationProperty Name="Products" Relationship="DataMiningModel.FK_Products_Discounts" FromRole="Discounts" ToRole="Products" />
         </EntityType>
@@ -280,7 +280,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProductName" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
           <Property Name="ProductTypeId" Type="Int32" />
-          <Property Name="ProductCost" Type="Decimal" Precision="9" Scale="2" />
+          <Property Name="Cost" Type="Decimal" Precision="9" Scale="2" />
           <Property Name="FractionalAllowed" Type="Boolean" Nullable="false" />
           <Property Name="WarehouseQuantity" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
           <NavigationProperty Name="Discounts" Relationship="DataMiningModel.FK_Products_Discounts" FromRole="Products" ToRole="Discounts" />
@@ -315,7 +315,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SaleId" Type="Int32" Nullable="false" />
           <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <Property Name="SaleQuantity" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
+          <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="18" Scale="4" />
           <Property Name="TotalCost" Type="Decimal" Nullable="false" Precision="9" Scale="2" />
           <NavigationProperty Name="Products" Relationship="DataMiningModel.FK_SaleRows_Products" FromRole="SaleRows" ToRole="Products" />
           <NavigationProperty Name="SaleReceipts" Relationship="DataMiningModel.FK_SaleRows_SaleReceipts" FromRole="SaleRows" ToRole="SaleReceipts" />
@@ -445,7 +445,7 @@
             <EntityTypeMapping TypeName="DataMiningModel.Discounts">
               <MappingFragment StoreEntitySet="Discounts">
                 <ScalarProperty Name="DiscountCost" ColumnName="DiscountCost" />
-                <ScalarProperty Name="DiscountQuantity" ColumnName="DiscountQuantity" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="FinishDate" ColumnName="FinishDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
@@ -460,7 +460,7 @@
               <MappingFragment StoreEntitySet="Products">
                 <ScalarProperty Name="WarehouseQuantity" ColumnName="WarehouseQuantity" />
                 <ScalarProperty Name="FractionalAllowed" ColumnName="FractionalAllowed" />
-                <ScalarProperty Name="ProductCost" ColumnName="ProductCost" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
                 <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
                 <ScalarProperty Name="ProductName" ColumnName="ProductName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -490,7 +490,7 @@
             <EntityTypeMapping TypeName="DataMiningModel.SaleRows">
               <MappingFragment StoreEntitySet="SaleRows">
                 <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
-                <ScalarProperty Name="SaleQuantity" ColumnName="SaleQuantity" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="SaleId" ColumnName="SaleId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

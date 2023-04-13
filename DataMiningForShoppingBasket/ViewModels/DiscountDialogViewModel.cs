@@ -37,7 +37,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             StartDate = _discount.StartDate;
             FinishDate= _discount.FinishDate;
             ProductId= _discount.ProductId;
-            DiscountQuantity = _discount.DiscountQuantity;
+            Quantity = _discount.Quantity;
             DiscountCost = _discount.DiscountCost;
         }
 
@@ -50,7 +50,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         public DateTime StartDate { get; set; }
         public DateTime FinishDate { get; set; }
         public int ProductId { get; set; }
-        public int DiscountQuantity { get; set; }
+        public int Quantity { get; set; }
         public decimal DiscountCost { get; set; }
 
         public IReadOnlyCollection<Products> ProductList { get; }
@@ -64,7 +64,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             _discount.StartDate = StartDate;
             _discount.FinishDate = FinishDate;
             _discount.ProductId = ProductId;
-            _discount.DiscountQuantity = DiscountQuantity;
+            _discount.Quantity = Quantity;
             _discount.DiscountCost = DiscountCost;
             await _getData.SaveAndNotifyHavingIdEntityAsync<Discounts, int>(_discount);
 

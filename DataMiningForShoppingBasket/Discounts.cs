@@ -20,7 +20,7 @@ namespace DataMiningForShoppingBasket
         public System.DateTime StartDate { get; set; }
         public System.DateTime FinishDate { get; set; }
         public int ProductId { get; set; }
-        public int DiscountQuantity { get; set; }
+        public int Quantity { get; set; }
         public decimal DiscountCost { get; set; }
     
         public virtual Products Products { get; set; }

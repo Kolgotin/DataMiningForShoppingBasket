@@ -31,14 +31,14 @@ namespace DataMiningForShoppingBasket.ViewModels
             }
         }
 
-        public decimal? ProductCost
+        public decimal? Cost
         {
-            get => Product.ProductCost;
+            get => Product.Cost;
             set
             {
-                if (value == Product.ProductCost) return;
-                Product.ProductCost = value;
-                RaisePropertyChanged(nameof(ProductCost));
+                if (value == Product.Cost) return;
+                Product.Cost = value;
+                RaisePropertyChanged(nameof(Cost));
             }
         }
 
