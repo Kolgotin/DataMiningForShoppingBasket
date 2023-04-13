@@ -23,6 +23,7 @@
                     <Setter Property="SelectionMode" Value="Single"/>
                     <Setter Property="CanUserSortColumns" Value="False"/>
                     <Setter Property="CanUserAddRows" Value="False"/>
+                    <Setter Property="FontSize" Value="15"/>
                 </Style.Setters>
             </Style>
             <Style TargetType="Button">
@@ -106,7 +107,7 @@
                                         Binding="{Binding Discount.Products.ProductName}"/>
                     <DataGridTextColumn Width="2*"
                                         Header="{x:Static properties:Resources.Quantity}"
-                                        Binding="{Binding DiscountQuantity}"/>
+                                        Binding="{Binding Quantity}"/>
                     <DataGridTextColumn Width="2*"
                                         Header="{x:Static properties:Resources.DiscountCost}"
                                         Binding="{Binding DiscountCost}"/>
@@ -162,7 +163,7 @@
                                         Binding="{Binding Product.ProductTypes.ProductTypeName}"/>
                     <DataGridTextColumn Width="2*"
                                         Header="{x:Static properties:Resources.Cost}"
-                                        Binding="{Binding ProductCost}"/>
+                                        Binding="{Binding Cost}"/>
                     <DataGridTextColumn Width="2*"
                                         Header="{x:Static properties:Resources.WarehouseQuantity}"
                                         Binding="{Binding WarehouseQuantity}"/>

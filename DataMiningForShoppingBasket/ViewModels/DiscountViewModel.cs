@@ -65,14 +65,14 @@ namespace DataMiningForShoppingBasket.ViewModels
             }
         }
 
-        public int DiscountQuantity
+        public int Quantity
         {
-            get => Discount.DiscountQuantity;
+            get => Discount.Quantity;
             set
             {
-                if (value == Discount.DiscountQuantity) return;
-                Discount.DiscountQuantity = value;
-                RaisePropertyChanged(nameof(DiscountQuantity));
+                if (value == Discount.Quantity) return;
+                Discount.Quantity = value;
+                RaisePropertyChanged(nameof(Quantity));
             }
         }
 

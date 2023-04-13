@@ -16,7 +16,7 @@ namespace DataMiningForShoppingBasket
 
         public MainViewModel(IUserControl userControl)
         {
-            ExitCommand = new MyAsyncCommand<Window>(ExitHandlerAsync,
+            ExitCommand = new MyAsyncCommand<Window>(ExecuteExitAsync,
                 obj => ExitCommand?.IsActive == false);
             ChangeWindow(userControl);
         }
@@ -28,7 +28,7 @@ namespace DataMiningForShoppingBasket
             RaisePropertyChanged(nameof(CurrentUserControl));
         }
 
-        private static Task ExitHandlerAsync(Window window)
+        private static Task ExecuteExitAsync(Window window)
         {
             try
             {

@@ -27,10 +27,13 @@ namespace DataMiningForShoppingBasket.ViewModels
         private readonly ReadOnlyObservableCollection<ProductViewModel> _productsList;
 
         #region ILabelHavingDataContext
+
         public string WindowLabel => "Кассир";
+
         #endregion
 
         #region Properties
+
         public ObservableCollection<CartRowViewModel> ConsumerCart { get; set; }
 
         public CartRowViewModel SelectedCartRowItem { get; set; }
@@ -53,12 +56,14 @@ namespace DataMiningForShoppingBasket.ViewModels
         public decimal TotalCost => ConsumerCart.Sum(x => x.TotalCost);
 
         #region Commands
+
         public MyCommand<ProductViewModel> AddProductIntoCartCommand { get; }
         public MyAsyncCommand PrepareOfferCommand { get; }
         public MyAsyncCommand FinalizeSaleCommand { get; }
-        
+
         public MyCommand ClearSearchCommand { get; }
         public MyCommand DeleteProductFromCartCommand { get; }
+
         #endregion
 
         #endregion Properties
@@ -82,17 +87,17 @@ namespace DataMiningForShoppingBasket.ViewModels
             ClearSearchCommand = new MyCommand(ExecuteClearSearch);
             AddProductIntoCartCommand = new MyCommand<ProductViewModel>(ExecuteAddProductIntoCartAsync);
             DeleteProductFromCartCommand = new MyCommand(ExecuteDeleteProductFromCart);
-            SourceCache<int, int> a = new SourceCache<int, int>(x => x);
-            SourceList<int> b = new SourceList<int>();
 
-            _cleanup = new CompositeDisposable();
-            _cleanup.Add(_productsINotifier.Changes
+            var productsChangeDisposable = _productsINotifier.Changes
                 .Filter(
                     this.WhenValueChanged(x => x.SearchString)
-                    .Select(SearchFilter))
-                .Transform(x=> new ProductViewModel(x))
+                        .Select(SearchFilter))
+                .Transform(x => new ProductViewModel(x))
                 .Bind(out _productsList)
-                .Subscribe());
+                .Subscribe();
+
+            _cleanup = new CompositeDisposable();
+            _cleanup.Add(productsChangeDisposable);
         }
 
         private async Task InitializeExecuteAsync()
@@ -119,29 +124,31 @@ namespace DataMiningForShoppingBasket.ViewModels
         {
             try
             {
-                var receipt = new SaleReceipts()
+                var receipt = new SaleReceipts
                 {
                     SaleDateTime = DateTime.Now,
-                    CashierId = 2,
+                    CashierId = CurrentSession.CurrentUser.Id,
                     ClientId = null,
                     SaleRows = ConsumerCart.Select(x =>
                         new SaleRows()
                         {
                             ProductId = x.Product.Id,
-                            SaleQuantity = x.Quantity,
+                            Quantity = x.Quantity,
                             TotalCost = x.TotalCost
                         }).ToList()
                 };
 
                 await _getData.SaveSale(receipt);
                 ConsumerCart.Clear();
+                OfferProductList = null;
+                RaisePropertyChanged(nameof(TotalCost));
             }
             catch (Exception e)
             {
                 MessageWriter.ShowMessage(e.Message);
             }
         }
-        
+
         private void ExecuteClearSearch()
         {
             SearchString = string.Empty;
@@ -149,6 +156,9 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         private void ExecuteAddProductIntoCartAsync(ProductViewModel productVm)
         {
+            if (productVm is null)
+                return;
+
             var product = productVm.Product;
             try
             {
@@ -185,7 +195,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         }
 
         private static bool ProductIsValid(Products product)
-            => product.ProductCost.HasValue && product.WarehouseQuantity > 0;
+            => product.Cost.HasValue && product.WarehouseQuantity > 0;
 
         private static Func<Products, bool> SearchFilter(string searchStr)
             => x => x.ProductName.ToLower().Contains(searchStr.ToLower());

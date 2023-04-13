@@ -31,7 +31,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             _product = product;
             ProductName = product.ProductName;
             ProductTypeId = product.ProductTypeId;
-            ProductCost = product.ProductCost;
+            Cost = product.Cost;
             FractionalAllowed = product.FractionalAllowed;
             WarehouseQuantity = product.WarehouseQuantity;
         }
@@ -42,7 +42,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         public string ProductName { get; set; }
         public int? ProductTypeId { get; set; }
-        public decimal? ProductCost { get; set; }
+        public decimal? Cost { get; set; }
         public bool FractionalAllowed { get; set; }
         public decimal WarehouseQuantity { get; set; }
 
@@ -54,7 +54,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         {
             _product.ProductName = ProductName;
             _product.ProductTypeId = ProductTypeId;
-            _product.ProductCost = ProductCost;
+            _product.Cost = Cost;
             _product.FractionalAllowed = FractionalAllowed;
             _product.WarehouseQuantity = WarehouseQuantity;
             await _getData.SaveAndNotifyHavingIdEntityAsync<Products, int>(_product);
