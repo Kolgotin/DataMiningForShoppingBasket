@@ -157,6 +157,7 @@
     <Compile Include="Interfaces\IGetData.cs" />
     <Compile Include="Interfaces\IPrepareOfferHandler.cs" />
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="ViewModels\AdditionalOfferViewModel.cs" />
     <Compile Include="ViewModels\CartRowViewModel.cs" />
     <Compile Include="Common\DefaultNotifier`2.cs" />
     <Compile Include="Products.cs">
