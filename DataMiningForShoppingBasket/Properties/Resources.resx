@@ -207,4 +207,7 @@
   <data name="Discount" xml:space="preserve">
     <value>Акция</value>
   </data>
+  <data name="Confidence" xml:space="preserve">
+    <value>Уверенность</value>
+  </data>
 </root>

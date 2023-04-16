@@ -27,13 +27,21 @@ namespace DataMiningForShoppingBasket.Handlers
 
         public static PrepareOfferSimpleHandler GetInstance() => Lazy.Value;
 
-        public async Task<List<Products>> PrepareOffer(IEnumerable<Products> cart)
+        public async Task<Dictionary<Products, decimal>> PrepareOffer(IEnumerable<Products> cart)
         {
-            return (await _getData.GetListAsync<Products>().ConfigureAwait(false))
+            var discountsList = await _getData.GetListAsync<Discounts>().ConfigureAwait(false);
+            var actualDiscountsList = discountsList.Where(x => x.StartDate <= DateTime.Now && DateTime.Now <= x.FinishDate)
+                .ToList();
+            var productsList = await _getData.GetListAsync<Products>().ConfigureAwait(false);
+            var dict = productsList
                 .Where(x => x.WarehouseQuantity > 0)
                 .Except(cart, _productsComparer)
-                .OrderBy(x=> _rnd.Next())
-                .Take(MaxOfferedProducts).ToList();
+                .Join(actualDiscountsList,
+                    x => x.Id,
+                    y => y.ProductId,
+                    (x, y) => x)
+                .Take(MaxOfferedProducts).ToDictionary(x => x, x => 1m *_rnd.Next(100, 200) / _rnd.Next(3, 100));
+            return dict;
         }
 
         private class EqualityProductsComparer : IEqualityComparer<Products>

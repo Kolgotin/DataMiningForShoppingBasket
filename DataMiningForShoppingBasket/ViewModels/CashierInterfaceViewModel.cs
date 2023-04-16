@@ -23,8 +23,8 @@ namespace DataMiningForShoppingBasket.ViewModels
         private readonly CompositeDisposable _cleanup;
 
         private string _searchString;
-        private List<ProductViewModel> _offerProductList;
-        private readonly ReadOnlyObservableCollection<ProductViewModel> _productsList;
+        private List<AdditionalOfferViewModel> _offerProductList;
+        private readonly ReadOnlyObservableCollection<Products> _productsList;
 
         #region ILabelHavingDataContext
 
@@ -38,7 +38,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         public CartRowViewModel SelectedCartRowItem { get; set; }
 
-        public List<ProductViewModel> OfferProductList
+        public List<AdditionalOfferViewModel> OfferProductList
         {
             get => _offerProductList;
             set => SetProperty(ref _offerProductList, value);
@@ -51,13 +51,13 @@ namespace DataMiningForShoppingBasket.ViewModels
         }
 
         //todo: добавить фильтрацию по наличию на складе
-        public ReadOnlyObservableCollection<ProductViewModel> ProductsList => _productsList;
+        public ReadOnlyObservableCollection<Products> ProductsList => _productsList;
 
         public decimal TotalCost => ConsumerCart.Sum(x => x.TotalCost);
 
         #region Commands
 
-        public MyCommand<ProductViewModel> AddProductIntoCartCommand { get; }
+        public MyCommand<Products> AddProductIntoCartCommand { get; }
         public MyAsyncCommand PrepareOfferCommand { get; }
         public MyAsyncCommand FinalizeSaleCommand { get; }
 
@@ -85,14 +85,13 @@ namespace DataMiningForShoppingBasket.ViewModels
                 _ => PrepareOfferCommand?.IsActive == false);
             FinalizeSaleCommand = new MyAsyncCommand(ExecuteFinalizeSaleAsync);
             ClearSearchCommand = new MyCommand(ExecuteClearSearch);
-            AddProductIntoCartCommand = new MyCommand<ProductViewModel>(ExecuteAddProductIntoCartAsync);
+            AddProductIntoCartCommand = new MyCommand<Products>(ExecuteAddProductIntoCartAsync);
             DeleteProductFromCartCommand = new MyCommand(ExecuteDeleteProductFromCart);
 
             var productsChangeDisposable = _productsINotifier.Changes
                 .Filter(
                     this.WhenValueChanged(x => x.SearchString)
                         .Select(SearchFilter))
-                .Transform(x => new ProductViewModel(x))
                 .Bind(out _productsList)
                 .Subscribe();
 
@@ -112,7 +111,10 @@ namespace DataMiningForShoppingBasket.ViewModels
             {
                 var productsInCart = ConsumerCart.Select(x => x.Product);
                 var productsList = await _prepareOfferHandler.PrepareOffer(productsInCart);
-                OfferProductList = productsList.Select(x => new ProductViewModel(x)).ToList();
+                OfferProductList = productsList
+                    .Select(x => new AdditionalOfferViewModel(x.Key, x.Value))
+                    .OrderByDescending(x => x.Confidence)
+                    .ToList();
             }
             catch (Exception e)
             {
@@ -154,12 +156,11 @@ namespace DataMiningForShoppingBasket.ViewModels
             SearchString = string.Empty;
         }
 
-        private void ExecuteAddProductIntoCartAsync(ProductViewModel productVm)
+        private void ExecuteAddProductIntoCartAsync(Products product)
         {
-            if (productVm is null)
+            if (product is null)
                 return;
 
-            var product = productVm.Product;
             try
             {
                 if (!ProductIsValid(product))

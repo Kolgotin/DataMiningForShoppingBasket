@@ -124,7 +124,7 @@
                 Grid.Column="2"
                 Style="{StaticResource InsideButtonStyle}"
                 Content="X"
-                Command="{Binding ClearTextBoxCommand}"/>
+                Command="{Binding ClearSearchCommand}"/>
 
         <TextBlock Grid.Row="2"
                    Grid.Column="0"
@@ -156,7 +156,7 @@
                                     Binding="{Binding ProductName}"/>
                 <DataGridTextColumn Width="4*"
                                     Header="{x:Static properties:Resources.Type}"
-                                    Binding="{Binding Product.ProductTypes.ProductTypeName}"/>
+                                    Binding="{Binding ProductTypes.ProductTypeName}"/>
                 <DataGridTextColumn Width="2*"
                                     Header="{x:Static properties:Resources.Cost}"
                                     Binding="{Binding Cost}"/>
@@ -182,18 +182,21 @@
                 <MouseBinding
                     MouseAction="LeftDoubleClick"
                     Command="{Binding AddProductIntoCartCommand}"
-                    CommandParameter="{Binding ElementName=AdditionalOfferDataGrid, Path=SelectedItem}"/>
+                    CommandParameter="{Binding ElementName=AdditionalOfferDataGrid, Path=SelectedItem.Product}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Width="5*"
                                     Header="{x:Static properties:Resources.Name}"
-                                    Binding="{Binding ProductName}"/>
+                                    Binding="{Binding Product.ProductName}"/>
                 <DataGridTextColumn Width="4*"
                                     Header="{x:Static properties:Resources.Type}"
                                     Binding="{Binding Product.ProductTypes.ProductTypeName}"/>
                 <DataGridTextColumn Width="2*"
                                     Header="{x:Static properties:Resources.Cost}"
-                                    Binding="{Binding Cost}"/>
+                                    Binding="{Binding Product.Cost}"/>
+                <DataGridTextColumn Width="2*"
+                                    Header="{x:Static properties:Resources.Confidence}"
+                                    Binding="{Binding Confidence, StringFormat=N3}"/>
             </DataGrid.Columns></DataGrid>
 
         <Button Grid.Column="0"

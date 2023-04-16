@@ -88,6 +88,15 @@ namespace DataMiningForShoppingBasket.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Уверенность.
+        /// </summary>
+        public static string Confidence {
+            get {
+                return ResourceManager.GetString("Confidence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Цена.
         /// </summary>
         public static string Cost {
