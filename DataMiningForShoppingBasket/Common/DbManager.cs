@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 
 namespace DataMiningForShoppingBasket.Common
 {
-    public class GetData : IGetData
+    public class DbManager : IDbManager
     {
         private readonly DataMiningEntities _dbContext;
 
-        private static readonly Lazy<GetData> Lazy =
-            new Lazy<GetData>(() => new GetData());
+        private static readonly Lazy<DbManager> Lazy =
+            new Lazy<DbManager>(() => new DbManager());
 
-        private GetData()
+        private DbManager()
         {
             _dbContext = new DataMiningEntities();
         }
 
-        public static GetData GetInstance() => Lazy.Value;
+        public static DbManager GetInstance() => Lazy.Value;
         
         public async Task<Users> GetUserAsync(string loginStr)
         {

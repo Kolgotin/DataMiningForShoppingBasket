@@ -17,7 +17,7 @@ namespace DataMiningForShoppingBasket.ViewModels
     public class CashierInterfaceViewModel : NotifyPropertyChangedImplementation,
         ILabelHavingDataContext, IDisposable
     {
-        private readonly IGetData _getData;
+        private readonly IDbManager _dbManager;
         private readonly IPrepareOfferHandler _prepareOfferHandler;
         private readonly INotifier<Products, int> _productsINotifier;
         private readonly CompositeDisposable _cleanup;
@@ -70,7 +70,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         public CashierInterfaceViewModel()
         {
-            _getData = GetData.GetInstance();
+            _dbManager = DbManager.GetInstance();
             _productsINotifier = DefaultNotifier<Products, int>.GetInstance();
             _prepareOfferHandler = PrepareOfferSimpleHandler.GetInstance();
 
@@ -101,7 +101,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         private async Task InitializeExecuteAsync()
         {
-            var productList = await _getData.GetListAsync<Products>();
+            var productList = await _dbManager.GetListAsync<Products>();
             productList.ForEach(_productsINotifier.NotifyAdd);
         }
 
@@ -140,7 +140,7 @@ namespace DataMiningForShoppingBasket.ViewModels
                         }).ToList()
                 };
 
-                await _getData.SaveSale(receipt);
+                await _dbManager.SaveSale(receipt);
                 ConsumerCart.Clear();
                 OfferProductList = null;
                 RaisePropertyChanged(nameof(TotalCost));

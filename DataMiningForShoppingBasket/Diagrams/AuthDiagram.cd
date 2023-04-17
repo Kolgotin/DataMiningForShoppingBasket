@@ -3,11 +3,11 @@
   <Class Name="DataMiningForShoppingBasket.ViewModels.AuthorizationViewModel">
     <Position X="7.75" Y="1.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAABgAAAAAEAAAAAAAAAAACAgAAIAAQAACAAAA=</HashCode>
+      <HashCode>AAAAAAAABgAAAAAGAAAAAAAAAAACAgAAIAAQAACAAAA=</HashCode>
       <FileName>ViewModels\AuthorizationViewModel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_getData" />
+      <Field Name="_dbManager" />
       <Property Name="LoginCommand" />
     </ShowAsAssociation>
   </Class>
@@ -26,11 +26,11 @@
       <FileName>Commands\MyAsyncCommand`1.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="DataMiningForShoppingBasket.Interfaces.IGetData">
+  <Interface Name="DataMiningForShoppingBasket.Interfaces.IDbManager">
     <Position X="5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAAAAAAAAAAAAAAAAAAAAAABQAACAAAAAAAAAQAAAAA=</HashCode>
-      <FileName>Interfaces\IGetData.cs</FileName>
+      <FileName>Interfaces\IDbManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

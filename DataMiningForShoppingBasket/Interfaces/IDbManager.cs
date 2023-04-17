@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace DataMiningForShoppingBasket.Interfaces
 {
-    public interface IGetData
+    public interface IDbManager
     {
         Task<Users> GetUserAsync(string login);
         Task<List<T>> GetListAsync<T>() where T : class;
