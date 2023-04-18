@@ -33,6 +33,14 @@ namespace DataMiningForShoppingBasket.Common
             return user;
         }
         
+        public async Task<List<SaleRows>> GetSalesByProductIds(IReadOnlyCollection<int> productIds)
+            => await _dbContext.SaleRows
+                .Join(productIds,
+                    x => x.ProductId,
+                    y => y,
+                    (x, y) => x)
+                .ToListAsync().ConfigureAwait(false);
+
         public async Task<List<T>> GetListAsync<T>() where T : class
             => await _dbContext.Set<T>().ToListAsync().ConfigureAwait(false);
 

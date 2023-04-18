@@ -121,6 +121,7 @@
     <Compile Include="Commands\MyCommand.cs" />
     <Compile Include="Common\CurrentSession.cs" />
     <Compile Include="Common\DbManager.cs" />
+    <Compile Include="Common\EqualityProductsComparer.cs" />
     <Compile Include="Common\MessageWriter.cs" />
     <Compile Include="Common\MyException.cs" />
     <Compile Include="Common\UserType.cs" />
@@ -145,6 +146,7 @@
     </Compile>
     <Compile Include="Commands\AsyncCommandBase.cs" />
     <Compile Include="Commands\MyAsyncCommand.cs" />
+    <Compile Include="Handlers\AprioryAlgorithm.cs" />
     <Compile Include="Handlers\PrepareOfferSimpleHandler.cs" />
     <Compile Include="Interfaces\IAsyncCommand.cs" />
     <Compile Include="Commands\MyAsyncCommand`1.cs" />
