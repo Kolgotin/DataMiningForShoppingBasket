@@ -29,14 +29,14 @@ namespace DataMiningForShoppingBasket.Handlers
 
         public async Task<Dictionary<Products, decimal>> PrepareOffer(IReadOnlyCollection<Products> cart)
         {
-            var discountsList = await _dbManager.GetListAsync<Discounts>().ConfigureAwait(false);
-            var actualDiscountsList = discountsList.Where(x => x.StartDate <= DateTime.Now && DateTime.Now <= x.FinishDate)
+            var focusProductsList = await _dbManager.GetListAsync<FocusProducts>().ConfigureAwait(false);
+            var actualFocusProductsList = focusProductsList.Where(x => x.StartDate <= DateTime.Now && DateTime.Now <= x.FinishDate)
                 .ToList();
             var productsList = await _dbManager.GetListAsync<Products>().ConfigureAwait(false);
             var dict = productsList
                 .Where(x => x.WarehouseQuantity > 0)
                 .Except(cart, _productsComparer)
-                .Join(actualDiscountsList,
+                .Join(actualFocusProductsList,
                     x => x.Id,
                     y => y.ProductId,
                     (x, y) => x)

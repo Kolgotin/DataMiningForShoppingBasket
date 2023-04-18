@@ -17,8 +17,8 @@ namespace DataMiningForShoppingBasket
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Products()
         {
-            this.Discounts = new HashSet<Discounts>();
             this.SaleRows = new HashSet<SaleRows>();
+            this.FocusProducts = new HashSet<FocusProducts>();
         }
     
         public int Id { get; set; }
@@ -28,10 +28,10 @@ namespace DataMiningForShoppingBasket
         public bool FractionalAllowed { get; set; }
         public decimal WarehouseQuantity { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Discounts> Discounts { get; set; }
         public virtual ProductTypes ProductTypes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SaleRows> SaleRows { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FocusProducts> FocusProducts { get; set; }
     }
 }

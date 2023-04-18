@@ -2,7 +2,7 @@
 
 namespace DataMiningForShoppingBasket
 {
-    public partial class Discounts : IHavingId<int>
+    public partial class FocusProducts : IHavingId<int>
     {
     }
 

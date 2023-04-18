@@ -61,11 +61,11 @@ namespace DataMiningForShoppingBasket.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавить акцию.
+        ///   Looks up a localized string similar to Добавить фокусный продукт.
         /// </summary>
-        public static string AddDiscount {
+        public static string AddFocusProduct {
             get {
-                return ResourceManager.GetString("AddDiscount", resourceCulture);
+                return ResourceManager.GetString("AddFocusProduct", resourceCulture);
             }
         }
         
@@ -115,38 +115,11 @@ namespace DataMiningForShoppingBasket.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Акция.
-        /// </summary>
-        public static string Discount {
-            get {
-                return ResourceManager.GetString("Discount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Акционная цена.
         /// </summary>
         public static string DiscountCost {
             get {
                 return ResourceManager.GetString("DiscountCost", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Список акций.
-        /// </summary>
-        public static string DiscountList {
-            get {
-                return ResourceManager.GetString("DiscountList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Наименование акции.
-        /// </summary>
-        public static string DiscountName {
-            get {
-                return ResourceManager.GetString("DiscountName", resourceCulture);
             }
         }
         
@@ -183,6 +156,24 @@ namespace DataMiningForShoppingBasket.Properties {
         public static string FinishDate {
             get {
                 return ResourceManager.GetString("FinishDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Фокусный продукт.
+        /// </summary>
+        public static string FocusProduct {
+            get {
+                return ResourceManager.GetString("FocusProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Список фокусных продуктов.
+        /// </summary>
+        public static string FocusProductList {
+            get {
+                return ResourceManager.GetString("FocusProductList", resourceCulture);
             }
         }
         

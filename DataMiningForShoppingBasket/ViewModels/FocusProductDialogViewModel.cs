@@ -10,12 +10,12 @@ using System.Windows.Input;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
-    public class DiscountDialogViewModel : NotifyPropertyChangedImplementation
+    public class FocusProductDialogViewModel : NotifyPropertyChangedImplementation
     {
-        private readonly Discounts _discount;
+        private readonly FocusProducts _focusProduct;
         private readonly IDbManager _dbManager;
 
-        public DiscountDialogViewModel(Discounts discount = null)
+        public FocusProductDialogViewModel(FocusProducts focusProduct = null)
         {
             _dbManager = DbManager.GetInstance();
 
@@ -23,34 +23,30 @@ namespace DataMiningForShoppingBasket.ViewModels
                 .OrderBy(x=>x.ProductName).ToList();
             SaveCommand = new MyAsyncCommand<Window>(SaveExecuteAsync);
 
-            if (discount == null)
+            if (focusProduct == null)
             {
-                _discount = new Discounts();
+                _focusProduct = new FocusProducts();
                 StartDate = DateTime.Today;
                 FinishDate = DateTime.Today;
                 return;
             }
 
-            _discount = discount;
-            DiscountName = _discount.DiscountName;
-            DiscountDescription = _discount.DiscountDescription;
-            StartDate = _discount.StartDate;
-            FinishDate= _discount.FinishDate;
-            ProductId= _discount.ProductId;
-            Quantity = _discount.Quantity;
-            DiscountCost = _discount.DiscountCost;
+            _focusProduct = focusProduct;
+            Description = _focusProduct.Description;
+            StartDate = _focusProduct.StartDate;
+            FinishDate= _focusProduct.FinishDate;
+            ProductId= _focusProduct.ProductId;
+            DiscountCost = _focusProduct.DiscountCost;
         }
 
         #region Properties
 
         public ICommand SaveCommand { get; }
 
-        public string DiscountName { get; set; }
-        public string DiscountDescription { get; set; }
+        public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime FinishDate { get; set; }
         public int ProductId { get; set; }
-        public int Quantity { get; set; }
         public decimal DiscountCost { get; set; }
 
         public IReadOnlyCollection<Products> ProductList { get; }
@@ -59,14 +55,12 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         private async Task SaveExecuteAsync(Window window)
         {
-            _discount.DiscountName = DiscountName;
-            _discount.DiscountDescription = DiscountDescription ?? string.Empty;
-            _discount.StartDate = StartDate;
-            _discount.FinishDate = FinishDate;
-            _discount.ProductId = ProductId;
-            _discount.Quantity = Quantity;
-            _discount.DiscountCost = DiscountCost;
-            await _dbManager.SaveAndNotifyHavingIdEntityAsync<Discounts, int>(_discount);
+            _focusProduct.Description = Description ?? string.Empty;
+            _focusProduct.StartDate = StartDate;
+            _focusProduct.FinishDate = FinishDate;
+            _focusProduct.ProductId = ProductId;
+            _focusProduct.DiscountCost = DiscountCost;
+            await _dbManager.SaveAndNotifyHavingIdEntityAsync<FocusProducts, int>(_focusProduct);
 
             window.DialogResult = true;
             window.Close();
