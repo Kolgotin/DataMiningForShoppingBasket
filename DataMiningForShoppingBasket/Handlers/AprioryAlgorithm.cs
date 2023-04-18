@@ -27,26 +27,27 @@ namespace DataMiningForShoppingBasket.Handlers
                 return new Dictionary<Products, decimal>();
 
             var cartIds = cart.Select(x => x.Id).ToList();
-            var discountsList = await _dbManager.GetListAsync<Discounts>().ConfigureAwait(false);
-            var actualDiscountProducts = discountsList
-                .Where(x => x.StartDate <= DateTime.Now && DateTime.Now <= x.FinishDate)
+            var focusProductsList = await _dbManager.GetListAsync<FocusProducts>().ConfigureAwait(false);
+            var actualFocusProducts = focusProductsList
+                .Where(x => x.StartDate <= DateTime.Now
+                            && DateTime.Now <= x.FinishDate && x.Products.WarehouseQuantity > 0)
                 .Select(x => x.Products).ToList();
-            var actualDiscountProductIds = actualDiscountProducts
+            var actualFocusProductIds = actualFocusProducts
                 .Select(x => x.Id)
                 .Except(cartIds)
                 .ToList();
-            var discountSaleRows = await _dbManager.GetSalesByProductIds(actualDiscountProductIds);
+            var focusProductsSaleRows = await _dbManager.GetSalesByProductIds(actualFocusProductIds);
             var cartSaleRows = await _dbManager.GetSalesByProductIds(cartIds);
-            var intersection = discountSaleRows.Join(cartSaleRows,
+            var intersection = focusProductsSaleRows.Join(cartSaleRows,
                     x => x.SaleId,
                     y => y.SaleId,
                     (x, y) => x).ToList();
-            var lonelyCount = discountSaleRows.GroupBy(x => x.ProductId)
+            var lonelyCount = focusProductsSaleRows.GroupBy(x => x.ProductId)
                 .ToDictionary(x => x.Key, x => x.Count());
             var intersectionCount = intersection.GroupBy(x => x.ProductId)
                 .ToDictionary(x => x.Key, x => x.Count());
 
-            var res = actualDiscountProducts.ToDictionary(x => x,
+            var res = actualFocusProducts.ToDictionary(x => x,
                 x => intersectionCount.ContainsKey(x.Id)
                     ? 100m * intersectionCount[x.Id] / lonelyCount[x.Id]
                     : 0m);

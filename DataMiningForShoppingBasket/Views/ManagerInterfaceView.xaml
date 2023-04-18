@@ -48,7 +48,7 @@
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Name="Discounts"
+        <Grid Name="FocusProducts"
               Grid.Row="0"
               Grid.Column="0">
             <Grid.ColumnDefinitions>
@@ -62,37 +62,34 @@
 
             <Label Grid.Row="0"
                    Grid.Column="0"
-                   Content="{x:Static properties:Resources.DiscountList}"/>
+                   Content="{x:Static properties:Resources.FocusProductList}"/>
 
             <Button Grid.Row="0"
                     Grid.Column="1"
                     Style="{StaticResource AddButton}"
-                    Content="{x:Static properties:Resources.AddDiscount}"
-                    Command="{Binding AddOrEditDiscountCommand}"/>
+                    Content="{x:Static properties:Resources.AddFocusProduct}"
+                    Command="{Binding AddOrEditFocusProductCommand}"/>
 
             <DataGrid Grid.Row="1"
                       Grid.Column="0"
                       Grid.ColumnSpan="2"
-                      x:Name="DiscountsDataGrid"
+                      x:Name="FocusProductsDataGrid"
                       IsReadOnly="True"
                       VerticalAlignment="Stretch"
-                      ItemsSource="{Binding DiscountList}">
+                      ItemsSource="{Binding FocusProductList}">
                 <DataGrid.InputBindings>
                     <MouseBinding
                         MouseAction="LeftDoubleClick"
-                        Command="{Binding AddOrEditDiscountCommand}"
-                        CommandParameter="{Binding ElementName=DiscountsDataGrid, Path=SelectedItem}"/>
+                        Command="{Binding AddOrEditFocusProductCommand}"
+                        CommandParameter="{Binding ElementName=FocusProductsDataGrid, Path=SelectedItem}"/>
                 </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="*"
                                         Header="Id"
                                         Binding="{Binding Id}"/>
                     <DataGridTextColumn Width="5*"
-                                        Header="{x:Static properties:Resources.Name}"
-                                        Binding="{Binding DiscountName}"/>
-                    <DataGridTextColumn Width="1*"
                                         Header="{x:Static properties:Resources.Description}"
-                                        Binding="{Binding DiscountDescription}"/>
+                                        Binding="{Binding Description}"/>
                     <DataGridTextColumn Width="2*"
                                         Header="{x:Static properties:Resources.StartDate}"
                                         Binding="{Binding StartDate}"/>
@@ -104,10 +101,7 @@
                                         Binding="{Binding ProductId}"/>
                     <DataGridTextColumn Width="5*"
                                         Header="{x:Static properties:Resources.ProductName}"
-                                        Binding="{Binding Discount.Products.ProductName}"/>
-                    <DataGridTextColumn Width="2*"
-                                        Header="{x:Static properties:Resources.Quantity}"
-                                        Binding="{Binding Quantity}"/>
+                                        Binding="{Binding FocusProduct.Products.ProductName}"/>
                     <DataGridTextColumn Width="2*"
                                         Header="{x:Static properties:Resources.DiscountCost}"
                                         Binding="{Binding DiscountCost}"/>

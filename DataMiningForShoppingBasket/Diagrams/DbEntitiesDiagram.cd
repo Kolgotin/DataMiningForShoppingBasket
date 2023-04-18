@@ -25,14 +25,16 @@
     <Position X="6.5" Y="4" Width="1.5" />
     <AssociationLine Name="Products" Type="DataMiningForShoppingBasket.Products" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="7.5" Y="4" />
-        <Point X="7.5" Y="3.625" />
-        <Point X="12.062" Y="3.625" />
-        <Point X="12.062" Y="3.267" />
+        <Point X="7.75" Y="4" />
+        <Point X="7.75" Y="3.188" />
+        <Point X="11.75" Y="3.188" />
       </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.955" Y="-0.006" />
+      </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EAACAAAAACAAAAABAAAAAAAAAAAAAAAAAAAABAAAEAQ=</HashCode>
+      <HashCode>EAACAAAAACAAAAABAAAAAAAAAAAAAAAAAAAAgAAAEAQ=</HashCode>
       <FileName>SaleRows.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -58,38 +60,34 @@
   </Class>
   <Class Name="DataMiningForShoppingBasket.Products" BaseTypeListCollapsed="true">
     <Position X="11.75" Y="0.75" Width="1.75" />
-    <AssociationLine Name="ProductTypes" Type="DataMiningForShoppingBasket.ProductTypes" FixedFromPoint="true" FixedToPoint="true">
+    <AssociationLine Name="SaleRows" Type="DataMiningForShoppingBasket.SaleRows" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="12.906" Y="3.267" />
-        <Point X="12.906" Y="5.375" />
-        <Point X="11.25" Y="5.375" />
+        <Point X="12.25" Y="3.459" />
+        <Point X="12.25" Y="4.312" />
+        <Point X="8" Y="4.312" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.653" Y="-0.338" />
+        <Position X="3.32" Y="0.081" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="Discounts" Type="DataMiningForShoppingBasket.Discounts" FixedToPoint="true">
+    <AssociationLine Name="ProductTypes" Type="DataMiningForShoppingBasket.ProductTypes" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.75" Y="2.875" />
-        <Point X="8.25" Y="2.875" />
+        <Point X="12.812" Y="3.459" />
+        <Point X="12.812" Y="5.47" />
+        <Point X="11.25" Y="5.47" />
       </Path>
-    </AssociationLine>
-    <AssociationLine Name="SaleRows" Type="DataMiningForShoppingBasket.SaleRows" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="12.375" Y="3.267" />
-        <Point X="12.375" Y="4.188" />
-        <Point X="8" Y="4.188" />
-      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.464" Y="0.062" />
+      </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAACAAAQAQACAAAAAAAAAAAQAAAIAAgAAgAAAAAIAAA=</HashCode>
+      <HashCode>AAACAAAQAQAAAAAAAAAAABAQAAAIAAgAAAAAAAAIAAA=</HashCode>
       <FileName>Products.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="ProductTypes" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
-      <Property Name="Discounts" />
       <Property Name="SaleRows" />
     </ShowAsCollectionAssociation>
     <Lollipop Orientation="Left" Position="0.267" />
@@ -98,12 +96,12 @@
     <Position X="9.25" Y="4.5" Width="2" />
     <AssociationLine Name="Products" Type="DataMiningForShoppingBasket.Products" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.25" Y="5" />
-        <Point X="12.688" Y="5" />
-        <Point X="12.688" Y="3.267" />
+        <Point X="11.25" Y="6" />
+        <Point X="13.125" Y="6" />
+        <Point X="13.125" Y="3.459" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.081" Y="1.443" />
+        <Position X="-0.035" Y="2.647" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -114,7 +112,7 @@
       <Property Name="Products" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="DataMiningForShoppingBasket.Discounts" BaseTypeListCollapsed="true">
+  <Class Name="DataMiningForShoppingBasket.FocusProducts" BaseTypeListCollapsed="true">
     <Position X="6.5" Y="0.75" Width="1.75" />
     <AssociationLine Name="Products" Type="DataMiningForShoppingBasket.Products" FixedFromPoint="true">
       <Path>
@@ -123,8 +121,8 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EAACAAAAAAACAAAAAAAAAACAAAAAACAAAACAAEAAAAQ=</HashCode>
-      <FileName>Discounts.cs</FileName>
+      <HashCode>EAACAAAAAAAiAAAAAAAAAAAAAAAAAAAAAACAAEAAAAQ=</HashCode>
+      <FileName>FocusProducts.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Products" />

@@ -12,15 +12,13 @@ namespace DataMiningForShoppingBasket
     using System;
     using System.Collections.Generic;
     
-    public partial class Discounts
+    public partial class FocusProducts
     {
         public int Id { get; set; }
-        public string DiscountName { get; set; }
-        public string DiscountDescription { get; set; }
+        public string Description { get; set; }
         public System.DateTime StartDate { get; set; }
         public System.DateTime FinishDate { get; set; }
         public int ProductId { get; set; }
-        public int Quantity { get; set; }
         public decimal DiscountCost { get; set; }
     
         public virtual Products Products { get; set; }

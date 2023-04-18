@@ -129,14 +129,11 @@
   <data name="FinishDate" xml:space="preserve">
     <value>Завершение</value>
   </data>
-  <data name="DiscountName" xml:space="preserve">
-    <value>Наименование акции</value>
-  </data>
   <data name="ProductName" xml:space="preserve">
     <value>Наименование товара</value>
   </data>
-  <data name="DiscountList" xml:space="preserve">
-    <value>Список акций</value>
+  <data name="FocusProductList" xml:space="preserve">
+    <value>Список фокусных продуктов</value>
   </data>
   <data name="StartDate" xml:space="preserve">
     <value>Начало</value>
@@ -192,8 +189,8 @@
   <data name="FractionalAllowed" xml:space="preserve">
     <value>Разрешены дробные</value>
   </data>
-  <data name="AddDiscount" xml:space="preserve">
-    <value>Добавить акцию</value>
+  <data name="AddFocusProduct" xml:space="preserve">
+    <value>Добавить фокусный продукт</value>
   </data>
   <data name="AddProduct" xml:space="preserve">
     <value>Добавить товар</value>
@@ -204,8 +201,8 @@
   <data name="Product" xml:space="preserve">
     <value>Товар</value>
   </data>
-  <data name="Discount" xml:space="preserve">
-    <value>Акция</value>
+  <data name="FocusProduct" xml:space="preserve">
+    <value>Фокусный продукт</value>
   </data>
   <data name="Confidence" xml:space="preserve">
     <value>Уверенность</value>

@@ -1,13 +1,12 @@
-﻿using DataMiningForShoppingBasket.Commands;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Reactive.Disposables;
+using System.Threading.Tasks;
+using DataMiningForShoppingBasket.Commands;
 using DataMiningForShoppingBasket.Common;
 using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.Views;
 using DynamicData;
-using System;
-using System.Collections.ObjectModel;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Threading.Tasks;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
@@ -16,12 +15,12 @@ namespace DataMiningForShoppingBasket.ViewModels
     {
         private readonly IDbManager _dbManager;
         private readonly INotifier<Products, int> _productsINotifier;
-        private readonly INotifier<Discounts, int> _discountsINotifier;
+        private readonly INotifier<FocusProducts, int> _focusProductsINotifier;
 
         private readonly CompositeDisposable _cleanup;
 
         private readonly ReadOnlyObservableCollection<ProductViewModel> _productList;
-        private readonly ReadOnlyObservableCollection<DiscountViewModel> _discountList;
+        private readonly ReadOnlyObservableCollection<FocusProductViewModel> _focusProductList;
 
         #region ILabelHavingDataContext
         public string WindowLabel => "Менеджер";
@@ -31,11 +30,11 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         #region Commands
         public MyAsyncCommand<ProductViewModel> AddOrEditProductCommand { get; }
-        public MyAsyncCommand<DiscountViewModel> AddOrEditDiscountCommand { get; }
+        public MyAsyncCommand<FocusProductViewModel> AddOrEditFocusProductCommand { get; }
         #endregion
 
         public ReadOnlyObservableCollection<ProductViewModel> ProductList => _productList;
-        public ReadOnlyObservableCollection<DiscountViewModel> DiscountList => _discountList;
+        public ReadOnlyObservableCollection<FocusProductViewModel> FocusProductList => _focusProductList;
         
         #endregion
 
@@ -43,7 +42,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         {
             _dbManager = DbManager.GetInstance();
             _productsINotifier = DefaultNotifier<Products, int>.GetInstance();
-            _discountsINotifier = DefaultNotifier<Discounts, int>.GetInstance();
+            _focusProductsINotifier = DefaultNotifier<FocusProducts, int>.GetInstance();
 
             //todo: вызвать по-нормальному
             var init = new MyAsyncCommand(InitializeExecuteAsync);
@@ -52,28 +51,28 @@ namespace DataMiningForShoppingBasket.ViewModels
             AddOrEditProductCommand = new MyAsyncCommand<ProductViewModel>(
                 ExecuteAddProductAsync,
                 _ => AddOrEditProductCommand?.IsActive == false);
-            AddOrEditDiscountCommand = new MyAsyncCommand<DiscountViewModel>(
-                ExecuteAddDiscountAsync,
-                obj => AddOrEditDiscountCommand?.IsActive == false);
+            AddOrEditFocusProductCommand = new MyAsyncCommand<FocusProductViewModel>(
+                ExecuteAddOrEditFocusProductAsync,
+                obj => AddOrEditFocusProductCommand?.IsActive == false);
 
             _cleanup = new CompositeDisposable();
             _cleanup.Add(_productsINotifier.Changes
                 .Transform(x=> new ProductViewModel(x))
                 .Bind(out _productList)
                 .Subscribe());
-            _cleanup.Add(_discountsINotifier.Changes
-                .Transform(x=> new DiscountViewModel(x))
-                .Bind(out _discountList)
+            _cleanup.Add(_focusProductsINotifier.Changes
+                .Transform(x=> new FocusProductViewModel(x))
+                .Bind(out _focusProductList)
                 .Subscribe());
         }
 
         private async Task InitializeExecuteAsync()
         {
             var productList = await _dbManager.GetListAsync<Products>();
-            var discountsList = await _dbManager.GetListAsync<Discounts>();
+            var focusProductsList = await _dbManager.GetListAsync<FocusProducts>();
 
             productList.ForEach(_productsINotifier.NotifyAdd);
-            discountsList.ForEach(_discountsINotifier.NotifyAdd);
+            focusProductsList.ForEach(_focusProductsINotifier.NotifyAdd);
         }
         
         private Task ExecuteAddProductAsync(ProductViewModel productVm)
@@ -97,17 +96,17 @@ namespace DataMiningForShoppingBasket.ViewModels
             return Task.CompletedTask;
         }
 
-        private Task ExecuteAddDiscountAsync(DiscountViewModel discountVm)
+        private Task ExecuteAddOrEditFocusProductAsync(FocusProductViewModel focusProductVm)
         {
-            var discount = discountVm?.Discount;
+            var focusProduct = focusProductVm?.FocusProduct;
             try
             {
-                var view = new DiscountDialogView(discount);
+                var view = new FocusProductDialogView(focusProduct);
                 var res = view.ShowDialog();
 
                 if (res is true)
                 {
-                    MessageWriter.ShowMessage("Акция сохранена");
+                    MessageWriter.ShowMessage("Фокусный продукт сохранен");
                 }
             }
             catch (Exception e)

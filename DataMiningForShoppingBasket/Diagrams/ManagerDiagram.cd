@@ -14,16 +14,15 @@
   <Class Name="DataMiningForShoppingBasket.ViewModels.ManagerInterfaceViewModel">
     <Position X="7.25" Y="3" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAgAAKAAAAACACAAAAgABAEAAAAIIhAAAgAAAAg=</HashCode>
+      <HashCode>AAAgAAAAACAAAAACACIAACgABAEAAAAFIgAAAAAAAAg=</HashCode>
       <FileName>ViewModels\ManagerInterfaceViewModel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="AddOrEditProductCommand" />
-      <Property Name="AddOrEditDiscountCommand" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="ProductList" />
-      <Property Name="DiscountList" />
+      <Property Name="FocusProductList" />
     </ShowAsCollectionAssociation>
     <Lollipop Position="1.7" />
   </Class>
@@ -33,16 +32,6 @@
       <HashCode>AAAAAgAAAAAAQAAAAEAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
       <FileName>Commands\MyAsyncCommand`1.cs</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="DataMiningForShoppingBasket.ViewModels.DiscountViewModel">
-    <Position X="11" Y="1.25" Width="2.5" />
-    <TypeIdentifier>
-      <HashCode>EAACAAAAAAACAAAAAAAAAACAAAAAACAAAgCAgEAAAAA=</HashCode>
-      <FileName>ViewModels\DiscountViewModel.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Discount" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="DataMiningForShoppingBasket.ViewModels.ProductViewModel">
     <Position X="11" Y="5" Width="2.5" />
@@ -57,37 +46,36 @@
   <Class Name="DataMiningForShoppingBasket.Products">
     <Position X="14.5" Y="5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAACAAAQAQAAAAAAAAAAABAQAAAIAAgAAgAAAAAIAAA=</HashCode>
+      <HashCode>AAACAAAQAQAAAAAAAAAAABAQAAAIAAgAAAAAAAAIAAA=</HashCode>
       <FileName>Products.cs</FileName>
     </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="Discounts" />
-    </ShowAsCollectionAssociation>
     <Lollipop Position="1.427" Collapsed="true" />
-  </Class>
-  <Class Name="DataMiningForShoppingBasket.Discounts">
-    <Position X="14.5" Y="1.25" Width="1.5" />
-    <AssociationLine Name="Products" Type="DataMiningForShoppingBasket.Products">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.859" Y="0.279" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <TypeIdentifier>
-      <HashCode>EAACAAAAAAACAAAAAAAAAACAAAAAACAAAACAgEAAAAQ=</HashCode>
-      <FileName>Discounts.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Products" />
-    </ShowAsAssociation>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="DataMiningForShoppingBasket.Common.DbManager">
     <Position X="2.25" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAABAAAAAAAAAAAAAAAAAAABRAACAAAAEAAAAQAAAAA=</HashCode>
+      <HashCode>gAABAAAAAAAAAAAAAAAAAAABRAACAEAAEAAAAQAAAAA=</HashCode>
       <FileName>Common\DbManager.cs</FileName>
     </TypeIdentifier>
     <Lollipop Orientation="Right" Position="0.623" />
+  </Class>
+  <Class Name="DataMiningForShoppingBasket.ViewModels.FocusProductViewModel">
+    <Position X="11.5" Y="1.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EAACAAAAAAAiAAAAAAAAAEAAAAAAAAAAAACAAEAAAAA=</HashCode>
+      <FileName>ViewModels\FocusProductViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FocusProduct" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DataMiningForShoppingBasket.FocusProducts">
+    <Position X="15.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAACAAAAAAAiAAAAAAAAAAAAAAAAAAAAAACAAEAAAAQ=</HashCode>
+      <FileName>FocusProducts.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Interface Name="DataMiningForShoppingBasket.Interfaces.ILabelHavingDataContext">
     <Position X="8.75" Y="1.25" Width="2" />
@@ -106,7 +94,7 @@
   <Interface Name="DataMiningForShoppingBasket.Interfaces.IDbManager">
     <Position X="4.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAAAAAAAAAAAAAAAAAAAAAABQAACAAAAAAAAAQAAAAA=</HashCode>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAABQAACAEAAAAAAAQAAAAA=</HashCode>
       <FileName>Interfaces\IDbManager.cs</FileName>
     </TypeIdentifier>
   </Interface>

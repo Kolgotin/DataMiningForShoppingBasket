@@ -71,8 +71,8 @@
     <Build Include="Tables\Users.sql" />
     <Build Include="Tables\Clients.sql" />
     <Build Include="Tables\Products.sql" />
-    <Build Include="Tables\Discounts.sql" />
     <Build Include="Tables\SaleReceipts.sql" />
     <Build Include="Tables\SaleRows.sql" />
+    <Build Include="Tables\FocusProducts.sql" />
   </ItemGroup>
 </Project>

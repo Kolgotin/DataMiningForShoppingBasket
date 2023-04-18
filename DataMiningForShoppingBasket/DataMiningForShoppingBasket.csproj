@@ -141,11 +141,11 @@
       <DependentUpon>DataMiningDB.edmx</DependentUpon>
     </Compile>
     <Compile Include="DbPartialEntities.cs" />
-    <Compile Include="Discounts.cs">
-      <DependentUpon>DataMiningDB.tt</DependentUpon>
-    </Compile>
     <Compile Include="Commands\AsyncCommandBase.cs" />
     <Compile Include="Commands\MyAsyncCommand.cs" />
+    <Compile Include="FocusProducts.cs">
+      <DependentUpon>DataMiningDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Handlers\AprioryAlgorithm.cs" />
     <Compile Include="Handlers\PrepareOfferSimpleHandler.cs" />
     <Compile Include="Interfaces\IAsyncCommand.cs" />
@@ -181,9 +181,9 @@
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
-    <Compile Include="ViewModels\DiscountDialogViewModel.cs" />
+    <Compile Include="ViewModels\FocusProductDialogViewModel.cs" />
     <Compile Include="Common\NotifyPropertyChangedImplementation.cs" />
-    <Compile Include="ViewModels\DiscountViewModel.cs" />
+    <Compile Include="ViewModels\FocusProductViewModel.cs" />
     <Compile Include="ViewModels\ManagerInterfaceViewModel.cs" />
     <Compile Include="ViewModels\CashierInterfaceViewModel.cs" />
     <Compile Include="ViewModels\ProductDialogViewModel.cs" />
@@ -191,8 +191,8 @@
     <Compile Include="Views\AuthorizationView.xaml.cs">
       <DependentUpon>AuthorizationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DiscountDialogView.xaml.cs">
-      <DependentUpon>DiscountDialogView.xaml</DependentUpon>
+    <Compile Include="Views\FocusProductDialogView.xaml.cs">
+      <DependentUpon>FocusProductDialogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ManagerInterfaceView.xaml.cs">
       <DependentUpon>ManagerInterfaceView.xaml</DependentUpon>
@@ -219,7 +219,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DiscountDialogView.xaml">
+    <Page Include="Views\FocusProductDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

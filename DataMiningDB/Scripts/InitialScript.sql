@@ -68,20 +68,18 @@ END
 GO
 
 
-IF NOT EXISTS (select * from sys.tables where name='Discounts')
+IF NOT EXISTS (select * from sys.tables where name='FocusProducts')
 BEGIN
-    CREATE TABLE [dbo].[Discounts](
-	    [Id] [int] IDENTITY(1,1) NOT NULL,
-	    [DiscountName] [nvarchar](32) NOT NULL,
-	    [DiscountDescription] [varchar](max) NOT NULL,
-	    [StartDate] [datetime] NOT NULL,
-	    [FinishDate] [datetime] NOT NULL,
-	    [ProductId] [int] NOT NULL,
-	    [Quantity] [int] NOT NULL,
-	    [DiscountCost] decimal(9, 2) NOT NULL,
-        CONSTRAINT [PK_Discounts] PRIMARY KEY CLUSTERED ([Id]) ON [PRIMARY],
-        CONSTRAINT [FK_Products_Discounts] FOREIGN KEY([ProductId]) REFERENCES [dbo].[Products] ([Id])
-    ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+	CREATE TABLE [dbo].[FocusProducts](
+		[Id] [int] IDENTITY(1,1) NOT NULL,
+		[Description] [varchar](max) NOT NULL,
+		[StartDate] [datetime] NOT NULL,
+		[FinishDate] [datetime] NOT NULL,
+		[ProductId] [int] NOT NULL,
+		[DiscountCost] [decimal](9, 2) NOT NULL,
+		CONSTRAINT [PK_FocusProducts] PRIMARY KEY CLUSTERED ([Id]) ON [PRIMARY],
+		CONSTRAINT [FK_Products_FocusProducts] FOREIGN KEY([ProductId]) REFERENCES [dbo].[Products] ([Id])
+	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
 
