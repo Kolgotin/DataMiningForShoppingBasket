@@ -13,13 +13,13 @@ namespace DataMiningForShoppingBasket.ViewModels
     public class DiscountDialogViewModel : NotifyPropertyChangedImplementation
     {
         private readonly Discounts _discount;
-        private readonly IGetData _getData;
+        private readonly IDbManager _dbManager;
 
         public DiscountDialogViewModel(Discounts discount = null)
         {
-            _getData = GetData.GetInstance();
+            _dbManager = DbManager.GetInstance();
 
-            ProductList = _getData.GetListAsync<Products>().Result
+            ProductList = _dbManager.GetListAsync<Products>().Result
                 .OrderBy(x=>x.ProductName).ToList();
             SaveCommand = new MyAsyncCommand<Window>(SaveExecuteAsync);
 
@@ -66,7 +66,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             _discount.ProductId = ProductId;
             _discount.Quantity = Quantity;
             _discount.DiscountCost = DiscountCost;
-            await _getData.SaveAndNotifyHavingIdEntityAsync<Discounts, int>(_discount);
+            await _dbManager.SaveAndNotifyHavingIdEntityAsync<Discounts, int>(_discount);
 
             window.DialogResult = true;
             window.Close();

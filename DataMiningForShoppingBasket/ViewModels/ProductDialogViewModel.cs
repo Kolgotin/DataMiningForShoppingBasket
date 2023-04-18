@@ -12,13 +12,13 @@ namespace DataMiningForShoppingBasket.ViewModels
     public class ProductDialogViewModel : NotifyPropertyChangedImplementation
     {
         private readonly Products _product;
-        private readonly IGetData _getData;
+        private readonly IDbManager _dbManager;
 
         public ProductDialogViewModel(Products product = null)
         {
-            _getData = GetData.GetInstance();
+            _dbManager = DbManager.GetInstance();
 
-            ProductTypes = _getData.GetListAsync<ProductTypes>().Result
+            ProductTypes = _dbManager.GetListAsync<ProductTypes>().Result
                 .OrderBy(x => x.ProductTypeName).ToList();
             SaveCommand = new MyAsyncCommand<Window>(SaveExecuteAsync);
 
@@ -57,7 +57,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             _product.Cost = Cost;
             _product.FractionalAllowed = FractionalAllowed;
             _product.WarehouseQuantity = WarehouseQuantity;
-            await _getData.SaveAndNotifyHavingIdEntityAsync<Products, int>(_product);
+            await _dbManager.SaveAndNotifyHavingIdEntityAsync<Products, int>(_product);
 
             window.DialogResult = true;
             window.Close();

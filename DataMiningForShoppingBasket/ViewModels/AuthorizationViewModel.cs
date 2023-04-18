@@ -11,7 +11,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 {
     public class AuthorizationViewModel : NotifyPropertyChangedImplementation
     {
-        private readonly IGetData _getData;
+        private readonly IDbManager _dbManager;
         private readonly Window _window;
 
         #region Commands
@@ -23,7 +23,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         public AuthorizationViewModel(Window window)
         {
-            _getData = GetData.GetInstance();
+            _dbManager = DbManager.GetInstance();
             _window = window;
 
             LoginCommand = new MyAsyncCommand<PasswordBox>(
@@ -84,7 +84,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         private async Task CheckProfileAsync(string password)
         {
-            var currentUser = await _getData.GetUserAsync(Login);
+            var currentUser = await _dbManager.GetUserAsync(Login);
 
             if (currentUser is null)
             {

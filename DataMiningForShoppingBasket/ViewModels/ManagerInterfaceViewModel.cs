@@ -14,7 +14,7 @@ namespace DataMiningForShoppingBasket.ViewModels
     public sealed class ManagerInterfaceViewModel : NotifyPropertyChangedImplementation,
         ILabelHavingDataContext, IDisposable
     {
-        private readonly IGetData _getData;
+        private readonly IDbManager _dbManager;
         private readonly INotifier<Products, int> _productsINotifier;
         private readonly INotifier<Discounts, int> _discountsINotifier;
 
@@ -41,7 +41,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         public ManagerInterfaceViewModel()
         {
-            _getData = GetData.GetInstance();
+            _dbManager = DbManager.GetInstance();
             _productsINotifier = DefaultNotifier<Products, int>.GetInstance();
             _discountsINotifier = DefaultNotifier<Discounts, int>.GetInstance();
 
@@ -69,8 +69,8 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         private async Task InitializeExecuteAsync()
         {
-            var productList = await _getData.GetListAsync<Products>();
-            var discountsList = await _getData.GetListAsync<Discounts>();
+            var productList = await _dbManager.GetListAsync<Products>();
+            var discountsList = await _dbManager.GetListAsync<Discounts>();
 
             productList.ForEach(_productsINotifier.NotifyAdd);
             discountsList.ForEach(_discountsINotifier.NotifyAdd);

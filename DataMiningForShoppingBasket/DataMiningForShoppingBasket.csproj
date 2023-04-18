@@ -120,7 +120,8 @@
     </Compile>
     <Compile Include="Commands\MyCommand.cs" />
     <Compile Include="Common\CurrentSession.cs" />
-    <Compile Include="Common\GetData.cs" />
+    <Compile Include="Common\DbManager.cs" />
+    <Compile Include="Common\EqualityProductsComparer.cs" />
     <Compile Include="Common\MessageWriter.cs" />
     <Compile Include="Common\MyException.cs" />
     <Compile Include="Common\UserType.cs" />
@@ -145,6 +146,7 @@
     </Compile>
     <Compile Include="Commands\AsyncCommandBase.cs" />
     <Compile Include="Commands\MyAsyncCommand.cs" />
+    <Compile Include="Handlers\AprioryAlgorithm.cs" />
     <Compile Include="Handlers\PrepareOfferSimpleHandler.cs" />
     <Compile Include="Interfaces\IAsyncCommand.cs" />
     <Compile Include="Commands\MyAsyncCommand`1.cs" />
@@ -154,7 +156,7 @@
     <Compile Include="Interfaces\IHavingId`1.cs" />
     <Compile Include="Interfaces\IUserControl.cs" />
     <Compile Include="Interfaces\ILabelHavingDataContext.cs" />
-    <Compile Include="Interfaces\IGetData.cs" />
+    <Compile Include="Interfaces\IDbManager.cs" />
     <Compile Include="Interfaces\IPrepareOfferHandler.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="ViewModels\AdditionalOfferViewModel.cs" />
@@ -263,7 +265,6 @@
     <None Include="DataMiningForShoppingBasket_TemporaryKey.pfx" />
     <None Include="Diagrams\AuthDiagram.cd" />
     <None Include="Diagrams\CashierDiagram.cd" />
-    <None Include="Diagrams\ClassDiagram.cd" />
     <None Include="Diagrams\DbEntitiesDiagram.cd" />
     <None Include="Diagrams\ManagerDiagram.cd" />
     <None Include="packages.config" />
