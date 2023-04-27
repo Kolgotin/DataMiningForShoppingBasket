@@ -199,14 +199,27 @@
                                     Binding="{Binding Confidence, StringFormat=N3}"/>
             </DataGrid.Columns></DataGrid>
 
-        <Button Grid.Column="0"
-                Grid.Row="5"
-                Content="{x:Static properties:Resources.PrepareSale}" 
-                Command="{Binding PrepareOfferCommand}"/>
+        <Grid Name="ButtonsGrid"
+              Grid.Row="5"
+              Grid.Column="0"
+              Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="1"
-                Grid.Row="5"
-                Content="{x:Static properties:Resources.FinalizeSale}" 
-                Command="{Binding FinalizeSaleCommand}"/>
+            <Button Grid.Column="0"
+                    Content="{x:Static properties:Resources.CleanCart}" 
+                    Command="{Binding CleanCartCommand}"/>
+
+            <Button Grid.Column="1"
+                    Content="{x:Static properties:Resources.PrepareSale}" 
+                    Command="{Binding PrepareOfferCommand}"/>
+
+            <Button Grid.Column="2"
+                    Content="{x:Static properties:Resources.FinalizeSale}" 
+                    Command="{Binding FinalizeSaleCommand}"/>
+        </Grid>
     </Grid>
 </UserControl>
