@@ -2,7 +2,7 @@
 
 namespace DataMiningForShoppingBasket.Interfaces
 {
-    interface IAsyncCommand : ICommand
+    public interface IAsyncCommand : ICommand
     {
         bool IsActive { get; }
     }

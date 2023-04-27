@@ -39,7 +39,7 @@ namespace DataMiningForShoppingBasket.Handlers
             var focusProductsSaleRows = await _dbManager.GetSalesByProductIds(actualFocusProductIds);
             var cartSaleRows = await _dbManager.GetSalesByProductIds(cartIds);
             var intersection = focusProductsSaleRows.Join(cartSaleRows,
-                    x => x.SaleId,
+                    x => x.SaleId, //todo: //? подумать, нужен ли для SaleRows Id?
                     y => y.SaleId,
                     (x, y) => x).ToList();
             var lonelyCount = focusProductsSaleRows.GroupBy(x => x.ProductId)

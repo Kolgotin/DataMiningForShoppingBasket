@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
@@ -53,16 +54,17 @@ namespace DataMiningForShoppingBasket.ViewModels
         //todo: добавить фильтрацию по наличию на складе
         public ReadOnlyObservableCollection<Products> ProductsList => _productsList;
 
+        //todo: сделать через DynamicData, подаписать на изменение в ConsumerCart
         public decimal TotalCost => ConsumerCart.Sum(x => x.TotalCost);
 
         #region Commands
 
-        public MyCommand<Products> AddProductIntoCartCommand { get; }
-        public MyAsyncCommand PrepareOfferCommand { get; }
-        public MyAsyncCommand FinalizeSaleCommand { get; }
-
-        public MyCommand ClearSearchCommand { get; }
-        public MyCommand DeleteProductFromCartCommand { get; }
+        public ICommand AddProductIntoCartCommand { get; }
+        public ICommand CleanCartCommand { get; }
+        public IAsyncCommand PrepareOfferCommand { get; }
+        public ICommand FinalizeSaleCommand { get; }
+        public ICommand ClearSearchCommand { get; }
+        public ICommand DeleteProductFromCartCommand { get; }
 
         #endregion
 
@@ -81,6 +83,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             ConsumerCart = new ObservableCollection<CartRowViewModel>();
             SearchString = string.Empty;
 
+            CleanCartCommand = new MyCommand(ExecuteCleanCart);
             PrepareOfferCommand = new MyAsyncCommand(ExecutePrepareOfferAsync,
                 _ => PrepareOfferCommand?.IsActive == false);
             FinalizeSaleCommand = new MyAsyncCommand(ExecuteFinalizeSaleAsync);
@@ -103,6 +106,12 @@ namespace DataMiningForShoppingBasket.ViewModels
         {
             var productList = await _dbManager.GetListAsync<Products>();
             productList.ForEach(_productsINotifier.NotifyAdd);
+        }
+
+        private void ExecuteCleanCart()
+        {
+            ConsumerCart?.Clear();
+            RaisePropertyChanged(nameof(TotalCost));
         }
 
         private async Task ExecutePrepareOfferAsync()

@@ -88,6 +88,15 @@ namespace DataMiningForShoppingBasket.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Очистить корзину.
+        /// </summary>
+        public static string CleanCart {
+            get {
+                return ResourceManager.GetString("CleanCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Уверенность.
         /// </summary>
         public static string Confidence {

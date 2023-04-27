@@ -207,4 +207,7 @@
   <data name="Confidence" xml:space="preserve">
     <value>Уверенность</value>
   </data>
+  <data name="CleanCart" xml:space="preserve">
+    <value>Очистить корзину</value>
+  </data>
 </root>
