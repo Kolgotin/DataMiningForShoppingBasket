@@ -111,6 +111,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         private void ExecuteCleanCart()
         {
             ConsumerCart?.Clear();
+            OfferProductList = null;
             RaisePropertyChanged(nameof(TotalCost));
         }
 
@@ -150,9 +151,7 @@ namespace DataMiningForShoppingBasket.ViewModels
                 };
 
                 await _dbManager.SaveSale(receipt);
-                ConsumerCart.Clear();
-                OfferProductList = null;
-                RaisePropertyChanged(nameof(TotalCost));
+                ExecuteCleanCart();
             }
             catch (Exception e)
             {
