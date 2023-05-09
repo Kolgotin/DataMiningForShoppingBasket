@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:DataMiningForShoppingBasket.Views"
              xmlns:viewModels="clr-namespace:DataMiningForShoppingBasket.ViewModels"
              xmlns:properties="clr-namespace:DataMiningForShoppingBasket.Properties"
+             xmlns:converters="clr-namespace:DataMiningForShoppingBasket.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:CashierInterfaceViewModel}">
@@ -50,6 +51,7 @@
                 <Setter Property="Margin" Value="5"/>
                 <Setter Property="FontSize" Value="20"/>
             </Style>
+            <converters:DecimalIsPositiveToFontWeightConverter x:Key="DecimalIsPositiveToFontWeightConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Margin="5">
@@ -194,10 +196,18 @@
                 <DataGridTextColumn Width="2*"
                                     Header="{x:Static properties:Resources.Cost}"
                                     Binding="{Binding Product.Cost}"/>
-                <DataGridTextColumn Width="2*"
-                                    Header="{x:Static properties:Resources.Confidence}"
-                                    Binding="{Binding Confidence, StringFormat=N3}"/>
-            </DataGrid.Columns></DataGrid>
+                <DataGridTemplateColumn Width="2*"
+                                        Header="{x:Static properties:Resources.Confidence}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Confidence, StringFormat=N3}"
+                                       FontWeight="{Binding Confidence,
+                                Converter={StaticResource DecimalIsPositiveToFontWeightConverter}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
 
         <Grid Name="ButtonsGrid"
               Grid.Row="5"

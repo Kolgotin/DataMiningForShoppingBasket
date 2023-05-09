@@ -203,6 +203,7 @@
     <Compile Include="Views\ProductDialogView.xaml.cs">
       <DependentUpon>ProductDialogView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\DecimalIsPositiveToFontWeightConverter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
