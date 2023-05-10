@@ -1,0 +1,28 @@
+﻿<Window x:Class="DataMiningForShoppingBasket.Views.FocusProductListDialogView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DataMiningForShoppingBasket.Views"
+        xmlns:viewModels="clr-namespace:DataMiningForShoppingBasket.ViewModels"
+        xmlns:properties="clr-namespace:DataMiningForShoppingBasket.Properties"
+        mc:Ignorable="d"
+        Title="{x:Static properties:Resources.FocusProductList}"
+        Height="600" Width="1024"
+        d:DataContext="{d:DesignInstance viewModels:FocusProductListViewModel}">
+    <Window.Resources>
+        <Style TargetType="DataGrid">
+            <Style.Setters>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="AutoGenerateColumns" Value="False"/>
+                <Setter Property="SelectionMode" Value="Single"/>
+                <Setter Property="CanUserSortColumns" Value="False"/>
+                <Setter Property="CanUserAddRows" Value="False"/>
+                <Setter Property="FontSize" Value="15"/>
+            </Style.Setters>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <local:FocusProductListView DataContext="{Binding}"/>
+    </Grid>
+</Window>

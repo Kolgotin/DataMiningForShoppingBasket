@@ -119,12 +119,14 @@
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Commands\MyCommand.cs" />
+    <Compile Include="Common\AsyncInitializedCreator`1.cs" />
     <Compile Include="Common\CurrentSession.cs" />
     <Compile Include="Common\DbManager.cs" />
     <Compile Include="Common\EqualityProductsComparer.cs" />
     <Compile Include="Common\MessageWriter.cs" />
     <Compile Include="Common\MyException.cs" />
     <Compile Include="Common\UserType.cs" />
+    <Compile Include="Converters\BoolToFontWeightConverter.cs" />
     <Compile Include="DataMiningDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -152,6 +154,7 @@
     <Compile Include="Commands\MyAsyncCommand`1.cs" />
     <Compile Include="Commands\MyCommand`1.cs" />
     <Compile Include="Commands\NotifyTaskCompletion.cs" />
+    <Compile Include="Interfaces\IAsyncInitialized.cs" />
     <Compile Include="Interfaces\INotifier`2.cs" />
     <Compile Include="Interfaces\IHavingId`1.cs" />
     <Compile Include="Interfaces\IUserControl.cs" />
@@ -183,6 +186,7 @@
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\FocusProductDialogViewModel.cs" />
     <Compile Include="Common\NotifyPropertyChangedImplementation.cs" />
+    <Compile Include="ViewModels\FocusProductListViewModel.cs" />
     <Compile Include="ViewModels\FocusProductViewModel.cs" />
     <Compile Include="ViewModels\ManagerInterfaceViewModel.cs" />
     <Compile Include="ViewModels\CashierInterfaceViewModel.cs" />
@@ -193,6 +197,12 @@
     </Compile>
     <Compile Include="Views\FocusProductDialogView.xaml.cs">
       <DependentUpon>FocusProductDialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FocusProductListDialogView.xaml.cs">
+      <DependentUpon>FocusProductListDialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FocusProductListView.xaml.cs">
+      <DependentUpon>FocusProductListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ManagerInterfaceView.xaml.cs">
       <DependentUpon>ManagerInterfaceView.xaml</DependentUpon>
@@ -221,6 +231,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FocusProductDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FocusProductListDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FocusProductListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

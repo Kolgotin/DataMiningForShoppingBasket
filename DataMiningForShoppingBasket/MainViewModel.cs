@@ -10,8 +10,7 @@ namespace DataMiningForShoppingBasket
 {
     public class MainViewModel : NotifyPropertyChangedImplementation
     {
-        public MyAsyncCommand<Window> ExitCommand { get; }
-
+        public IAsyncCommand ExitCommand { get; }
         public IUserControl CurrentUserControl { get; set; }
 
         public MainViewModel(IUserControl userControl)
