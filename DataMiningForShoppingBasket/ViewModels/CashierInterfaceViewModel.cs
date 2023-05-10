@@ -2,6 +2,7 @@
 using DataMiningForShoppingBasket.Common;
 using DataMiningForShoppingBasket.Handlers;
 using DataMiningForShoppingBasket.Interfaces;
+using DataMiningForShoppingBasket.Views;
 using DynamicData;
 using DynamicData.Binding;
 using System;
@@ -21,7 +22,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         private readonly IDbManager _dbManager;
         private readonly IPrepareOfferHandler _prepareOfferHandler;
         private readonly INotifier<Products, int> _productsINotifier;
-        private readonly CompositeDisposable _cleanup;
+        private readonly CompositeDisposable _cleanup = new CompositeDisposable();
 
         private string _searchString;
         private List<AdditionalOfferViewModel> _offerProductList;
@@ -59,6 +60,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         #region Commands
 
+        public IAsyncCommand ShowFocusProductListCommand { get; }
         public ICommand AddProductIntoCartCommand { get; }
         public ICommand CleanCartCommand { get; }
         public IAsyncCommand PrepareOfferCommand { get; }
@@ -83,6 +85,8 @@ namespace DataMiningForShoppingBasket.ViewModels
             ConsumerCart = new ObservableCollection<CartRowViewModel>();
             SearchString = string.Empty;
 
+            ShowFocusProductListCommand = new MyAsyncCommand(ExecuteShowFocusProductListAsync,
+                _=> ShowFocusProductListCommand?.IsActive == false);
             CleanCartCommand = new MyCommand(ExecuteCleanCart);
             PrepareOfferCommand = new MyAsyncCommand(ExecutePrepareOfferAsync,
                 _ => PrepareOfferCommand?.IsActive == false);
@@ -98,7 +102,6 @@ namespace DataMiningForShoppingBasket.ViewModels
                 .Bind(out _productsList)
                 .Subscribe();
 
-            _cleanup = new CompositeDisposable();
             _cleanup.Add(productsChangeDisposable);
         }
 
@@ -106,6 +109,23 @@ namespace DataMiningForShoppingBasket.ViewModels
         {
             var productList = await _dbManager.GetListAsync<Products>();
             productList.ForEach(_productsINotifier.NotifyAdd);
+        }
+
+        private static async Task ExecuteShowFocusProductListAsync()
+        {
+            try
+            {
+                var focusProductListViewModel = await AsyncInitializedCreator<FocusProductListViewModel>.ConstructorAsync();
+                var view = new FocusProductListDialogView
+                {
+                    DataContext = focusProductListViewModel
+                };
+                view.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                MessageWriter.ShowMessage(e.Message);
+            }
         }
 
         private void ExecuteCleanCart()

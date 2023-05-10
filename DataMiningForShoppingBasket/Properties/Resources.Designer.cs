@@ -196,7 +196,7 @@ namespace DataMiningForShoppingBasket.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Id.
+        ///   Looks up a localized string similar to Ид.
         /// </summary>
         public static string Id {
             get {

@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="DataMiningForShoppingBasket.Views.FocusProductListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DataMiningForShoppingBasket.Views"
+             xmlns:properties="clr-namespace:DataMiningForShoppingBasket.Properties"
+             xmlns:viewModels="clr-namespace:DataMiningForShoppingBasket.ViewModels"
+             xmlns:converters="clr-namespace:DataMiningForShoppingBasket.Converters"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:FocusProductListViewModel}">
+    <UserControl.Resources>
+        <converters:BoolToFontWeightConverter x:Key="BoolToFontWeightConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <DataGrid x:Name="FocusProductsDataGrid"
+                  IsReadOnly="True"
+                  CanUserSortColumns="True"
+                  CanUserReorderColumns="False"
+                  AutoGenerateColumns="False"
+                  VerticalAlignment="Stretch"
+                  ItemsSource="{Binding FocusProductList}"
+                  RowHeaderWidth="0">
+            <DataGrid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick"
+                              Command="{Binding DoubleClickElementCommand}"
+                              CommandParameter="{Binding ElementName=FocusProductsDataGrid, Path=SelectedItem}"/>
+            </DataGrid.InputBindings>
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*"
+                                    Header="{x:Static properties:Resources.Id}"
+                                    Binding="{Binding Id}"/>
+                <DataGridTemplateColumn Width="6*"
+                                        Header="{x:Static properties:Resources.Description}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Description}"
+                                       FontWeight="{Binding IsActual,
+                                Converter={StaticResource BoolToFontWeightConverter}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Width="4*"
+                                    Header="{x:Static properties:Resources.StartDate}"
+                                    Binding="{Binding StartDate}"/>
+                <DataGridTextColumn Width="4*"
+                                    Header="{x:Static properties:Resources.FinishDate}"
+                                    Binding="{Binding FinishDate}"/>
+                <DataGridTextColumn Width="2*"
+                                    Header="{x:Static properties:Resources.ProductId}"
+                                    Binding="{Binding ProductId}"/>
+                <DataGridTextColumn Width="5*"
+                                    Header="{x:Static properties:Resources.ProductName}"
+                                    Binding="{Binding FocusProduct.Products.ProductName}"/>
+                <DataGridTextColumn Width="2*"
+                                    Header="{x:Static properties:Resources.DiscountCost}"
+                                    Binding="{Binding DiscountCost}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

@@ -15,12 +15,11 @@ namespace DataMiningForShoppingBasket.ViewModels
     {
         private readonly IDbManager _dbManager;
         private readonly INotifier<Products, int> _productsINotifier;
-        private readonly INotifier<FocusProducts, int> _focusProductsINotifier;
 
         private readonly CompositeDisposable _cleanup;
 
         private readonly ReadOnlyObservableCollection<ProductViewModel> _productList;
-        private readonly ReadOnlyObservableCollection<FocusProductViewModel> _focusProductList;
+        private FocusProductListViewModel _focusProductList;
 
         #region ILabelHavingDataContext
         public string WindowLabel => "Менеджер";
@@ -29,53 +28,55 @@ namespace DataMiningForShoppingBasket.ViewModels
         #region Properties
 
         #region Commands
-        public MyAsyncCommand<ProductViewModel> AddOrEditProductCommand { get; }
-        public MyAsyncCommand<FocusProductViewModel> AddOrEditFocusProductCommand { get; }
+        public IAsyncCommand AddOrEditProductCommand { get; }
+        public IAsyncCommand AddOrEditFocusProductCommand { get; }
         #endregion
 
         public ReadOnlyObservableCollection<ProductViewModel> ProductList => _productList;
-        public ReadOnlyObservableCollection<FocusProductViewModel> FocusProductList => _focusProductList;
-        
+
+        public FocusProductListViewModel FocusProductList
+        {
+            get => _focusProductList;
+            private set => SetProperty(ref _focusProductList, value);
+        }
+
         #endregion
 
         public ManagerInterfaceViewModel()
         {
             _dbManager = DbManager.GetInstance();
             _productsINotifier = DefaultNotifier<Products, int>.GetInstance();
-            _focusProductsINotifier = DefaultNotifier<FocusProducts, int>.GetInstance();
-
-            //todo: вызвать по-нормальному
-            var init = new MyAsyncCommand(InitializeExecuteAsync);
-            init.Execute();
 
             AddOrEditProductCommand = new MyAsyncCommand<ProductViewModel>(
                 ExecuteAddProductAsync,
                 _ => AddOrEditProductCommand?.IsActive == false);
             AddOrEditFocusProductCommand = new MyAsyncCommand<FocusProductViewModel>(
                 ExecuteAddOrEditFocusProductAsync,
-                obj => AddOrEditFocusProductCommand?.IsActive == false);
+                _ => AddOrEditFocusProductCommand?.IsActive == false);
 
-            _cleanup = new CompositeDisposable();
-            _cleanup.Add(_productsINotifier.Changes
-                .Transform(x=> new ProductViewModel(x))
-                .Bind(out _productList)
-                .Subscribe());
-            _cleanup.Add(_focusProductsINotifier.Changes
-                .Transform(x=> new FocusProductViewModel(x))
-                .Bind(out _focusProductList)
-                .Subscribe());
+            //todo: вызвать по-нормальному
+            var init = new MyAsyncCommand(InitializeExecuteAsync);
+            init.Execute();
+
+            _cleanup = new CompositeDisposable
+            {
+                _productsINotifier.Changes
+                    .Transform(x => new ProductViewModel(x))
+                    .Bind(out _productList)
+                    .Subscribe()
+            };
         }
-
+        
         private async Task InitializeExecuteAsync()
         {
             var productList = await _dbManager.GetListAsync<Products>();
-            var focusProductsList = await _dbManager.GetListAsync<FocusProducts>();
-
             productList.ForEach(_productsINotifier.NotifyAdd);
-            focusProductsList.ForEach(_focusProductsINotifier.NotifyAdd);
+            FocusProductList = await AsyncInitializedCreator<FocusProductListViewModel>.ConstructorAsync();
+            FocusProductList.DoubleClickElementCommand = AddOrEditFocusProductCommand;
+            _cleanup.Add(FocusProductList);
         }
         
-        private Task ExecuteAddProductAsync(ProductViewModel productVm)
+        private static Task ExecuteAddProductAsync(ProductViewModel productVm)
         {
             var product = productVm?.Product;
             try
@@ -96,7 +97,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             return Task.CompletedTask;
         }
 
-        private Task ExecuteAddOrEditFocusProductAsync(FocusProductViewModel focusProductVm)
+        private static Task ExecuteAddOrEditFocusProductAsync(FocusProductViewModel focusProductVm)
         {
             var focusProduct = focusProductVm?.FocusProduct;
             try

@@ -7,7 +7,8 @@
         xmlns:viewModels="clr-namespace:DataMiningForShoppingBasket.ViewModels"
         xmlns:properties="clr-namespace:DataMiningForShoppingBasket.Properties"
         mc:Ignorable="d"
-        Title="{x:Static properties:Resources.Product}" Height="450" Width="800"
+        Title="{x:Static properties:Resources.Product}"
+        Height="450" Width="800"
         x:Name="ProductDialogWindow"
         d:DataContext="{d:DesignInstance viewModels:ProductDialogViewModel}">
     <Window.Resources>

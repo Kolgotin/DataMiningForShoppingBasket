@@ -36,12 +36,10 @@ namespace DataMiningForShoppingBasket.ViewModels
             try
             {
 #if DEBUG
-                DebugCheckProfile(UserType.Cashier);
-#endif
-
-#if !DEBUG
+                CurrentSession.CurrentUser = await DebugCheckProfileAsync(UserType.Manager);
+#else
                 var password = passwordBox?.Password;
-                await CheckProfileAsync(password);
+                CurrentSession.CurrentUser = await CheckProfileAsync(password);
 #endif
 
                 var userControl = GetWindowType(CurrentSession.CurrentUser.UserTypeId);
@@ -55,22 +53,21 @@ namespace DataMiningForShoppingBasket.ViewModels
             }
         }
 
-        private static void DebugCheckProfile(UserType userType)
+        private static Task<Users> DebugCheckProfileAsync(UserType userType)
         {
+            Users currentUser;
             switch (userType)
             {
                 case UserType.Manager:
-                    CurrentSession.CurrentUser =
-                    new Users
-                        {
-                            Id = 1,
-                            UserTypeId = 1,
-                            UserName = "manager"
+                    currentUser = new Users
+                    {
+                        Id = 1,
+                        UserTypeId = 1,
+                        UserName = "manager"
                     };
                     break;
                 case UserType.Cashier:
-                    CurrentSession.CurrentUser =
-                    new Users
+                    currentUser = new Users
                     {
                         Id = 2,
                         UserTypeId = 2,
@@ -80,9 +77,11 @@ namespace DataMiningForShoppingBasket.ViewModels
                 default:
                     throw new ArgumentOutOfRangeException(nameof(userType), userType, null);
             }
+
+            return Task.FromResult(currentUser);
         }
 
-        private async Task CheckProfileAsync(string password)
+        private async Task<Users> CheckProfileAsync(string password)
         {
             var currentUser = await _dbManager.GetUserAsync(Login);
 
@@ -96,7 +95,7 @@ namespace DataMiningForShoppingBasket.ViewModels
                 throw new MyException("Неверный пароль");
             }
 
-            CurrentSession.CurrentUser = currentUser;
+            return currentUser;
         }
 
         private IUserControl GetWindowType(int? userTypeId)

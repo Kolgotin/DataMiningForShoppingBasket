@@ -25,15 +25,6 @@
                     <Setter Property="FontSize" Value="15"/>
                 </Style.Setters>
             </Style>
-            <Style TargetType="Button">
-                <Style.Setters>
-                    <Setter Property="Margin" Value="5"/>
-                    <Setter Property="Padding" Value="15,3"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="FontSize" Value="20"/>
-                </Style.Setters>
-            </Style>
             <Style TargetType="Button" x:Key="InsideButtonStyle">
                 <Setter Property="Margin" Value="10,0"/>
                 <Setter Property="Padding" Value="5,0"/>
@@ -209,27 +200,32 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid Name="ButtonsGrid"
+        <UniformGrid Name="ButtonsGrid"
               Grid.Row="5"
               Grid.Column="0"
               Grid.ColumnSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+            <UniformGrid.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="5,3"/>
+                    <Setter Property="Padding" Value="15,3"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="20"/>
+                </Style>
+            </UniformGrid.Resources>
 
-            <Button Grid.Column="0"
-                    Content="{x:Static properties:Resources.CleanCart}" 
+            <Button Content="{x:Static properties:Resources.FocusProductList}" 
+                    Command="{Binding ShowFocusProductListCommand}"/>
+
+            <Button Content="{x:Static properties:Resources.CleanCart}" 
                     Command="{Binding CleanCartCommand}"/>
 
-            <Button Grid.Column="1"
-                    Content="{x:Static properties:Resources.PrepareSale}" 
+            <Button Content="{x:Static properties:Resources.PrepareSale}" 
                     Command="{Binding PrepareOfferCommand}"/>
 
-            <Button Grid.Column="2"
+            <Button FontWeight="Bold"
                     Content="{x:Static properties:Resources.FinalizeSale}" 
                     Command="{Binding FinalizeSaleCommand}"/>
-        </Grid>
+        </UniformGrid>
     </Grid>
 </UserControl>

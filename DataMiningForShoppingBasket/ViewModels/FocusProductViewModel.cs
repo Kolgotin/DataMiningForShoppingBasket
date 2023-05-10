@@ -65,6 +65,8 @@ namespace DataMiningForShoppingBasket.ViewModels
             }
         }
 
+        public bool IsActual => StartDate <= DateTime.Now && FinishDate >= DateTime.Now.Date;
+
         public FocusProductViewModel(FocusProducts focusProduct)
         {
             FocusProduct = focusProduct;

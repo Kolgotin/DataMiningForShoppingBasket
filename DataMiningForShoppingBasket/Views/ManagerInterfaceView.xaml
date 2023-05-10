@@ -70,44 +70,10 @@
                     Content="{x:Static properties:Resources.AddFocusProduct}"
                     Command="{Binding AddOrEditFocusProductCommand}"/>
 
-            <DataGrid Grid.Row="1"
-                      Grid.Column="0"
-                      Grid.ColumnSpan="2"
-                      x:Name="FocusProductsDataGrid"
-                      IsReadOnly="True"
-                      VerticalAlignment="Stretch"
-                      ItemsSource="{Binding FocusProductList}">
-                <DataGrid.InputBindings>
-                    <MouseBinding
-                        MouseAction="LeftDoubleClick"
-                        Command="{Binding AddOrEditFocusProductCommand}"
-                        CommandParameter="{Binding ElementName=FocusProductsDataGrid, Path=SelectedItem}"/>
-                </DataGrid.InputBindings>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="*"
-                                        Header="Id"
-                                        Binding="{Binding Id}"/>
-                    <DataGridTextColumn Width="5*"
-                                        Header="{x:Static properties:Resources.Description}"
-                                        Binding="{Binding Description}"/>
-                    <DataGridTextColumn Width="2*"
-                                        Header="{x:Static properties:Resources.StartDate}"
-                                        Binding="{Binding StartDate}"/>
-                    <DataGridTextColumn Width="2*"
-                                        Header="{x:Static properties:Resources.FinishDate}"
-                                        Binding="{Binding FinishDate}"/>
-                    <DataGridTextColumn Width="2*"
-                                        Header="{x:Static properties:Resources.ProductId}"
-                                        Binding="{Binding ProductId}"/>
-                    <DataGridTextColumn Width="5*"
-                                        Header="{x:Static properties:Resources.ProductName}"
-                                        Binding="{Binding FocusProduct.Products.ProductName}"/>
-                    <DataGridTextColumn Width="2*"
-                                        Header="{x:Static properties:Resources.DiscountCost}"
-                                        Binding="{Binding DiscountCost}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-
+            <local:FocusProductListView Grid.Row="1"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="2"
+                                        DataContext="{Binding FocusProductList}"/>
         </Grid>
 
         <Grid Name="Products"
