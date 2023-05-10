@@ -76,7 +76,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         {
             _dbManager = DbManager.GetInstance();
             _productsINotifier = DefaultNotifier<Products, int>.GetInstance();
-            _prepareOfferHandler = AprioriAlgorithm.GetInstance();
+            _prepareOfferHandler = AprioriAlgorithm3Deep.GetInstance();
 
             //todo: вызвать по-нормальному
             var init = new MyAsyncCommand(InitializeExecuteAsync);

@@ -149,6 +149,7 @@
       <DependentUpon>DataMiningDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Handlers\AprioryAlgorithm.cs" />
+    <Compile Include="Handlers\AprioriAlgorithm3Deep.cs" />
     <Compile Include="Handlers\PrepareOfferSimpleHandler.cs" />
     <Compile Include="Interfaces\IAsyncCommand.cs" />
     <Compile Include="Commands\MyAsyncCommand`1.cs" />

@@ -207,7 +207,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DataMiningModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="DataMiningEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="DataMiningEntities" annotation:LazyLoadingEnabled="false">
           <EntitySet Name="Clients" EntityType="DataMiningModel.Clients" />
           <EntitySet Name="Products" EntityType="DataMiningModel.Products" />
           <EntitySet Name="ProductTypes" EntityType="DataMiningModel.ProductTypes" />

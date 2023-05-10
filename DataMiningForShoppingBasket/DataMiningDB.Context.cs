@@ -18,6 +18,7 @@ namespace DataMiningForShoppingBasket
         public DataMiningEntities()
             : base("name=DataMiningEntities")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

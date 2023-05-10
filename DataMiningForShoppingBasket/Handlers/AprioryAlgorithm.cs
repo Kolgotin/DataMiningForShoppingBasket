@@ -9,6 +9,9 @@ namespace DataMiningForShoppingBasket.Handlers
 {
     public class AprioriAlgorithm : IPrepareOfferHandler
     {
+        private const decimal MaxConfidence = 100m;
+        private const decimal MinConfidence = 0m;
+
         private static readonly Lazy<AprioriAlgorithm> Lazy =
             new Lazy<AprioriAlgorithm>(() => new AprioriAlgorithm());
 
@@ -26,7 +29,7 @@ namespace DataMiningForShoppingBasket.Handlers
             if (!cart.Any())
                 return new Dictionary<Products, decimal>();
 
-            var cartIds = cart.Select(x => x.Id).ToList();
+            var cartProductIds = cart.Select(x => x.Id).ToList();
             var focusProductsList = await _dbManager.GetListAsync<FocusProducts>().ConfigureAwait(false);
             var actualFocusProducts = focusProductsList
                 .Where(x => x.StartDate <= DateTime.Now
@@ -34,10 +37,10 @@ namespace DataMiningForShoppingBasket.Handlers
                 .Select(x => x.Products).ToList();
             var actualFocusProductIds = actualFocusProducts
                 .Select(x => x.Id)
-                .Except(cartIds)
+                .Except(cartProductIds)
                 .ToList();
             var focusProductsSaleRows = await _dbManager.GetSalesByProductIds(actualFocusProductIds);
-            var cartSaleRows = await _dbManager.GetSalesByProductIds(cartIds);
+            var cartSaleRows = await _dbManager.GetSalesByProductIds(cartProductIds);
             var intersection = focusProductsSaleRows.Join(cartSaleRows,
                     x => x.SaleId, //todo: //? подумать, нужен ли для SaleRows Id?
                     y => y.SaleId,
@@ -47,11 +50,10 @@ namespace DataMiningForShoppingBasket.Handlers
             var intersectionCount = intersection.GroupBy(x => x.ProductId)
                 .ToDictionary(x => x.Key, x => x.Count());
 
-            var res = actualFocusProducts.ToDictionary(x => x,
+            return actualFocusProducts.ToDictionary(x => x,
                 x => intersectionCount.ContainsKey(x.Id)
-                    ? 100m * intersectionCount[x.Id] / lonelyCount[x.Id]
-                    : 0m);
-            return res;
+                    ? MaxConfidence * intersectionCount[x.Id] / lonelyCount[x.Id]
+                    : MinConfidence);
         }
     }
 }
