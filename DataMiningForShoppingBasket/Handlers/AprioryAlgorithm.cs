@@ -12,8 +12,7 @@ namespace DataMiningForShoppingBasket.Handlers
         private const decimal MaxConfidence = 100m;
         private const decimal MinConfidence = 0m;
 
-        private static readonly Lazy<AprioriAlgorithm> Lazy =
-            new Lazy<AprioriAlgorithm>(() => new AprioriAlgorithm());
+        private static readonly Lazy<AprioriAlgorithm> Lazy = new(() => new AprioriAlgorithm());
 
         private readonly IDbManager _dbManager;
 
@@ -24,16 +23,15 @@ namespace DataMiningForShoppingBasket.Handlers
 
         public static AprioriAlgorithm GetInstance() => Lazy.Value;
 
-        public async Task<Dictionary<Products, decimal>> PrepareOffer(IReadOnlyCollection<Products> cart)
+        public async Task<List<(Products, decimal)>> PrepareOfferAsync(IReadOnlyCollection<Products> cart)
         {
             if (!cart.Any())
-                return new Dictionary<Products, decimal>();
+                return new List<(Products, decimal)>();
 
             var cartProductIds = cart.Select(x => x.Id).ToList();
             var focusProductsList = await _dbManager.GetListAsync<FocusProducts>().ConfigureAwait(false);
             var actualFocusProducts = focusProductsList
-                .Where(x => x.StartDate <= DateTime.Now
-                            && DateTime.Now <= x.FinishDate && x.Products.WarehouseQuantity > 0)
+                .Where(x => x.IsActual() && x.Products.WarehouseQuantity > 0)
                 .Select(x => x.Products).ToList();
             var actualFocusProductIds = actualFocusProducts
                 .Select(x => x.Id)
@@ -50,10 +48,11 @@ namespace DataMiningForShoppingBasket.Handlers
             var intersectionCount = intersection.GroupBy(x => x.ProductId)
                 .ToDictionary(x => x.Key, x => x.Count());
 
-            return actualFocusProducts.ToDictionary(x => x,
-                x => intersectionCount.ContainsKey(x.Id)
+            return actualFocusProducts.Select(x => (x,
+                intersectionCount.ContainsKey(x.Id)
                     ? MaxConfidence * intersectionCount[x.Id] / lonelyCount[x.Id]
-                    : MinConfidence);
+                    : MinConfidence))
+                .ToList();
         }
     }
 }

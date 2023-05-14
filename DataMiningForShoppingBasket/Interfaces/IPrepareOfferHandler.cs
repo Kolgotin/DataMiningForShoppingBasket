@@ -5,6 +5,6 @@ namespace DataMiningForShoppingBasket.Interfaces
 {
     public interface IPrepareOfferHandler
     {
-        Task<Dictionary<Products, decimal>> PrepareOffer(IReadOnlyCollection<Products> cart);
+        Task<List<(Products, decimal)>> PrepareOfferAsync(IReadOnlyCollection<Products> cart);
     }
 }

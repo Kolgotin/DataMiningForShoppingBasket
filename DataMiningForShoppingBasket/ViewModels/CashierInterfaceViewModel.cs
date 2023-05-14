@@ -22,7 +22,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         private readonly IDbManager _dbManager;
         private readonly IPrepareOfferHandler _prepareOfferHandler;
         private readonly INotifier<Products, int> _productsINotifier;
-        private readonly CompositeDisposable _cleanup = new CompositeDisposable();
+        private readonly CompositeDisposable _cleanup = new();
 
         private string _searchString;
         private List<AdditionalOfferViewModel> _offerProductList;
@@ -140,9 +140,9 @@ namespace DataMiningForShoppingBasket.ViewModels
             try
             {
                 var productsInCart = ConsumerCart.Select(x => x.Product).ToList();
-                var productsList = await _prepareOfferHandler.PrepareOffer(productsInCart);
+                var productsList = await _prepareOfferHandler.PrepareOfferAsync(productsInCart);
                 OfferProductList = productsList
-                    .Select(x => new AdditionalOfferViewModel(x.Key, x.Value))
+                    .Select(x => new AdditionalOfferViewModel(x.Item1, x.Item2))
                     .OrderByDescending(x => x.Confidence)
                     .ToList();
             }
@@ -158,7 +158,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             {
                 var receipt = new SaleReceipts
                 {
-                    SaleDateTime = DateTime.Now,
+                    SaleDateTime = DateTime.UtcNow,
                     CashierId = CurrentSession.CurrentUser.Id,
                     ClientId = null,
                     SaleRows = ConsumerCart.Select(x =>
