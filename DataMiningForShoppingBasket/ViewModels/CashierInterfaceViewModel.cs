@@ -21,7 +21,7 @@ namespace DataMiningForShoppingBasket.ViewModels
     {
         private readonly IDbManager _dbManager;
         private readonly IPrepareOfferHandler _prepareOfferHandler;
-        private readonly INotifier<Products, int> _productsINotifier;
+        private readonly INotifier<Products, int> _productsNotifier;
         private readonly CompositeDisposable _cleanup = new();
 
         private string _searchString;
@@ -75,7 +75,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         public CashierInterfaceViewModel()
         {
             _dbManager = DbManager.GetInstance();
-            _productsINotifier = DefaultNotifier<Products, int>.GetInstance();
+            _productsNotifier = DefaultNotifier<Products, int>.GetInstance();
             _prepareOfferHandler = AprioriAlgorithm3Deep.GetInstance();
 
             //todo: вызвать по-нормальному
@@ -95,10 +95,10 @@ namespace DataMiningForShoppingBasket.ViewModels
             AddProductIntoCartCommand = new MyCommand<Products>(ExecuteAddProductIntoCartAsync);
             DeleteProductFromCartCommand = new MyCommand(ExecuteDeleteProductFromCart);
 
-            var productsChangeDisposable = _productsINotifier.Changes
-                .Filter(
-                    this.WhenValueChanged(x => x.SearchString)
-                        .Select(SearchFilter))
+            var productsChangeDisposable = _productsNotifier.Changes
+                .Filter(this.WhenValueChanged(x => x.SearchString)
+                    .Select(SearchFilter))
+                .SortBy(x => x.Id)
                 .Bind(out _productsList)
                 .Subscribe();
 
@@ -108,7 +108,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         private async Task InitializeExecuteAsync()
         {
             var productList = await _dbManager.GetListAsync<Products>();
-            productList.ForEach(_productsINotifier.NotifyAdd);
+            productList.ForEach(_productsNotifier.NotifyAdd);
         }
 
         private static async Task ExecuteShowFocusProductListAsync()
@@ -227,7 +227,11 @@ namespace DataMiningForShoppingBasket.ViewModels
             => product.Cost.HasValue && product.WarehouseQuantity > 0;
 
         private static Func<Products, bool> SearchFilter(string searchStr)
-            => x => x.ProductName.ToLower().Contains(searchStr.ToLower());
+        {
+            var searchStrLower = searchStr.ToLower();
+            return x => x.ProductName.ToLower().Contains(searchStrLower) ||
+                        x.Id.ToString().Contains(searchStrLower);
+        }
 
         public void Dispose()
         {

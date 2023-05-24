@@ -56,7 +56,7 @@ IF NOT EXISTS (select * from sys.tables where name='Products')
 BEGIN
     CREATE TABLE [dbo].[Products](
 	    [Id] [int] IDENTITY(1,1) NOT NULL,
-	    [ProductName] [nvarchar](32) NOT NULL,
+	    [ProductName] [nvarchar](64) NOT NULL,
 	    [ProductTypeId] [int] NULL,
 	    [Cost] [decimal](9, 2) NULL,
 	    [FractionalAllowed] bit NOT NULL CONSTRAINT [DF_Products_FractionalAllowed] default (0),
