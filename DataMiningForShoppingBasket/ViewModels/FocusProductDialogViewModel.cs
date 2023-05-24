@@ -12,6 +12,10 @@ namespace DataMiningForShoppingBasket.ViewModels
 {
     public class FocusProductDialogViewModel : NotifyPropertyChangedImplementation
     {
+        private const int TimeZoneStartHourCorrection = 3;
+        private const int TimeZoneFinishHourCorrection = 27;
+        private const int TimeDateSecondsCorrection = -1;
+
         private readonly FocusProducts _focusProduct;
         private readonly IDbManager _dbManager;
 
@@ -56,8 +60,9 @@ namespace DataMiningForShoppingBasket.ViewModels
         private async Task SaveExecuteAsync(Window window)
         {
             _focusProduct.Description = Description ?? string.Empty;
-            _focusProduct.StartDate = StartDate;
-            _focusProduct.FinishDate = FinishDate;
+            _focusProduct.StartDate = StartDate.ToUniversalTime().AddHours(TimeZoneStartHourCorrection);
+            _focusProduct.FinishDate = FinishDate.Date.ToUniversalTime()
+                .AddHours(TimeZoneFinishHourCorrection).AddSeconds(TimeDateSecondsCorrection);
             _focusProduct.ProductId = ProductId;
             _focusProduct.DiscountCost = DiscountCost;
             await _dbManager.SaveAndNotifyHavingIdEntityAsync<FocusProducts, int>(_focusProduct);
