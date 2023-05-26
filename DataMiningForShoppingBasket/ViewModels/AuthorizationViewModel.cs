@@ -36,7 +36,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             try
             {
 #if DEBUG
-                CurrentSession.CurrentUser = await DebugCheckProfileAsync(UserType.Manager);
+                CurrentSession.CurrentUser = await DebugCheckProfileAsync(UserType.Cashier);
 #else
                 var password = passwordBox?.Password;
                 CurrentSession.CurrentUser = await CheckProfileAsync(password);
