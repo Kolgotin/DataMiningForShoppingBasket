@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows;
 using System;
+using System.Net.Http.Headers;
 using System.Windows.Data;
 
 namespace DataMiningForShoppingBasket.Converters
@@ -11,6 +12,6 @@ namespace DataMiningForShoppingBasket.Converters
             value is true ? FontWeights.Bold : FontWeights.Normal;
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
-            throw new NotImplementedException();
+            value is FontWeight f && f == FontWeights.Bold;
     }
 }

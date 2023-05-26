@@ -262,7 +262,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
           <Property Name="ProductTypeId" Type="Int32" />
           <Property Name="Cost" Type="Decimal" Precision="9" Scale="2" />
           <Property Name="FractionalAllowed" Type="Boolean" Nullable="false" />

@@ -67,7 +67,8 @@
         <TextBox Grid.Row="0"
                  Grid.Column="1"
                  MaxLength="32"
-                 Text="{Binding ProductName}"/>
+                 Text="{Binding ProductName}"
+                 TextWrapping="Wrap"/>
 
         <Label Grid.Row="1"
                Grid.Column="0"

@@ -36,7 +36,7 @@ namespace DataMiningForShoppingBasket.ViewModels
             try
             {
 #if DEBUG
-                CurrentSession.CurrentUser = await DebugCheckProfileAsync(UserType.Cashier);
+                CurrentSession.CurrentUser = await DebugCheckProfileAsync(UserType.Manager);
 #else
                 var password = passwordBox?.Password;
                 CurrentSession.CurrentUser = await CheckProfileAsync(password);
@@ -55,28 +55,12 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         private static Task<Users> DebugCheckProfileAsync(UserType userType)
         {
-            Users currentUser;
-            switch (userType)
+            var currentUser = userType switch
             {
-                case UserType.Manager:
-                    currentUser = new Users
-                    {
-                        Id = 1,
-                        UserTypeId = 1,
-                        UserName = "manager"
-                    };
-                    break;
-                case UserType.Cashier:
-                    currentUser = new Users
-                    {
-                        Id = 2,
-                        UserTypeId = 2,
-                        UserName = "cashier"
-                    };
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(userType), userType, null);
-            }
+                UserType.Manager => new Users {Id = 1, UserTypeId = 1, UserName = "manager"},
+                UserType.Cashier => new Users {Id = 2, UserTypeId = 2, UserName = "cashier"},
+                _ => throw new ArgumentOutOfRangeException(nameof(userType), userType, null)
+            };
 
             return Task.FromResult(currentUser);
         }
@@ -100,15 +84,12 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         private IUserControl GetWindowType(int? userTypeId)
         {
-            switch (userTypeId)
+            return userTypeId switch
             {
-                case 1:
-                    return new ManagerInterfaceView();
-                case 2:
-                    return new CashierInterfaceView();
-                default:
-                    throw new MyException("Тип пользователя не определён");
-            }
+                1 => new ManagerInterfaceView(),
+                2 => new CashierInterfaceView(),
+                _ => throw new MyException("Тип пользователя не определён")
+            };
         }
     }
 }
