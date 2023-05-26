@@ -1,18 +1,15 @@
-﻿using DataMiningForShoppingBasket.Commands;
-using DataMiningForShoppingBasket.Common;
-using DataMiningForShoppingBasket.Handlers;
-using DataMiningForShoppingBasket.Interfaces;
-using DataMiningForShoppingBasket.Views;
-using DynamicData;
-using DynamicData.Binding;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DataMiningForShoppingBasket.Commands;
+using DataMiningForShoppingBasket.Common;
+using DataMiningForShoppingBasket.Handlers;
+using DataMiningForShoppingBasket.Interfaces;
+using DataMiningForShoppingBasket.Views;
 
 namespace DataMiningForShoppingBasket.ViewModels
 {
@@ -21,12 +18,10 @@ namespace DataMiningForShoppingBasket.ViewModels
     {
         private readonly IDbManager _dbManager;
         private readonly IPrepareOfferHandler _prepareOfferHandler;
-        private readonly INotifier<Products, int> _productsNotifier;
         private readonly CompositeDisposable _cleanup = new();
 
-        private string _searchString;
         private List<AdditionalOfferViewModel> _offerProductList;
-        private readonly ReadOnlyObservableCollection<Products> _productsList;
+        private ProductListViewModel _productList;
 
         #region ILabelHavingDataContext
 
@@ -45,18 +40,15 @@ namespace DataMiningForShoppingBasket.ViewModels
             get => _offerProductList;
             set => SetProperty(ref _offerProductList, value);
         }
-
-        public string SearchString
-        {
-            get => _searchString;
-            set => SetProperty(ref _searchString, value);
-        }
-
-        //todo: добавить фильтрацию по наличию на складе
-        public ReadOnlyObservableCollection<Products> ProductsList => _productsList;
-
+        
         //todo: сделать через DynamicData, подаписать на изменение в ConsumerCart
         public decimal TotalCost => ConsumerCart.Sum(x => x.TotalCost);
+
+        public ProductListViewModel ProductList
+        {
+            get => _productList;
+            private set => SetProperty(ref _productList, value);
+        }
 
         #region Commands
 
@@ -65,7 +57,6 @@ namespace DataMiningForShoppingBasket.ViewModels
         public ICommand CleanCartCommand { get; }
         public IAsyncCommand PrepareOfferCommand { get; }
         public ICommand FinalizeSaleCommand { get; }
-        public ICommand ClearSearchCommand { get; }
         public ICommand DeleteProductFromCartCommand { get; }
 
         #endregion
@@ -75,47 +66,36 @@ namespace DataMiningForShoppingBasket.ViewModels
         public CashierInterfaceViewModel()
         {
             _dbManager = DbManager.GetInstance();
-            _productsNotifier = DefaultNotifier<Products, int>.GetInstance();
             _prepareOfferHandler = AprioriAlgorithm3Deep.GetInstance();
 
-            //todo: вызвать по-нормальному
-            var init = new MyAsyncCommand(InitializeExecuteAsync);
-            init.Execute();
+            InitializeAsync();
 
             ConsumerCart = new ObservableCollection<CartRowViewModel>();
-            SearchString = string.Empty;
 
             ShowFocusProductListCommand = new MyAsyncCommand(ExecuteShowFocusProductListAsync,
-                _=> ShowFocusProductListCommand?.IsActive == false);
+                _ => ShowFocusProductListCommand?.IsActive == false);
             CleanCartCommand = new MyCommand(ExecuteCleanCart);
             PrepareOfferCommand = new MyAsyncCommand(ExecutePrepareOfferAsync,
                 _ => PrepareOfferCommand?.IsActive == false);
             FinalizeSaleCommand = new MyAsyncCommand(ExecuteFinalizeSaleAsync);
-            ClearSearchCommand = new MyCommand(ExecuteClearSearch);
-            AddProductIntoCartCommand = new MyCommand<Products>(ExecuteAddProductIntoCartAsync);
+            AddProductIntoCartCommand = new MyCommand<ProductViewModel>(ExecuteAddProductIntoCartAsync);
             DeleteProductFromCartCommand = new MyCommand(ExecuteDeleteProductFromCart);
-
-            var productsChangeDisposable = _productsNotifier.Changes
-                .Filter(this.WhenValueChanged(x => x.SearchString)
-                    .Select(SearchFilter))
-                .SortBy(x => x.Id)
-                .Bind(out _productsList)
-                .Subscribe();
-
-            _cleanup.Add(productsChangeDisposable);
         }
 
-        private async Task InitializeExecuteAsync()
+        private async void InitializeAsync()
         {
-            var productList = await _dbManager.GetListAsync<Products>();
-            productList.ForEach(_productsNotifier.NotifyAdd);
+            ProductList = await AsyncInitializedCreator<ProductListViewModel>.ConstructorAsync();
+            ProductList.DoubleClickElementCommand = AddProductIntoCartCommand;
+            _cleanup.Add(ProductList);
         }
 
-        private static async Task ExecuteShowFocusProductListAsync()
+        private async Task ExecuteShowFocusProductListAsync()
         {
             try
             {
                 var focusProductListViewModel = await AsyncInitializedCreator<FocusProductListViewModel>.ConstructorAsync();
+                _cleanup.Add(focusProductListViewModel);
+
                 var view = new FocusProductListDialogView
                 {
                     DataContext = focusProductListViewModel
@@ -178,14 +158,11 @@ namespace DataMiningForShoppingBasket.ViewModels
                 MessageWriter.ShowMessage(e.Message);
             }
         }
-
-        private void ExecuteClearSearch()
+        
+        private void ExecuteAddProductIntoCartAsync(ProductViewModel productVm)
         {
-            SearchString = string.Empty;
-        }
+            var product = productVm?.Product;
 
-        private void ExecuteAddProductIntoCartAsync(Products product)
-        {
             if (product is null)
                 return;
 
@@ -221,17 +198,11 @@ namespace DataMiningForShoppingBasket.ViewModels
             }
 
             _ = ConsumerCart.Remove(SelectedCartRowItem);
+            RaisePropertyChanged(nameof(TotalCost));
         }
 
         private static bool ProductIsValid(Products product)
             => product.Cost.HasValue && product.WarehouseQuantity > 0;
-
-        private static Func<Products, bool> SearchFilter(string searchStr)
-        {
-            var searchStrLower = searchStr.ToLower();
-            return x => x.ProductName.ToLower().Contains(searchStrLower) ||
-                        x.Id.ToString().Contains(searchStrLower);
-        }
 
         public void Dispose()
         {

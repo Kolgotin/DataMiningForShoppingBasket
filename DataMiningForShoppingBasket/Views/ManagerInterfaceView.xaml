@@ -11,6 +11,7 @@
              d:DataContext="{d:DesignInstance viewModels:ManagerInterfaceViewModel}">
     <UserControl.Resources>
         <ResourceDictionary>
+            <!--todo: вынести в общий файл повторяющиеся ресурсы-->
             <Style TargetType="Label">
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -98,37 +99,10 @@
                     Content="{x:Static properties:Resources.AddProduct}"
                     Command="{Binding AddOrEditProductCommand}"/>
 
-            <DataGrid Grid.Row="1"
-                      Grid.Column="0"
-                      Grid.ColumnSpan="2"
-                      VerticalAlignment="Stretch"
-                      x:Name="ProductsDataGrid"
-                      IsReadOnly="True"
-                      ItemsSource="{Binding ProductList}">
-                <DataGrid.InputBindings>
-                    <MouseBinding
-                        MouseAction="LeftDoubleClick"
-                        Command="{Binding AddOrEditProductCommand}"
-                        CommandParameter="{Binding ElementName=ProductsDataGrid, Path=SelectedItem}"/>
-                </DataGrid.InputBindings>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="*"
-                                        Header="Id"
-                                        Binding="{Binding Id}"/>
-                    <DataGridTextColumn Width="5*"
-                                        Header="{x:Static properties:Resources.Name}"
-                                        Binding="{Binding ProductName}"/>
-                    <DataGridTextColumn Width="4*"
-                                        Header="{x:Static properties:Resources.Type}"
-                                        Binding="{Binding Product.ProductTypes.ProductTypeName}"/>
-                    <DataGridTextColumn Width="2*"
-                                        Header="{x:Static properties:Resources.Cost}"
-                                        Binding="{Binding Cost}"/>
-                    <DataGridTextColumn Width="2*"
-                                        Header="{x:Static properties:Resources.WarehouseQuantity}"
-                                        Binding="{Binding WarehouseQuantity}"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <local:ProductListView Grid.Row="1"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   DataContext="{Binding ProductList}"/>
         </Grid>
     </Grid>
 </UserControl>

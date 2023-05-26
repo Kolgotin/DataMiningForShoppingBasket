@@ -1,6 +1,5 @@
 ﻿using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.ViewModels;
-using System.Windows.Controls;
 
 namespace DataMiningForShoppingBasket.Views
 {
@@ -15,12 +14,6 @@ namespace DataMiningForShoppingBasket.Views
         public CashierInterfaceView()
         {
             InitializeComponent();
-        }
-
-        private void SearchTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            var bindingExpression = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
-            bindingExpression?.UpdateSource();
         }
     }
 }
