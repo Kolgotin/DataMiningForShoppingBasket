@@ -9,6 +9,7 @@ using DataMiningForShoppingBasket.Commands;
 using DataMiningForShoppingBasket.Common;
 using DataMiningForShoppingBasket.Handlers;
 using DataMiningForShoppingBasket.Interfaces;
+using DataMiningForShoppingBasket.ViewModels;
 using DataMiningForShoppingBasket.Views;
 
 namespace DataMiningForShoppingBasket.ViewModels
@@ -32,7 +33,6 @@ namespace DataMiningForShoppingBasket.ViewModels
         #region Properties
 
         public ObservableCollection<CartRowViewModel> ConsumerCart { get; set; }
-
         public CartRowViewModel SelectedCartRowItem { get; set; }
 
         public List<AdditionalOfferViewModel> OfferProductList
@@ -53,7 +53,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         #region Commands
 
         public IAsyncCommand ShowFocusProductListCommand { get; }
-        public ICommand AddProductIntoCartCommand { get; }
+        public ICommand AddOfferedProductIntoCartCommand { get; }
         public ICommand CleanCartCommand { get; }
         public IAsyncCommand PrepareOfferCommand { get; }
         public ICommand FinalizeSaleCommand { get; }
@@ -78,14 +78,14 @@ namespace DataMiningForShoppingBasket.ViewModels
             PrepareOfferCommand = new MyAsyncCommand(ExecutePrepareOfferAsync,
                 _ => PrepareOfferCommand?.IsActive == false);
             FinalizeSaleCommand = new MyAsyncCommand(ExecuteFinalizeSaleAsync);
-            AddProductIntoCartCommand = new MyCommand<ProductViewModel>(ExecuteAddProductIntoCartAsync);
+            AddOfferedProductIntoCartCommand = new MyCommand<AdditionalOfferViewModel>(ExecuteAddOfferedProductIntoCart);
             DeleteProductFromCartCommand = new MyCommand(ExecuteDeleteProductFromCart);
         }
 
         private async void InitializeAsync()
         {
             ProductList = await AsyncInitializedCreator<ProductListViewModel>.ConstructorAsync();
-            ProductList.DoubleClickElementCommand = AddProductIntoCartCommand;
+            ProductList.DoubleClickElementCommand = new MyCommand<ProductViewModel>(ExecuteAddProductIntoCart);
             _cleanup.Add(ProductList);
         }
 
@@ -158,11 +158,32 @@ namespace DataMiningForShoppingBasket.ViewModels
                 MessageWriter.ShowMessage(e.Message);
             }
         }
-        
-        private void ExecuteAddProductIntoCartAsync(ProductViewModel productVm)
-        {
-            var product = productVm?.Product;
 
+        private void ExecuteAddOfferedProductIntoCart(AdditionalOfferViewModel viewModel)
+        {
+            var product = viewModel?.Product;
+            AddProductIntoCart(product);
+        }
+
+        private void ExecuteAddProductIntoCart(ProductViewModel viewModel)
+        {
+            var product = viewModel?.Product;
+            AddProductIntoCart(product);
+        }
+
+        private void ExecuteDeleteProductFromCart()
+        {
+            if (SelectedCartRowItem is null)
+            {
+                return;
+            }
+
+            _ = ConsumerCart.Remove(SelectedCartRowItem);
+            RaisePropertyChanged(nameof(TotalCost));
+        }
+
+        private void AddProductIntoCart(Products product)
+        {
             if (product is null)
                 return;
 
@@ -188,17 +209,6 @@ namespace DataMiningForShoppingBasket.ViewModels
             {
                 MessageWriter.ShowMessage(e.Message);
             }
-        }
-
-        private void ExecuteDeleteProductFromCart()
-        {
-            if (SelectedCartRowItem is null)
-            {
-                return;
-            }
-
-            _ = ConsumerCart.Remove(SelectedCartRowItem);
-            RaisePropertyChanged(nameof(TotalCost));
         }
 
         private static bool ProductIsValid(Products product)

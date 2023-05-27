@@ -210,4 +210,7 @@
   <data name="CleanCart" xml:space="preserve">
     <value>Очистить корзину</value>
   </data>
+  <data name="ProductsInStockOnly" xml:space="preserve">
+    <value>Только товары в наличии</value>
+  </data>
 </root>

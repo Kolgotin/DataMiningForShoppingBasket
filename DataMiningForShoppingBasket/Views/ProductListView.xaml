@@ -17,25 +17,46 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="10"/>
         </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="LayoutTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1.67" ScaleY="1.67"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
 
         <TextBox Grid.Row="0"
+                 Grid.Column="0"
                  Name="SearchTextBox"
                  TextChanged="SearchTextBox_OnTextChanged"
                  Text="{Binding SearchString, UpdateSourceTrigger=Explicit}"/>
 
-        <!--Todo: поправить так чтобы визуально не изменилось, но кнопка не была на одной ячейке с текстбоксом-->
         <Button Grid.Row="0"
+                Grid.Column="0"
                 Style="{StaticResource InsideButtonStyle}"
                 Content="X"
                 Command="{Binding ClearSearchCommand}"/>
 
+        <CheckBox Grid.Row="0"
+                  Grid.Column="1"
+                  VerticalAlignment="Center"
+                  HorizontalAlignment="Right"
+                  Content="{x:Static properties:Resources.ProductsInStockOnly}"
+                  IsChecked="{Binding InStockOnly}"/>
+
         <DataGrid Grid.Row="1"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
                   VerticalAlignment="Stretch"
                   x:Name="ProductsDataGrid"
                   IsReadOnly="True"
@@ -44,7 +65,7 @@
                 <MouseBinding
                         MouseAction="LeftDoubleClick"
                         Command="{Binding DoubleClickElementCommand}"
-                        CommandParameter="{Binding ElementName=ProductsDataGrid, Path=SelectedItem}"/>
+                        CommandParameter="{Binding ElementName=ProductsDataGrid, Path=CurrentItem}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Width="*"

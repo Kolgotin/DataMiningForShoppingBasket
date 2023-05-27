@@ -124,12 +124,12 @@
                   Grid.Column="0"
                   IsReadOnly="True"
                   ItemsSource="{Binding OfferProductList}">
+            <!--Todo: сделать даблклик на элементе, а не на таблице-->
             <DataGrid.InputBindings>
-                <!--Todo: сделать даблклик на элементе, а не на таблице-->
                 <MouseBinding
                     MouseAction="LeftDoubleClick"
-                    Command="{Binding AddProductIntoCartCommand}"
-                    CommandParameter="{Binding ElementName=AdditionalOfferDataGrid, Path=SelectedItem.Product}"/>
+                    Command="{Binding AddOfferedProductIntoCartCommand}"
+                    CommandParameter="{Binding ElementName=AdditionalOfferDataGrid, Path=CurrentItem}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Width="5*"

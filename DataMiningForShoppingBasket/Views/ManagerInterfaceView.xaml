@@ -11,7 +11,7 @@
              d:DataContext="{d:DesignInstance viewModels:ManagerInterfaceViewModel}">
     <UserControl.Resources>
         <ResourceDictionary>
-            <!--todo: вынести в общий файл повторяющиеся ресурсы-->
+            <!--todo: вынести в общий файл повторяющиеся стили-->
             <Style TargetType="Label">
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>

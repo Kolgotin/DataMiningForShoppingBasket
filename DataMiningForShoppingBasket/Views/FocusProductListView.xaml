@@ -24,7 +24,7 @@
             <DataGrid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick"
                               Command="{Binding DoubleClickElementCommand}"
-                              CommandParameter="{Binding ElementName=FocusProductsDataGrid, Path=SelectedItem}"/>
+                              CommandParameter="{Binding ElementName=FocusProductsDataGrid, Path=CurrentItem}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Width="*"

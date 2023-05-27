@@ -19,8 +19,10 @@ public sealed class ProductListViewModel : NotifyPropertyChangedImplementation, 
     private readonly INotifier<Products, int> _productsNotifier;
     private readonly CompositeDisposable _cleanup = new();
     private readonly ReadOnlyObservableCollection<ProductViewModel> _productList;
+
     private string _searchString;
     private ICommand _doubleClickElementCommand;
+    private bool _inStockOnly;
 
     #endregion
 
@@ -33,13 +35,18 @@ public sealed class ProductListViewModel : NotifyPropertyChangedImplementation, 
         set => SetProperty(ref _doubleClickElementCommand, value);
     }
 
-    //todo: добавить фильтрацию по наличию на складе
     public ReadOnlyObservableCollection<ProductViewModel> ProductsList => _productList;
 
     public string SearchString
     {
         get => _searchString;
         set => SetProperty(ref _searchString, value);
+    }
+
+    public bool InStockOnly
+    {
+        get => _inStockOnly;
+        set => SetProperty(ref _inStockOnly, value);
     }
 
     #endregion
@@ -50,13 +57,16 @@ public sealed class ProductListViewModel : NotifyPropertyChangedImplementation, 
         _productsNotifier = DefaultNotifier<Products, int>.GetInstance();
 
         SearchString = string.Empty;
+        InStockOnly = true;
         ClearSearchCommand = new MyCommand(ExecuteClearSearch);
 
         _cleanup.Add(_productsNotifier.Changes
+                .Transform(x => new ProductViewModel(x))
                 .Filter(this.WhenValueChanged(x => x.SearchString)
                     .Select(SearchFilter))
+                .Filter(this.WhenValueChanged(vm => vm.InStockOnly)
+                    .Select(StockFilter))
                 .SortBy(x => x.Id)
-                .Transform(x => new ProductViewModel(x))
                 .Bind(out _productList)
                 .Subscribe());
     }
@@ -67,12 +77,15 @@ public sealed class ProductListViewModel : NotifyPropertyChangedImplementation, 
         productList.ForEach(_productsNotifier.NotifyAdd);
     }
 
-    private static Func<Products, bool> SearchFilter(string searchStr)
+    private static Func<ProductViewModel, bool> SearchFilter(string searchStr)
     {
         var searchStrLower = searchStr.ToLower();
         return x => x.ProductName.ToLower().Contains(searchStrLower) ||
                     x.Id.ToString().Contains(searchStrLower);
     }
+
+    private static Func<ProductViewModel, bool> StockFilter(bool inStockOnly)
+        => x => !inStockOnly || x.WarehouseQuantity > 0;
 
     private void ExecuteClearSearch()
     {
