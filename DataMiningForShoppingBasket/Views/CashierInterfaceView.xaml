@@ -73,7 +73,7 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
-                <DataGridTextColumn Width="*"
+                <DataGridTextColumn Width="2*"
                                     Header="{x:Static properties:Resources.Id}"
                                     IsReadOnly="True"
                                     Binding="{Binding Product.Id}"/>
@@ -81,7 +81,7 @@
                                     Header="{x:Static properties:Resources.Name}"
                                     IsReadOnly="True"
                                     Binding="{Binding Product.ProductName}"/>
-                <DataGridTextColumn Width="4*"
+                <DataGridTextColumn Width="*"
                                     Header="{x:Static properties:Resources.Type}"
                                     IsReadOnly="True"
                                     Binding="{Binding Product.ProductTypes.ProductTypeName}"/>
@@ -132,13 +132,13 @@
                     CommandParameter="{Binding ElementName=AdditionalOfferDataGrid, Path=CurrentItem}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
-                <DataGridTextColumn Width="5*"
+                <DataGridTextColumn Width="2*"
                                     Header="{x:Static properties:Resources.Id}"
                                     Binding="{Binding Product.Id}"/>
                 <DataGridTextColumn Width="5*"
                                     Header="{x:Static properties:Resources.Name}"
                                     Binding="{Binding Product.ProductName}"/>
-                <DataGridTextColumn Width="4*"
+                <DataGridTextColumn Width="*"
                                     Header="{x:Static properties:Resources.Type}"
                                     Binding="{Binding Product.ProductTypes.ProductTypeName}"/>
                 <DataGridTextColumn Width="2*"

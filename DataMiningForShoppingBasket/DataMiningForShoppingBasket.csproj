@@ -124,6 +124,7 @@
     <Compile Include="Common\CurrentSession.cs" />
     <Compile Include="Common\DbManager.cs" />
     <Compile Include="Common\EqualityProductsComparer.cs" />
+    <Compile Include="Common\IntHashSet.cs" />
     <Compile Include="Common\MessageWriter.cs" />
     <Compile Include="Common\MethodExtensions.cs" />
     <Compile Include="Common\MyException.cs" />

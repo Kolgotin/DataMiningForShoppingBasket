@@ -9,7 +9,6 @@ using DataMiningForShoppingBasket.Commands;
 using DataMiningForShoppingBasket.Common;
 using DataMiningForShoppingBasket.Handlers;
 using DataMiningForShoppingBasket.Interfaces;
-using DataMiningForShoppingBasket.ViewModels;
 using DataMiningForShoppingBasket.Views;
 
 namespace DataMiningForShoppingBasket.ViewModels

@@ -68,13 +68,13 @@
                         CommandParameter="{Binding ElementName=ProductsDataGrid, Path=CurrentItem}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
-                <DataGridTextColumn Width="*"
+                <DataGridTextColumn Width="2*"
                                         Header="Id"
                                         Binding="{Binding Id}"/>
                 <DataGridTextColumn Width="5*"
                                         Header="{x:Static properties:Resources.Name}"
                                         Binding="{Binding ProductName}"/>
-                <DataGridTextColumn Width="4*"
+                <DataGridTextColumn Width="*"
                                         Header="{x:Static properties:Resources.Type}"
                                         Binding="{Binding Product.ProductTypes.ProductTypeName}"/>
                 <DataGridTextColumn Width="2*"

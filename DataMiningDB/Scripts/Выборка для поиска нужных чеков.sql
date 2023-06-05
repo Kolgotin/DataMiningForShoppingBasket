@@ -2,7 +2,7 @@
 declare @id as int
 set @id = 284
 
-SELECT TOP (100) [SaleRows].Id, Products.*
+SELECT TOP (100) [SaleRows].SaleId, Products.*
 from 
 (
 SELECT  [SaleId]
