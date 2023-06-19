@@ -41,6 +41,7 @@ namespace DataMiningForShoppingBasket.Common
                     (x, y) => x)
                 .ToListAsync().ConfigureAwait(false);
 
+        //todo: Не потокобезопасно. придумать как исключить падения при вхождении из 2х потоков
         public async Task<List<T>> GetListAsync<T>() where T : class
             => await _dbContext.Set<T>().ToListAsync().ConfigureAwait(false);
 

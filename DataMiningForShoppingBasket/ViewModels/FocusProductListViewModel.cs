@@ -13,7 +13,7 @@ namespace DataMiningForShoppingBasket.ViewModels
         private readonly IDbManager _dbManager;
         private readonly INotifier<FocusProducts, int> _focusProductsINotifier;
         private readonly ReadOnlyObservableCollection<FocusProductViewModel> _focusProductList;
-        private readonly CompositeDisposable _cleanup;
+        private readonly CompositeDisposable _cleanup = new();
         private IAsyncCommand _doubleClickElementCommand;
 
         public FocusProductListViewModel()
@@ -21,13 +21,10 @@ namespace DataMiningForShoppingBasket.ViewModels
             _dbManager = DbManager.GetInstance();
             _focusProductsINotifier = DefaultNotifier<FocusProducts, int>.GetInstance();
 
-            _cleanup = new CompositeDisposable
-            {
-                _focusProductsINotifier.Changes
+            _cleanup.Add(_focusProductsINotifier.Changes
                     .Transform(x => new FocusProductViewModel(x))
                     .Bind(out _focusProductList)
-                    .Subscribe()
-            };
+                    .Subscribe());
         }
 
         public ReadOnlyObservableCollection<FocusProductViewModel> FocusProductList => _focusProductList;

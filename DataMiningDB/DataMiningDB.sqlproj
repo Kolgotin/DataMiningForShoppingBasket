@@ -64,6 +64,8 @@
   <ItemGroup>
     <None Include="Scripts\InitialScript.sql" />
     <None Include="Triggers\SaleRows_INSERT.sql" />
+    <None Include="Scripts\CopyData.sql" />
+    <None Include="Scripts\Выборка для поиска нужных чеков.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\UserTypes.sql" />

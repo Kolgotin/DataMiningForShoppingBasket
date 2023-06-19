@@ -1,4 +1,5 @@
-﻿using DataMiningForShoppingBasket.Commands;
+﻿using System;
+using DataMiningForShoppingBasket.Commands;
 using DataMiningForShoppingBasket.Common;
 using DataMiningForShoppingBasket.Interfaces;
 using System.Collections.Generic;
@@ -52,15 +53,25 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         private async Task SaveExecuteAsync(Window window)
         {
-            _product.ProductName = ProductName;
-            _product.ProductTypeId = ProductTypeId;
-            _product.Cost = Cost;
-            _product.FractionalAllowed = FractionalAllowed;
-            _product.WarehouseQuantity = WarehouseQuantity;
-            await _dbManager.SaveAndNotifyHavingIdEntityAsync<Products, int>(_product);
-
-            window.DialogResult = true;
-            window.Close();
+            try
+            {
+                _product.ProductName = ProductName;
+                _product.ProductTypeId = ProductTypeId;
+                _product.Cost = Cost;
+                _product.FractionalAllowed = FractionalAllowed;
+                _product.WarehouseQuantity = WarehouseQuantity;
+                await _dbManager.SaveAndNotifyHavingIdEntityAsync<Products, int>(_product);
+                window.DialogResult = true;
+            }
+            catch (Exception e)
+            {
+                MessageWriter.ShowMessage(e.Message);
+                window.DialogResult = false;
+            }
+            finally
+            {
+                window.Close();
+            }
         }
     }
 }

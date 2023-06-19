@@ -277,6 +277,15 @@ namespace DataMiningForShoppingBasket.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Только товары в наличии.
+        /// </summary>
+        public static string ProductsInStockOnly {
+            get {
+                return ResourceManager.GetString("ProductsInStockOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Количество.
         /// </summary>
         public static string Quantity {

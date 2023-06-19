@@ -12,8 +12,7 @@ namespace DataMiningForShoppingBasket.ViewModels
 {
     public class FocusProductDialogViewModel : NotifyPropertyChangedImplementation
     {
-        private const int TimeZoneStartHourCorrection = 3;
-        private const int TimeZoneFinishHourCorrection = 27;
+        private const int TimeZoneFinishHourCorrection = 24;
         private const int TimeDateSecondsCorrection = -1;
 
         private readonly FocusProducts _focusProduct;
@@ -27,18 +26,14 @@ namespace DataMiningForShoppingBasket.ViewModels
                 .OrderBy(x=>x.ProductName).ToList();
             SaveCommand = new MyAsyncCommand<Window>(SaveExecuteAsync);
 
-            if (focusProduct == null)
+            _focusProduct = focusProduct ?? new FocusProducts
             {
-                _focusProduct = new FocusProducts();
-                StartDate = DateTime.Today;
-                FinishDate = DateTime.Today;
-                return;
-            }
-
-            _focusProduct = focusProduct;
+                StartDate = DateTime.Today.ToUniversalTime(),
+                FinishDate = DateTime.Today.ToUniversalTime()
+            };
             Description = _focusProduct.Description;
-            StartDate = _focusProduct.StartDate;
-            FinishDate= _focusProduct.FinishDate;
+            StartDate = _focusProduct.StartDate.ToLocalTime();
+            FinishDate = _focusProduct.FinishDate.ToLocalTime();
             ProductId= _focusProduct.ProductId;
             DiscountCost = _focusProduct.DiscountCost;
         }
@@ -59,16 +54,27 @@ namespace DataMiningForShoppingBasket.ViewModels
 
         private async Task SaveExecuteAsync(Window window)
         {
-            _focusProduct.Description = Description ?? string.Empty;
-            _focusProduct.StartDate = StartDate.ToUniversalTime().AddHours(TimeZoneStartHourCorrection);
-            _focusProduct.FinishDate = FinishDate.Date.ToUniversalTime()
-                .AddHours(TimeZoneFinishHourCorrection).AddSeconds(TimeDateSecondsCorrection);
-            _focusProduct.ProductId = ProductId;
-            _focusProduct.DiscountCost = DiscountCost;
-            await _dbManager.SaveAndNotifyHavingIdEntityAsync<FocusProducts, int>(_focusProduct);
+            try
+            {
+                _focusProduct.Description = Description ?? string.Empty;
+                _focusProduct.StartDate = StartDate.Date.ToUniversalTime();
+                _focusProduct.FinishDate = FinishDate.Date.AddHours(TimeZoneFinishHourCorrection)
+                    .AddSeconds(TimeDateSecondsCorrection).ToUniversalTime();
+                _focusProduct.ProductId = ProductId;
+                _focusProduct.DiscountCost = DiscountCost;
+                await _dbManager.SaveAndNotifyHavingIdEntityAsync<FocusProducts, int>(_focusProduct);
 
-            window.DialogResult = true;
-            window.Close();
+                window.DialogResult = true;
+            }
+            catch (Exception e)
+            {
+                MessageWriter.ShowMessage(e.Message);
+                window.DialogResult = false;
+            }
+            finally
+            {
+                window.Close();
+            }
         }
     }
 }

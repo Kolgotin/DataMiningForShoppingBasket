@@ -124,6 +124,7 @@
     <Compile Include="Common\CurrentSession.cs" />
     <Compile Include="Common\DbManager.cs" />
     <Compile Include="Common\EqualityProductsComparer.cs" />
+    <Compile Include="Common\IntHashSet.cs" />
     <Compile Include="Common\MessageWriter.cs" />
     <Compile Include="Common\MethodExtensions.cs" />
     <Compile Include="Common\MyException.cs" />
@@ -194,6 +195,7 @@
     <Compile Include="ViewModels\ManagerInterfaceViewModel.cs" />
     <Compile Include="ViewModels\CashierInterfaceViewModel.cs" />
     <Compile Include="ViewModels\ProductDialogViewModel.cs" />
+    <Compile Include="ViewModels\ProductListViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="Views\AuthorizationView.xaml.cs">
       <DependentUpon>AuthorizationView.xaml</DependentUpon>
@@ -217,6 +219,9 @@
       <DependentUpon>ProductDialogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\DecimalIsPositiveToFontWeightConverter.cs" />
+    <Compile Include="Views\ProductListView.xaml.cs">
+      <DependentUpon>ProductListView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -254,6 +259,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProductDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProductListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
