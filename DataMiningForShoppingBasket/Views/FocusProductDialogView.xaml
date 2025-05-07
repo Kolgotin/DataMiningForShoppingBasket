@@ -84,12 +84,19 @@
                Grid.Column="0"
                Content="{x:Static properties:Resources.Product}"/>
 
-        <ComboBox Grid.Row="3"
+        <Button Grid.Row="3"
+                Grid.Column="1"
+                Content="{Binding ProductId}"
+                Command="{Binding ChangeProductCommand}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"/>
+
+        <!--<ComboBox Grid.Row="3"
                   Grid.Column="1"
                   ItemsSource="{Binding ProductList}"
                   DisplayMemberPath="ProductName"
                   SelectedValue="{Binding ProductId}"
-                  SelectedValuePath="Id"/>
+                  SelectedValuePath="Id"/>-->
 
         <Label Grid.Row="4"
                Grid.Column="0"

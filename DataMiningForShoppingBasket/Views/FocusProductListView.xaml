@@ -14,13 +14,8 @@
     </UserControl.Resources>
     <Grid>
         <DataGrid x:Name="FocusProductsDataGrid"
-                  IsReadOnly="True"
-                  CanUserSortColumns="True"
-                  CanUserReorderColumns="False"
-                  AutoGenerateColumns="False"
-                  VerticalAlignment="Stretch"
-                  ItemsSource="{Binding FocusProductList}"
-                  RowHeaderWidth="0">
+                  Margin="5"
+                  ItemsSource="{Binding FocusProductList}">
             <DataGrid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick"
                               Command="{Binding DoubleClickElementCommand}"

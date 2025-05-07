@@ -1,77 +1,76 @@
 ﻿using System;
-using DataMiningForShoppingBasket.Commands;
-using DataMiningForShoppingBasket.Common;
-using DataMiningForShoppingBasket.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using DataMiningForShoppingBasket.Commands;
+using DataMiningForShoppingBasket.Common;
+using DataMiningForShoppingBasket.Interfaces;
 
-namespace DataMiningForShoppingBasket.ViewModels
+namespace DataMiningForShoppingBasket.ViewModels;
+
+public class ProductDialogViewModel : NotifyPropertyChangedImplementation
 {
-    public class ProductDialogViewModel : NotifyPropertyChangedImplementation
+    private readonly Products _product;
+    private readonly IDbManager _dbManager;
+
+    public ProductDialogViewModel(Products product = null)
     {
-        private readonly Products _product;
-        private readonly IDbManager _dbManager;
+        _dbManager = DbManager.GetInstance();
 
-        public ProductDialogViewModel(Products product = null)
+        ProductTypes = _dbManager.GetListAsync<ProductTypes>().Result
+            .OrderBy(x => x.ProductTypeName).ToList();
+        SaveCommand = new MyAsyncCommand<Window>(SaveExecuteAsync);
+
+        if (product == null)
         {
-            _dbManager = DbManager.GetInstance();
-
-            ProductTypes = _dbManager.GetListAsync<ProductTypes>().Result
-                .OrderBy(x => x.ProductTypeName).ToList();
-            SaveCommand = new MyAsyncCommand<Window>(SaveExecuteAsync);
-
-            if (product == null)
-            {
-                _product = new Products();
-                return;
-            }
-
-            _product = product;
-            ProductName = product.ProductName;
-            ProductTypeId = product.ProductTypeId;
-            Cost = product.Cost;
-            FractionalAllowed = product.FractionalAllowed;
-            WarehouseQuantity = product.WarehouseQuantity;
+            _product = new Products();
+            return;
         }
 
-        #region Properties
+        _product = product;
+        ProductName = product.ProductName;
+        ProductTypeId = product.ProductTypeId;
+        Cost = product.Cost;
+        FractionalAllowed = product.FractionalAllowed;
+        WarehouseQuantity = product.WarehouseQuantity;
+    }
+
+    #region Properties
         
-        public ICommand SaveCommand { get; }
+    public ICommand SaveCommand { get; }
+    
+    public string ProductName { get; set; }
+    public int? ProductTypeId { get; set; }
+    public decimal? Cost { get; set; }
+    public bool FractionalAllowed { get; set; }
+    public decimal WarehouseQuantity { get; set; }
 
-        public string ProductName { get; set; }
-        public int? ProductTypeId { get; set; }
-        public decimal? Cost { get; set; }
-        public bool FractionalAllowed { get; set; }
-        public decimal WarehouseQuantity { get; set; }
+    public IReadOnlyCollection<ProductTypes> ProductTypes { get; }
 
-        public IReadOnlyCollection<ProductTypes> ProductTypes { get; }
+    #endregion
 
-        #endregion
-
-        private async Task SaveExecuteAsync(Window window)
+    private async Task SaveExecuteAsync(Window window)
+    {
+        try
         {
-            try
-            {
-                _product.ProductName = ProductName;
-                _product.ProductTypeId = ProductTypeId;
-                _product.Cost = Cost;
-                _product.FractionalAllowed = FractionalAllowed;
-                _product.WarehouseQuantity = WarehouseQuantity;
-                await _dbManager.SaveAndNotifyHavingIdEntityAsync<Products, int>(_product);
-                window.DialogResult = true;
-            }
-            catch (Exception e)
-            {
-                MessageWriter.ShowMessage(e.Message);
-                window.DialogResult = false;
-            }
-            finally
-            {
-                window.Close();
-            }
+            _product.ProductName = ProductName;
+            _product.ProductTypeId = ProductTypeId;
+            _product.Cost = Cost;
+            _product.FractionalAllowed = FractionalAllowed;
+            _product.WarehouseQuantity = WarehouseQuantity;
+            await _dbManager.SaveAndNotifyHavingIdEntityAsync<Products, int>(_product);
+            window.DialogResult = true;
+        }
+        catch (Exception e)
+        {
+            MessageWriter.ShowMessage(e.Message);
+            window.DialogResult = false;
+        }
+        finally
+        {
+            window.Close();
         }
     }
 }

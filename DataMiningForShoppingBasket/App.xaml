@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:DataMiningForShoppingBasket"
              StartupUri="Views/AuthorizationView.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/CommonResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

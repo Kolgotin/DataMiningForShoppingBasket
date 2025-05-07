@@ -11,6 +11,7 @@ public class AprioriAlgorithm3Deep : IPrepareOfferHandler
 {
     private const decimal MaxConfidence = 100m;
     private const decimal MinConfidence = 0m;
+    private const int MinimumCartCount = 2;
 
     private static readonly Lazy<AprioriAlgorithm3Deep> Lazy = new(() => new AprioriAlgorithm3Deep());
 
@@ -25,31 +26,31 @@ public class AprioriAlgorithm3Deep : IPrepareOfferHandler
 
     public async Task<List<(Products, decimal)>> PrepareOfferAsync(IReadOnlyCollection<Products> cart)
     {
-        if (!cart.Any())
+        if(cart.Count < MinimumCartCount)
             return new List<(Products, decimal)>();
 
         var cartProductIds = cart.Select(x => x.Id).ToList();
         var cartSaleRows = await _dbManager.GetSalesByProductIds(cartProductIds);
         var cartProductsSalesDictionary = cartSaleRows.GroupBy(x => x.ProductId)
-            .ToDictionary(x => 
+            .ToDictionary(x =>
                 x.Key, x => x.Select(y => y.SaleId).ToList());
 
         var prevItemSetsSaleIds = cartProductsSalesDictionary
-            .Select(x => (Key: new IntHashSet {x.Key}, x.Value))
+            .Select(x => (Key: new IntHashSet { x.Key }, x.Value))
             .ToList();
 
         var itemSetsSalesIntersections = new List<(IntHashSet, List<int>)>();
 
-        foreach (var productId in cartProductsSalesDictionary.Keys.ToList())
+        foreach(var productId in cartProductsSalesDictionary.Keys.ToList())
         {
             var setProductSalesIntersections = prevItemSetsSaleIds
                 .Where(x => !x.Key.Contains(productId))
-                .Select(x => (new IntHashSet(x.Key) {productId}
+                .Select(x => (new IntHashSet(x.Key) { productId }
                     , x.Value.Intersect(cartProductsSalesDictionary[productId]).ToList()))
                 .Where(x => x.Item2.Any())
                 .ToList();
             var newSetProductSalesIntersections = setProductSalesIntersections
-                .Where(x => !itemSetsSalesIntersections.Any(y=> y.Item1.Equals(x.Item1)))
+                .Where(x => !itemSetsSalesIntersections.Any(y => y.Item1.Equals(x.Item1)))
                 .ToList();
 
             itemSetsSalesIntersections.AddRange(newSetProductSalesIntersections);
@@ -71,7 +72,7 @@ public class AprioriAlgorithm3Deep : IPrepareOfferHandler
             .ToDictionary(x => x.Key, x => x.Select(y => y.SaleId).ToList());
 
         var salesId = itemSetsSalesIntersections.SelectMany(x => x.Item2).ToList();
-        var intersectionCount = actualFocusProductIds.ToDictionary(x => x,
+        var intersectionCount = focusProductSalesDict.Keys.ToDictionary(x => x,
             x => salesId.Intersect(focusProductSalesDict[x]).Count());
 
         return actualFocusProducts.Select(x => (x,

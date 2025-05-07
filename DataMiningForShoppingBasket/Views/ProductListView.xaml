@@ -11,8 +11,8 @@
              d:DataContext="{d:DesignInstance viewModels:ProductListViewModel}">
     <UserControl.Resources>
         <Style TargetType="Button" x:Key="InsideButtonStyle">
-            <Setter Property="Margin" Value="10,0"/>
-            <Setter Property="Padding" Value="5,0"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="Padding" Value="0"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="10"/>
@@ -39,28 +39,31 @@
                  Grid.Column="0"
                  Name="SearchTextBox"
                  TextChanged="SearchTextBox_OnTextChanged"
+                 Margin="5"
                  Text="{Binding SearchString, UpdateSourceTrigger=Explicit}"/>
 
         <Button Grid.Row="0"
                 Grid.Column="0"
                 Style="{StaticResource InsideButtonStyle}"
-                Content="X"
-                Command="{Binding ClearSearchCommand}"/>
+                Command="{Binding ClearSearchCommand}">
+            <Image Source="{StaticResource CrossDrawingImage}"
+                   Style="{StaticResource ImageButton26}"/>
+        </Button>
 
         <CheckBox Grid.Row="0"
                   Grid.Column="1"
                   VerticalAlignment="Center"
                   HorizontalAlignment="Right"
+                  Margin="5"
                   Content="{x:Static properties:Resources.ProductsInStockOnly}"
                   IsChecked="{Binding InStockOnly}"/>
 
         <DataGrid Grid.Row="1"
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
-                  VerticalAlignment="Stretch"
                   x:Name="ProductsDataGrid"
-                  IsReadOnly="True"
-                  ItemsSource="{Binding ProductsList}">
+                  Margin="5"
+                  ItemsSource="{Binding ProductsList, Mode=OneWay}">
             <DataGrid.InputBindings>
                 <MouseBinding
                         MouseAction="LeftDoubleClick"

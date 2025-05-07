@@ -11,211 +11,210 @@ using DataMiningForShoppingBasket.Handlers;
 using DataMiningForShoppingBasket.Interfaces;
 using DataMiningForShoppingBasket.Views;
 
-namespace DataMiningForShoppingBasket.ViewModels
+namespace DataMiningForShoppingBasket.ViewModels;
+
+public class CashierInterfaceViewModel : NotifyPropertyChangedImplementation,
+    ILabelHavingDataContext, IDisposable
 {
-    public class CashierInterfaceViewModel : NotifyPropertyChangedImplementation,
-        ILabelHavingDataContext, IDisposable
+    private readonly IDbManager _dbManager;
+    private readonly IPrepareOfferHandler _prepareOfferHandler;
+    private readonly CompositeDisposable _cleanup = new();
+
+    private List<AdditionalOfferViewModel> _offerProductList;
+    private ProductListViewModel _productList;
+
+    #region ILabelHavingDataContext
+
+    public string WindowLabel => "Кассир";
+
+    #endregion
+
+    #region Properties
+
+    public ObservableCollection<CartRowViewModel> ConsumerCart { get; set; }
+    public CartRowViewModel SelectedCartRowItem { get; set; }
+
+    public List<AdditionalOfferViewModel> OfferProductList
     {
-        private readonly IDbManager _dbManager;
-        private readonly IPrepareOfferHandler _prepareOfferHandler;
-        private readonly CompositeDisposable _cleanup = new();
+        get => _offerProductList;
+        set => SetProperty(ref _offerProductList, value);
+    }
+    
+    //todo: сделать через DynamicData, подаписать на изменение в ConsumerCart
+    public decimal TotalCost => ConsumerCart.Sum(x => x.TotalCost);
 
-        private List<AdditionalOfferViewModel> _offerProductList;
-        private ProductListViewModel _productList;
+    public ProductListViewModel ProductList
+    {
+        get => _productList;
+        private set => SetProperty(ref _productList, value);
+    }
 
-        #region ILabelHavingDataContext
+    #region Commands
 
-        public string WindowLabel => "Кассир";
+    public IAsyncCommand ShowFocusProductListCommand { get; }
+    public ICommand AddOfferedProductIntoCartCommand { get; }
+    public ICommand CleanCartCommand { get; }
+    public IAsyncCommand PrepareOfferCommand { get; }
+    public ICommand FinalizeSaleCommand { get; }
+    public ICommand DeleteProductFromCartCommand { get; }
 
-        #endregion
+    #endregion
 
-        #region Properties
+    #endregion Properties
 
-        public ObservableCollection<CartRowViewModel> ConsumerCart { get; set; }
-        public CartRowViewModel SelectedCartRowItem { get; set; }
+    public CashierInterfaceViewModel()
+    {
+        _dbManager = DbManager.GetInstance();
+        _prepareOfferHandler = AprioriAlgorithm3Deep.GetInstance();
 
-        public List<AdditionalOfferViewModel> OfferProductList
+        InitializeAsync();
+
+        ConsumerCart = new ObservableCollection<CartRowViewModel>();
+
+        ShowFocusProductListCommand = new MyAsyncCommand(ExecuteShowFocusProductListAsync,
+            _ => ShowFocusProductListCommand?.IsActive == false);
+        CleanCartCommand = new MyCommand(ExecuteCleanCart);
+        PrepareOfferCommand = new MyAsyncCommand(ExecutePrepareOfferAsync,
+            _ => PrepareOfferCommand?.IsActive == false);
+        FinalizeSaleCommand = new MyAsyncCommand(ExecuteFinalizeSaleAsync);
+        AddOfferedProductIntoCartCommand = new MyCommand<AdditionalOfferViewModel>(ExecuteAddOfferedProductIntoCart);
+        DeleteProductFromCartCommand = new MyCommand(ExecuteDeleteProductFromCart);
+    }
+
+    private async void InitializeAsync()
+    {
+        ProductList = await AsyncInitializedCreator<ProductListViewModel>.ConstructorAsync();
+        ProductList.DoubleClickElementCommand = new MyCommand<ProductViewModel>(ExecuteAddProductIntoCart);
+        _cleanup.Add(ProductList);
+    }
+
+    private async Task ExecuteShowFocusProductListAsync()
+    {
+        try
         {
-            get => _offerProductList;
-            set => SetProperty(ref _offerProductList, value);
-        }
-        
-        //todo: сделать через DynamicData, подаписать на изменение в ConsumerCart
-        public decimal TotalCost => ConsumerCart.Sum(x => x.TotalCost);
+            var focusProductListViewModel = await AsyncInitializedCreator<FocusProductListViewModel>.ConstructorAsync();
+            _cleanup.Add(focusProductListViewModel);
 
-        public ProductListViewModel ProductList
-        {
-            get => _productList;
-            private set => SetProperty(ref _productList, value);
-        }
-
-        #region Commands
-
-        public IAsyncCommand ShowFocusProductListCommand { get; }
-        public ICommand AddOfferedProductIntoCartCommand { get; }
-        public ICommand CleanCartCommand { get; }
-        public IAsyncCommand PrepareOfferCommand { get; }
-        public ICommand FinalizeSaleCommand { get; }
-        public ICommand DeleteProductFromCartCommand { get; }
-
-        #endregion
-
-        #endregion Properties
-
-        public CashierInterfaceViewModel()
-        {
-            _dbManager = DbManager.GetInstance();
-            _prepareOfferHandler = AprioriAlgorithm3Deep.GetInstance();
-
-            InitializeAsync();
-
-            ConsumerCart = new ObservableCollection<CartRowViewModel>();
-
-            ShowFocusProductListCommand = new MyAsyncCommand(ExecuteShowFocusProductListAsync,
-                _ => ShowFocusProductListCommand?.IsActive == false);
-            CleanCartCommand = new MyCommand(ExecuteCleanCart);
-            PrepareOfferCommand = new MyAsyncCommand(ExecutePrepareOfferAsync,
-                _ => PrepareOfferCommand?.IsActive == false);
-            FinalizeSaleCommand = new MyAsyncCommand(ExecuteFinalizeSaleAsync);
-            AddOfferedProductIntoCartCommand = new MyCommand<AdditionalOfferViewModel>(ExecuteAddOfferedProductIntoCart);
-            DeleteProductFromCartCommand = new MyCommand(ExecuteDeleteProductFromCart);
-        }
-
-        private async void InitializeAsync()
-        {
-            ProductList = await AsyncInitializedCreator<ProductListViewModel>.ConstructorAsync();
-            ProductList.DoubleClickElementCommand = new MyCommand<ProductViewModel>(ExecuteAddProductIntoCart);
-            _cleanup.Add(ProductList);
-        }
-
-        private async Task ExecuteShowFocusProductListAsync()
-        {
-            try
+            var view = new FocusProductListDialogView
             {
-                var focusProductListViewModel = await AsyncInitializedCreator<FocusProductListViewModel>.ConstructorAsync();
-                _cleanup.Add(focusProductListViewModel);
+                DataContext = focusProductListViewModel
+            };
+            view.ShowDialog();
+        }
+        catch (Exception e)
+        {
+            MessageWriter.ShowMessage(e.Message);
+        }
+    }
 
-                var view = new FocusProductListDialogView
-                {
-                    DataContext = focusProductListViewModel
-                };
-                view.ShowDialog();
-            }
-            catch (Exception e)
+    private void ExecuteCleanCart()
+    {
+        ConsumerCart?.Clear();
+        OfferProductList = null;
+        RaisePropertyChanged(nameof(TotalCost));
+    }
+
+    private async Task ExecutePrepareOfferAsync()
+    {
+        try
+        {
+            var productsInCart = ConsumerCart.Select(x => x.Product).ToList();
+            var productsList = await _prepareOfferHandler.PrepareOfferAsync(productsInCart);
+            OfferProductList = productsList
+                .Select(x => new AdditionalOfferViewModel(x.Item1, x.Item2))
+                .OrderByDescending(x => x.Confidence)
+                .ToList();
+        }
+        catch (Exception e)
+        {
+            MessageWriter.ShowMessage(e.Message);
+        }
+    }
+
+    private async Task ExecuteFinalizeSaleAsync()
+    {
+        try
+        {
+            var receipt = new SaleReceipts
             {
-                MessageWriter.ShowMessage(e.Message);
-            }
+                SaleDateTime = DateTime.UtcNow,
+                CashierId = CurrentSession.CurrentUser.Id,
+                ClientId = null,
+                SaleRows = ConsumerCart.Select(x =>
+                    new SaleRows()
+                    {
+                        ProductId = x.Product.Id,
+                        Quantity = x.Quantity,
+                        TotalCost = x.TotalCost
+                    }).ToList()
+            };
+
+            await _dbManager.SaveSale(receipt);
+            ExecuteCleanCart();
+        }
+        catch (Exception e)
+        {
+            MessageWriter.ShowMessage(e.Message);
+        }
+    }
+
+    private void ExecuteAddOfferedProductIntoCart(AdditionalOfferViewModel viewModel)
+    {
+        var product = viewModel?.Product;
+        AddProductIntoCart(product);
+    }
+
+    private void ExecuteAddProductIntoCart(ProductViewModel viewModel)
+    {
+        var product = viewModel?.Product;
+        AddProductIntoCart(product);
+    }
+
+    private void ExecuteDeleteProductFromCart()
+    {
+        if (SelectedCartRowItem is null)
+        {
+            return;
         }
 
-        private void ExecuteCleanCart()
+        _ = ConsumerCart.Remove(SelectedCartRowItem);
+        RaisePropertyChanged(nameof(TotalCost));
+    }
+
+    private void AddProductIntoCart(Products product)
+    {
+        if (product is null)
+            return;
+
+        try
         {
-            ConsumerCart?.Clear();
-            OfferProductList = null;
-            RaisePropertyChanged(nameof(TotalCost));
-        }
-
-        private async Task ExecutePrepareOfferAsync()
-        {
-            try
-            {
-                var productsInCart = ConsumerCart.Select(x => x.Product).ToList();
-                var productsList = await _prepareOfferHandler.PrepareOfferAsync(productsInCart);
-                OfferProductList = productsList
-                    .Select(x => new AdditionalOfferViewModel(x.Item1, x.Item2))
-                    .OrderByDescending(x => x.Confidence)
-                    .ToList();
-            }
-            catch (Exception e)
-            {
-                MessageWriter.ShowMessage(e.Message);
-            }
-        }
-
-        private async Task ExecuteFinalizeSaleAsync()
-        {
-            try
-            {
-                var receipt = new SaleReceipts
-                {
-                    SaleDateTime = DateTime.UtcNow,
-                    CashierId = CurrentSession.CurrentUser.Id,
-                    ClientId = null,
-                    SaleRows = ConsumerCart.Select(x =>
-                        new SaleRows()
-                        {
-                            ProductId = x.Product.Id,
-                            Quantity = x.Quantity,
-                            TotalCost = x.TotalCost
-                        }).ToList()
-                };
-
-                await _dbManager.SaveSale(receipt);
-                ExecuteCleanCart();
-            }
-            catch (Exception e)
-            {
-                MessageWriter.ShowMessage(e.Message);
-            }
-        }
-
-        private void ExecuteAddOfferedProductIntoCart(AdditionalOfferViewModel viewModel)
-        {
-            var product = viewModel?.Product;
-            AddProductIntoCart(product);
-        }
-
-        private void ExecuteAddProductIntoCart(ProductViewModel viewModel)
-        {
-            var product = viewModel?.Product;
-            AddProductIntoCart(product);
-        }
-
-        private void ExecuteDeleteProductFromCart()
-        {
-            if (SelectedCartRowItem is null)
-            {
-                return;
-            }
-
-            _ = ConsumerCart.Remove(SelectedCartRowItem);
-            RaisePropertyChanged(nameof(TotalCost));
-        }
-
-        private void AddProductIntoCart(Products product)
-        {
-            if (product is null)
+            if (!ProductIsValid(product))
                 return;
 
-            try
+            if (ConsumerCart.Select(x => x.Product).Contains(product))
             {
-                if (!ProductIsValid(product))
-                    return;
-
-                if (ConsumerCart.Select(x => x.Product).Contains(product))
-                {
-                    ConsumerCart.Single(x => x.Product == product).Quantity++;
-                }
-                else
-                {
-                    var newProduct = new CartRowViewModel(product);
-                    newProduct.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(TotalCost));
-                    ConsumerCart.Add(newProduct);
-                }
-
-                RaisePropertyChanged(nameof(TotalCost));
+                ConsumerCart.Single(x => x.Product == product).Quantity++;
             }
-            catch (Exception e)
+            else
             {
-                MessageWriter.ShowMessage(e.Message);
+                var newProduct = new CartRowViewModel(product);
+                newProduct.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(TotalCost));
+                ConsumerCart.Add(newProduct);
             }
+
+            RaisePropertyChanged(nameof(TotalCost));
         }
-
-        private static bool ProductIsValid(Products product)
-            => product.Cost.HasValue && product.WarehouseQuantity > 0;
-
-        public void Dispose()
+        catch (Exception e)
         {
-            _cleanup?.Dispose();
+            MessageWriter.ShowMessage(e.Message);
         }
+    }
+
+    private static bool ProductIsValid(Products product)
+        => product.Cost.HasValue && product.WarehouseQuantity > 0;
+
+    public void Dispose()
+    {
+        _cleanup?.Dispose();
     }
 }

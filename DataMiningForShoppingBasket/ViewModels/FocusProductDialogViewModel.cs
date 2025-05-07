@@ -1,80 +1,120 @@
-﻿using DataMiningForShoppingBasket.Commands;
-using DataMiningForShoppingBasket.Common;
-using DataMiningForShoppingBasket.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using DataMiningForShoppingBasket.Commands;
+using DataMiningForShoppingBasket.Common;
+using DataMiningForShoppingBasket.Interfaces;
+using DataMiningForShoppingBasket.Views;
 
-namespace DataMiningForShoppingBasket.ViewModels
+namespace DataMiningForShoppingBasket.ViewModels;
+
+public class FocusProductDialogViewModel : NotifyPropertyChangedImplementation, IDisposable
 {
-    public class FocusProductDialogViewModel : NotifyPropertyChangedImplementation
+    private const int TimeZoneFinishHourCorrection = 24;
+    private const int TimeDateSecondsCorrection = -1;
+
+    private readonly FocusProducts _focusProduct;
+    private readonly IDbManager _dbManager;
+    private readonly CompositeDisposable _cleanup = new();
+
+    public FocusProductDialogViewModel(FocusProducts focusProduct = null)
     {
-        private const int TimeZoneFinishHourCorrection = 24;
-        private const int TimeDateSecondsCorrection = -1;
+        _dbManager = DbManager.GetInstance();
 
-        private readonly FocusProducts _focusProduct;
-        private readonly IDbManager _dbManager;
+        ProductList = _dbManager.GetListAsync<Products>().Result
+            .OrderBy(x => x.ProductName).ToList();
+        SaveCommand = new MyAsyncCommand<Window>(SaveExecuteAsync);
+        ChangeProductCommand = new MyAsyncCommand(ExecuteChangeProductAsync);
 
-        public FocusProductDialogViewModel(FocusProducts focusProduct = null)
+        _focusProduct = focusProduct ?? new FocusProducts
         {
-            _dbManager = DbManager.GetInstance();
+            StartDate = DateTime.Today.ToUniversalTime(),
+            FinishDate = DateTime.Today.ToUniversalTime()
+        };
+        Description = _focusProduct.Description;
+        StartDate = _focusProduct.StartDate.ToLocalTime();
+        FinishDate = _focusProduct.FinishDate.ToLocalTime();
+        ProductId = _focusProduct.ProductId;
+        DiscountCost = _focusProduct.DiscountCost;
+    }
 
-            ProductList = _dbManager.GetListAsync<Products>().Result
-                .OrderBy(x=>x.ProductName).ToList();
-            SaveCommand = new MyAsyncCommand<Window>(SaveExecuteAsync);
+    #region Properties
 
-            _focusProduct = focusProduct ?? new FocusProducts
+    public ICommand SaveCommand { get; }
+    public ICommand ChangeProductCommand { get; }
+
+    public string Description { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime FinishDate { get; set; }
+    public int ProductId { get; set; }
+    public decimal DiscountCost { get; set; }
+
+    public IReadOnlyCollection<Products> ProductList { get; }
+
+    #endregion
+
+    private async Task SaveExecuteAsync(Window window)
+    {
+        try
+        {
+            _focusProduct.Description = Description ?? string.Empty;
+            _focusProduct.StartDate = StartDate.Date.ToUniversalTime();
+            _focusProduct.FinishDate = FinishDate.Date.AddHours(TimeZoneFinishHourCorrection)
+                .AddSeconds(TimeDateSecondsCorrection).ToUniversalTime();
+            _focusProduct.ProductId = ProductId;
+            _focusProduct.DiscountCost = DiscountCost;
+            await _dbManager.SaveAndNotifyHavingIdEntityAsync<FocusProducts, int>(_focusProduct);
+
+            window.DialogResult = true;
+        }
+        catch(Exception e)
+        {
+            MessageWriter.ShowMessage(e.Message);
+            window.DialogResult = false;
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+    private async Task ExecuteChangeProductAsync()
+    {
+        var view = new ProductListDialogView();
+
+        try
+        {
+            var productListViewModel = await AsyncInitializedCreator<ProductListViewModel>.ConstructorAsync();
+            productListViewModel.DoubleClickElementCommand = new MyAsyncCommand<ProductViewModel>(ExecuteSelectProductAsync);
+            _cleanup.Add(productListViewModel);
+
+            view.DataContext = productListViewModel;
+            var res = view.ShowDialog();
+
+            if(res is true)
             {
-                StartDate = DateTime.Today.ToUniversalTime(),
-                FinishDate = DateTime.Today.ToUniversalTime()
-            };
-            Description = _focusProduct.Description;
-            StartDate = _focusProduct.StartDate.ToLocalTime();
-            FinishDate = _focusProduct.FinishDate.ToLocalTime();
-            ProductId= _focusProduct.ProductId;
-            DiscountCost = _focusProduct.DiscountCost;
+                MessageWriter.ShowMessage("Фокусный продукт добавлен");
+            }
+        }
+        catch(Exception e)
+        {
+            MessageWriter.ShowMessage(e.Message);
         }
 
-        #region Properties
-
-        public ICommand SaveCommand { get; }
-
-        public string Description { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime FinishDate { get; set; }
-        public int ProductId { get; set; }
-        public decimal DiscountCost { get; set; }
-
-        public IReadOnlyCollection<Products> ProductList { get; }
-
-        #endregion
-
-        private async Task SaveExecuteAsync(Window window)
+        Task ExecuteSelectProductAsync(ProductViewModel productViewModel)
         {
-            try
-            {
-                _focusProduct.Description = Description ?? string.Empty;
-                _focusProduct.StartDate = StartDate.Date.ToUniversalTime();
-                _focusProduct.FinishDate = FinishDate.Date.AddHours(TimeZoneFinishHourCorrection)
-                    .AddSeconds(TimeDateSecondsCorrection).ToUniversalTime();
-                _focusProduct.ProductId = ProductId;
-                _focusProduct.DiscountCost = DiscountCost;
-                await _dbManager.SaveAndNotifyHavingIdEntityAsync<FocusProducts, int>(_focusProduct);
+            view.DialogResult = true;
+            view.Close();
 
-                window.DialogResult = true;
-            }
-            catch (Exception e)
-            {
-                MessageWriter.ShowMessage(e.Message);
-                window.DialogResult = false;
-            }
-            finally
-            {
-                window.Close();
-            }
+            return Task.CompletedTask;
         }
+    }
+
+    public void Dispose()
+    {
+        _cleanup?.Dispose();
     }
 }

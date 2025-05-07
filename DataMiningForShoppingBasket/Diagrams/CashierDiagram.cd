@@ -1,140 +1,177 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="DataMiningForShoppingBasket.Views.CashierInterfaceView">
-    <Position X="6.25" Y="1.75" Width="2.5" />
+  <Class Name="DataMiningForShoppingBasket.ViewModels.CashierInterfaceViewModel">
+    <Position X="2.5" Y="2.75" Width="2.75" />
+    <AssociationLine Name="_dbManager" Type="DataMiningForShoppingBasket.Interfaces.IDbManager" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.25" Y="7.062" />
+        <Point X="5.712" Y="7.062" />
+        <Point X="5.712" Y="9.062" />
+        <Point X="15" Y="9.062" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="ConsumerCart" Type="DataMiningForShoppingBasket.ViewModels.CartRowViewModel" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.938" Y="7.771" />
+        <Point X="4.938" Y="9.562" />
+        <Point X="6.75" Y="9.562" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="SelectedCartRowItem" Type="DataMiningForShoppingBasket.ViewModels.CartRowViewModel" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.625" Y="7.771" />
+        <Point X="4.625" Y="10" />
+        <Point X="6.75" Y="10" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="ProductList" Type="DataMiningForShoppingBasket.ViewModels.ProductListViewModel" FixedFromPoint="true">
+      <Path>
+        <Point X="5.25" Y="3.021" />
+        <Point X="15.5" Y="3.021" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="AddOfferedProductIntoCartCommand" Type="System.Windows.Input.ICommand" FixedFromPoint="true">
+      <Path>
+        <Point X="5.25" Y="3.438" />
+        <Point X="11.5" Y="3.438" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="CleanCartCommand" Type="System.Windows.Input.ICommand" FixedFromPoint="true">
+      <Path>
+        <Point X="5.25" Y="4.125" />
+        <Point X="11.5" Y="4.125" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="PrepareOfferCommand" Type="DataMiningForShoppingBasket.Interfaces.IAsyncCommand" FixedFromPoint="true">
+      <Path>
+        <Point X="5.25" Y="6.562" />
+        <Point X="7.25" Y="6.562" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="FinalizeSaleCommand" Type="System.Windows.Input.ICommand" FixedFromPoint="true">
+      <Path>
+        <Point X="5.25" Y="3.75" />
+        <Point X="11.5" Y="3.75" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="DeleteProductFromCartCommand" Type="System.Windows.Input.ICommand" FixedFromPoint="true">
+      <Path>
+        <Point X="5.25" Y="4.5" />
+        <Point X="11.5" Y="4.5" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAEAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ECAgAAgAgCAAAEADACAAAAgAQAEACJAAIxABCEBIAAI=</HashCode>
+      <FileName>ViewModels\CashierInterfaceViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_dbManager" />
+      <Property Name="SelectedCartRowItem" />
+      <Property Name="ProductList" />
+      <Property Name="ShowFocusProductListCommand" />
+      <Property Name="AddOfferedProductIntoCartCommand" />
+      <Property Name="CleanCartCommand" />
+      <Property Name="PrepareOfferCommand" />
+      <Property Name="FinalizeSaleCommand" />
+      <Property Name="DeleteProductFromCartCommand" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ConsumerCart" />
+      <Property Name="OfferProductList" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataMiningForShoppingBasket.ViewModels.ProductListViewModel">
+    <Position X="15.5" Y="2.75" Width="2.5" />
+    <AssociationLine Name="ClearSearchCommand" Type="System.Windows.Input.ICommand" FixedFromPoint="true">
+      <Path>
+        <Point X="15.5" Y="3.938" />
+        <Point X="13.25" Y="3.938" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="DoubleClickElementCommand" Type="System.Windows.Input.ICommand" FixedFromPoint="true">
+      <Path>
+        <Point X="15.5" Y="3.562" />
+        <Point X="13.25" Y="3.562" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="ProductsList" Type="DataMiningForShoppingBasket.ViewModels.ProductViewModel" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="18" Y="5.875" />
+        <Point X="19.312" Y="5.875" />
+        <Point X="19.312" Y="11.569" />
+        <Point X="15.5" Y="11.569" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EAQAgAAAACAQEAACACAAABggQACAAAAAAgAAACAAAEA=</HashCode>
+      <FileName>ViewModels\ProductListViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_dbManager" />
+      <Property Name="ClearSearchCommand" />
+      <Property Name="DoubleClickElementCommand" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ProductsList" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataMiningForShoppingBasket.Views.CashierInterfaceView">
+    <Position X="5.75" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Views\CashierInterfaceView.xaml.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="CustomDataContext" />
     </ShowAsAssociation>
-    <Lollipop Orientation="Left" Position="0.1" />
-  </Class>
-  <Class Name="DataMiningForShoppingBasket.ViewModels.CashierInterfaceViewModel">
-    <Position X="9.25" Y="3.5" Width="2.5" />
-    <AssociationLine Name="_prepareOfferHandler" Type="DataMiningForShoppingBasket.Interfaces.IPrepareOfferHandler">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-1.578" Y="0.206" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <AssociationLine Name="_productsINotifier" Type="DataMiningForShoppingBasket.Interfaces.INotifier&lt;TEntity, TId&gt;" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="9.25" Y="6.375" />
-        <Point X="4.25" Y="6.375" />
-        <Point X="4.25" Y="8.75" />
-      </Path>
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.037" Y="0.268" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <AssociationLine Name="AddProductIntoCartCommand" Type="DataMiningForShoppingBasket.Commands.MyCommand&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="9.25" Y="8.125" />
-        <Point X="8.094" Y="8.125" />
-        <Point X="8.094" Y="10.5" />
-        <Point X="7.75" Y="10.5" />
-      </Path>
-      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
-        <Position X="0.419" Y="0.57" Height="0.182" Width="2.003" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <AssociationLine Name="ClearSearchCommand" Type="DataMiningForShoppingBasket.Commands.MyCommand" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="9.25" Y="7.437" />
-        <Point X="7" Y="7.437" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="DeleteProductFromCartCommand" Type="DataMiningForShoppingBasket.Commands.MyCommand" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="9.25" Y="7.875" />
-        <Point X="7" Y="7.875" />
-      </Path>
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.058" Y="0.06" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <TypeIdentifier>
-      <HashCode>AAAAgAAAgCAQAEADAAQAABgAQAAAABAAIxABAGAICEo=</HashCode>
-      <FileName>ViewModels\CashierInterfaceViewModel.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_prepareOfferHandler" />
-      <Field Name="_productsINotifier" />
-      <Property Name="SelectedCartRowItem" />
-      <Property Name="AddProductIntoCartCommand" />
-      <Property Name="PrepareOfferCommand" />
-      <Property Name="FinalizeSaleCommand" />
-      <Property Name="ClearSearchCommand" />
-      <Property Name="DeleteProductFromCartCommand" />
-    </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="ConsumerCart" />
-      <Property Name="ProductsList" />
-    </ShowAsCollectionAssociation>
-    <Lollipop Position="1.296" />
-  </Class>
-  <Class Name="DataMiningForShoppingBasket.Products">
-    <Position X="16.5" Y="6.75" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAQAQAAAAAAAAAAABAQAAAIAAgAAgAAAAAIAAA=</HashCode>
-      <FileName>Products.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="1.433" Collapsed="true" />
+    <Lollipop Orientation="Right" Position="0.212" />
   </Class>
   <Class Name="DataMiningForShoppingBasket.ViewModels.ProductViewModel">
-    <Position X="13" Y="5.5" Width="2.5" />
-    <AssociationLine Name="Product" Type="DataMiningForShoppingBasket.Products" FixedFromPoint="true" FixedToPoint="true">
+    <Position X="13" Y="10.25" Width="2.5" />
+    <AssociationLine Name="Product" Type="DataMiningForShoppingBasket.Products" FixedToPoint="true">
       <Path>
-        <Point X="15.5" Y="6.823" />
-        <Point X="15.875" Y="6.823" />
-        <Point X="15.875" Y="7.375" />
-        <Point X="16.5" Y="7.375" />
+        <Point X="13" Y="11.312" />
+        <Point X="11.75" Y="11.312" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAACAAAAAQAAAAAAAAAAABAQAAAAAAgAAAAAAAAIAAA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAAAAAAAABAQAAAAAAAAAAAAAAAIAAA=</HashCode>
       <FileName>ViewModels\ProductViewModel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Product" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="DataMiningForShoppingBasket.Handlers.PrepareOfferSimpleHandler">
-    <Position X="9.25" Y="11.75" Width="2.25" />
-    <NestedTypes>
-      <Class Name="DataMiningForShoppingBasket.Handlers.PrepareOfferSimpleHandler.EqualityProductsComparer" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Handlers\PrepareOfferSimpleHandler.cs</NewMemberFileName>
-        </TypeIdentifier>
-        <Lollipop Position="0.2" />
-      </Class>
-    </NestedTypes>
+  <Class Name="DataMiningForShoppingBasket.Products">
+    <Position X="10.25" Y="9.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAAEAAAAAgAIAAACAAAAAAAABAAAAAAAEAAAAAAAAAA=</HashCode>
-      <FileName>Handlers\PrepareOfferSimpleHandler.cs</FileName>
+      <HashCode>AAACAAAQAQAAAAAAAAAAABAQAAAIAAgAAAAAAAAIAAA=</HashCode>
+      <FileName>Products.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.285" />
+    <Lollipop Orientation="Right" Position="0.146" />
   </Class>
-  <Class Name="DataMiningForShoppingBasket.Commands.MyCommand&lt;T&gt;">
-    <Position X="6.25" Y="9.75" Width="1.5" />
+  <Class Name="DataMiningForShoppingBasket.ViewModels.AdditionalOfferViewModel">
+    <Position X="2.5" Y="10.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAEACAAQAAECAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Commands\MyCommand`1.cs</FileName>
+      <HashCode>AAAKAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\AdditionalOfferViewModel.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <ShowAsAssociation>
+      <Property Name="Product" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DataMiningForShoppingBasket.Common.DbManager">
+    <Position X="17.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAABAAAAAAAAAAAAAAAAAAABRAACAEAAEAAAAQAAAAA=</HashCode>
+      <FileName>Common\DbManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.668" />
   </Class>
   <Class Name="DataMiningForShoppingBasket.ViewModels.CartRowViewModel">
-    <Position X="15.75" Y="2" Width="2.5" />
-    <AssociationLine Name="Product" Type="DataMiningForShoppingBasket.Products" FixedToPoint="true">
-      <Path>
-        <Point X="17.688" Y="4.521" />
-        <Point X="17.688" Y="6.75" />
-      </Path>
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.06" Y="0.613" />
-      </MemberNameLabel>
-    </AssociationLine>
+    <Position X="6.75" Y="9.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAgABAAAA=</HashCode>
       <FileName>ViewModels\CartRowViewModel.cs</FileName>
@@ -144,69 +181,68 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="DataMiningForShoppingBasket.Commands.MyCommand">
-    <Position X="5.5" Y="6.75" Width="1.5" />
+    <Position X="12.75" Y="5.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAEACAAQAAECAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Commands\MyCommand.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Position="0.265" />
   </Class>
-  <Class Name="DataMiningForShoppingBasket.Commands.MyAsyncCommand">
-    <Position X="3" Y="3.75" Width="2.25" />
+  <Class Name="DataMiningForShoppingBasket.Commands.AsyncCommandBase">
+    <Position X="10" Y="5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAgAAAAAAQAQAAEAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
-      <FileName>Commands\MyAsyncCommand.cs</FileName>
+      <HashCode>AAAAAAAAQAACAAQAEEIAAAAQAAAAAABAAAAIAAAAACA=</HashCode>
+      <FileName>Commands\AsyncCommandBase.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.668" />
   </Class>
-  <Class Name="DataMiningForShoppingBasket.Common.DefaultNotifier&lt;TEntity, TId&gt;">
-    <Position X="3.25" Y="11" Width="2.25" />
+  <Interface Name="DataMiningForShoppingBasket.Interfaces.IAsyncInitialized">
+    <Position X="15.5" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAEAAAgACAAAAgAAAAAQAAABAAAABAEAAgAAAAAAAA=</HashCode>
-      <FileName>Common\DefaultNotifier`2.cs</FileName>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IAsyncInitialized.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="DataMiningForShoppingBasket.Common.DbManager">
-    <Position X="14.75" Y="10.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>gAABAAAAAAAAAAAAAAAAAAABRAACAAAAEAAAAQAAAAA=</HashCode>
-      <FileName>Common\DbManager.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Orientation="Left" Position="0.165" />
-  </Class>
+  </Interface>
   <Interface Name="DataMiningForShoppingBasket.Interfaces.ILabelHavingDataContext">
-    <Position X="10.5" Y="1.75" Width="2" />
+    <Position X="2.5" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Interfaces\ILabelHavingDataContext.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="DataMiningForShoppingBasket.Interfaces.IUserControl">
-    <Position X="3" Y="1.75" Width="1.75" />
+    <Position X="9.25" Y="1" Width="1.75" />
     <TypeIdentifier>
       <HashCode>gAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Interfaces\IUserControl.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="DataMiningForShoppingBasket.Interfaces.IDbManager">
-    <Position X="12.25" Y="10.25" Width="1.5" />
+    <Position X="15" Y="8" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAAAAAAAAAAAAAAAAAAAAAABQAACAAAAAAAAAQAAAAA=</HashCode>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAABQAACAEAAAAAAAQAAAAA=</HashCode>
       <FileName>Interfaces\IDbManager.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="DataMiningForShoppingBasket.Interfaces.IPrepareOfferHandler">
-    <Position X="9.5" Y="10.25" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Interfaces\IPrepareOfferHandler.cs</FileName>
-    </TypeIdentifier>
+  <Interface Name="System.Windows.Input.ICommand">
+    <Position X="11.5" Y="3.25" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Events" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier />
   </Interface>
-  <Interface Name="DataMiningForShoppingBasket.Interfaces.INotifier&lt;TEntity, TId&gt;">
-    <Position X="3.25" Y="8.75" Width="2" />
+  <Interface Name="DataMiningForShoppingBasket.Interfaces.IAsyncCommand">
+    <Position X="7.25" Y="5.5" Width="1.5" />
+    <InheritanceLine Type="System.Windows.Input.ICommand" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11.5" Y="4.625" />
+        <Point X="7.625" Y="4.625" />
+        <Point X="7.625" Y="5.5" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAABAAAAgAAAAAAAA=</HashCode>
-      <FileName>Interfaces\INotifier`2.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IAsyncCommand.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
